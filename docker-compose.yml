@@ -1,0 +1,6 @@
+services:
+  stayfit.api:
+    image: ${DOCKER_REGISTRY-}stayfitapi
+    build:
+      context: .
+      dockerfile: Presentation/StayFit.API/Dockerfile
