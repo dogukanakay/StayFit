@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StayFit.Domain.Entities;
+using StayFit.Domain.Entities.Common;
 using StayFit.Persistence.EntityConfigurations;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,21 @@ namespace StayFit.Persistence.Contexts
         public StayFitDbContext(DbContextOptions options) : base(options)
         {
         }
-
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entities = ChangeTracker.Entries<BaseEntity>(); 
+            foreach (var entity in entities)
+            {
+                _ = entity.State switch
+                {
+                    EntityState.Added => entity.Entity.CreatedDate = DateTime.UtcNow,
+                    EntityState.Modified => entity.Entity.UpdatedDate = DateTime.UtcNow,
+                    EntityState.Deleted =>entity.Entity.DeletedDate = DateTime.UtcNow,
+                    _ => DateTime.UtcNow
+                };
+            }
+            return await base.SaveChangesAsync(cancellationToken);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new MemberEntityConfiguration());

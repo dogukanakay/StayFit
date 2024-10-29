@@ -14,6 +14,7 @@ namespace StayFit.Application.Mapping
         public MappingProfile()
         {
             CreateMap<User,MemberRegisterDto>().ReverseMap();
+            CreateMap<User,TrainerRegisterDto>().ReverseMap();
         }
     }
 }

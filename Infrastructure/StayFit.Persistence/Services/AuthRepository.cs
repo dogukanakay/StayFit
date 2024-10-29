@@ -10,13 +10,13 @@ using StayFit.Persistence.Helpers;
 
 namespace StayFit.Persistence.Services
 {
-    public class AuthService  : IAuthRepository
+    public class AuthRepository  : IAuthRepository
     {
         private readonly StayFitDbContext _context;
         private readonly JwtTokenGenerator _jwtGenerator;
         private readonly IMapper _mapper;
 
-        public AuthService(StayFitDbContext context, JwtTokenGenerator jwtGenerator, IMapper mapper)
+        public AuthRepository(StayFitDbContext context, JwtTokenGenerator jwtGenerator, IMapper mapper)
         {
             _context = context;
             _jwtGenerator = jwtGenerator;
@@ -59,24 +59,17 @@ namespace StayFit.Persistence.Services
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(memberRegisterDto.Password, out passwordHash, out passwordSalt);
 
-            User user = new()
-            {
-                BirthDate = memberRegisterDto.BirthDate,
-                FirstName = memberRegisterDto.FirstName,
-                LastName = memberRegisterDto.LastName,
-                Email = memberRegisterDto.Email,
-                Gender = memberRegisterDto.Gender,
-                Phone = memberRegisterDto.Phone,
-                Status = UserStatus.Active,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                IsEmailConfirmed = true,
-                CreatedDate = DateTime.UtcNow,
-                UserRole = UserRole.Member
-                
-            };
+            User user = _mapper.Map<User>(memberRegisterDto);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.Status = UserStatus.Active;
+            user.IsEmailConfirmed = true;
+            user.UserRole = UserRole.Member;
+           
 
-            await _context.AddAsync<User>(user);
+           
+
+            await _context.Users.AddAsync(user);
 
             Member member = new()
             {
@@ -86,7 +79,7 @@ namespace StayFit.Persistence.Services
                 Weight = memberRegisterDto.Weight,
             };
 
-            await _context.AddAsync<Member>(member);
+            await _context.Members.AddAsync(member);
 
             await _context.SaveChangesAsync();
 

@@ -5,7 +5,7 @@ namespace StayFit.Application.Features.Commands.Auths.Register.MemberRegister
 {
     public class MemberRegisterCommandHandler : IRequestHandler<MemberRegisterCommandRequest, MemberRegisterCommandResponse>
     {
-        IAuthRepository _authRepository;
+        private readonly IAuthRepository _authRepository;
 
         public MemberRegisterCommandHandler(IAuthRepository authRepository)
         {
