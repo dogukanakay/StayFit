@@ -13,7 +13,16 @@ namespace StayFit.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(u=>u.Id);
+            builder
+                .HasKey(u => u.Id);
+
+            builder
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            builder
+                .HasIndex(u => u.Phone)
+                .IsUnique();
         }
     }
 }

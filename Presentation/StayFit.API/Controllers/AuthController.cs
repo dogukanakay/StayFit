@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StayFit.Application.Models;
-using StayFit.Application.Repositories;
+using StayFit.Application.DTOs;
+using StayFit.Application.Features.Commands.Auths.Login;
+using StayFit.Application.Features.Commands.Auths.Register.MemberRegister;
+using StayFit.Application.Features.Commands.Auths.Register.TrainerRegister;
 
 namespace StayFit.API.Controllers
 {
@@ -9,34 +11,41 @@ namespace StayFit.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly IMediator _mediator;
 
-        public AuthController(IAuthRepository authRepository)
+        public AuthController(IMediator mediator)
         {
-            _authRepository = authRepository;
+
+            _mediator = mediator;
         }
 
-        [HttpPost("StudentRegister")]
-        public async Task<IActionResult> StudentRegister(StudentRegisterModel studentRegisterModel)
+        [HttpPost("MemberRegister")]
+        public async Task<IActionResult> MemberRegisterAsync(MemberRegisterDto memberRegisterDto)
         {
-            var result = await _authRepository.StudentRegister(studentRegisterModel);
+            MemberRegisterCommandRequest request = new() { MemberRegisterDto = memberRegisterDto };
+            var result = await _mediator.Send(request);
             return Ok(result);
         }
 
         [HttpPost("TrainerRegister")]
-        public async Task<IActionResult> TrainerRegister(TrainerRegisterModel trainerRegisterModel)
+        public async Task<IActionResult> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto)
         {
-            var result = await _authRepository.TrainerRegister(trainerRegisterModel);
+            TrainerRegisterCommandRequest request = new() { TrainerRegisterDto = trainerRegisterDto};
+            var result = await _mediator.Send(request);
             return Ok(result);
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginModel loginModel)
+        public async Task<IActionResult> LoginAsync(LoginDto loginModel)
         {
-            var result = await _authRepository.Login(loginModel);
-            return Ok(result);
+            LoginCommandRequest loginCommandRequest = new()
+            {
+                LoginModel = loginModel
+            };
+            LoginCommandResponse response = await _mediator.Send(loginCommandRequest);
+            return Ok(response.TokenModel);
         }
 
-        
+
     }
 }

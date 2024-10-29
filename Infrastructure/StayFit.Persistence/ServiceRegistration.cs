@@ -7,6 +7,7 @@ using StayFit.Persistence.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,8 +18,9 @@ namespace StayFit.Persistence
         public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<StayFitDbContext>(options=> options.UseNpgsql(configuration.GetConnectionString("PostgreSQL")));
-            //services.AddScoped<IAuthRepository, AuthService>();
+            services.AddScoped<IAuthRepository, AuthService>();
             services.AddSingleton<JwtTokenGenerator>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
         }
     }

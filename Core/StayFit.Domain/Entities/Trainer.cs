@@ -13,7 +13,7 @@ namespace StayFit.Domain.Entities
         public float MonthlyRate { get; set; }
         public float Rate { get; set; }
         public int YearsOfExperience { get; set; }
-        public string Specializations { get; set; }
+        public string? Specializations { get; set; }
         public User User { get; set; }
 
     }

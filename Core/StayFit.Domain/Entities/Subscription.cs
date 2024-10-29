@@ -10,14 +10,13 @@ namespace StayFit.Domain.Entities
 {
     public class Subscription : BaseEntity<Guid>
     {
-        public Guid StudentId { get; set; }
+        public Guid MemberId { get; set; }
         public Guid TrainerId { get; set; }
         public DateTime EndDate { get; set; }
         public float Amount { get; set; }
-        public SubscriptionType SubscriptionType { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
 
-        public Member Student { get; set; }
+        public Member Member { get; set; }
         public Trainer Trainer { get; set; }
     }
 }
