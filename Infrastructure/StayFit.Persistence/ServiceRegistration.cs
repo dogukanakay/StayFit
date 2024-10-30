@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StayFit.Application.Repositories;
 using StayFit.Persistence.Contexts;
-using StayFit.Persistence.Services;
+using StayFit.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,9 @@ namespace StayFit.Persistence
         {
             services.AddDbContext<StayFitDbContext>(options=> options.UseNpgsql(configuration.GetConnectionString("PostgreSQL")));
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITrainerRepository, TrainerRepository>();
+            services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddSingleton<JwtTokenGenerator>();
             
         }

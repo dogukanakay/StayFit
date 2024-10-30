@@ -8,7 +8,7 @@ using StayFit.Domain.Enums;
 using StayFit.Persistence.Contexts;
 using StayFit.Persistence.Helpers;
 
-namespace StayFit.Persistence.Services
+namespace StayFit.Persistence.Repositories
 {
     public class AuthRepository  : IAuthRepository
     {
