@@ -11,7 +11,7 @@ namespace StayFit.Domain.Entities
 {
     public class Goal : BaseEntity<int>
     {
-        public Guid MemberId { get; set; }
+        public Guid SubscriptionId { get; set; }
         public GoalType GoalType { get; set; }
         public string Description { get; set; }
         public float TargetValue { get; set; }
@@ -22,7 +22,7 @@ namespace StayFit.Domain.Entities
         public GoalStatus Status { get; set; }
 
 
-        public Member Member { get; set; }
+        public Subscription Subscription { get; set; }
 
 
 

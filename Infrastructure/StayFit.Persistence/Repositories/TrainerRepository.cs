@@ -18,6 +18,9 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
+        public async Task<List<Trainer>> GetAllTrainersIncludeUser()
+                => await _context.Trainers.Include(t=>t.User).AsNoTracking().ToListAsync();
+
         public async Task<Trainer> GetTrainerProfile(Guid id)
                 => await _context.Trainers.Include(t => t.User).FirstOrDefaultAsync(t => t.Id == id);
     }

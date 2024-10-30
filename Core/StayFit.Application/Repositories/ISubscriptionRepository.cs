@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.Repositories
 {
-    public interface ITrainerRepository : IGenericRepository<Trainer>
+    public interface ISubscriptionRepository : IGenericRepository<Subscription>
     {
-        public Task<Trainer> GetTrainerProfile(Guid id);
-        public Task<List<Trainer>> GetAllTrainersIncludeUser();
     }
 }

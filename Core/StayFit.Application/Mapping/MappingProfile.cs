@@ -23,6 +23,8 @@ namespace StayFit.Application.Mapping
 
             CreateMap<Trainer, TrainerResponseDto>().IncludeMembers(src=>src.User).ReverseMap();
             CreateMap<Member, MemberResponseDto>().IncludeMembers(src=>src.User).ReverseMap();
+
+            CreateMap<Subscription,CreateSubscriptionDto>().ReverseMap();
         }
     }
 }

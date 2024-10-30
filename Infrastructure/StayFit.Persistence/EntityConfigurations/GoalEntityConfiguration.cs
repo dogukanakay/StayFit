@@ -13,9 +13,9 @@ namespace StayFit.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Goal> builder)
         {
-            builder.HasOne(g => g.Member)
+            builder.HasOne(g => g.Subscription)
                 .WithMany()
-                .HasForeignKey(g => g.MemberId);
+                .HasForeignKey(g => g.SubscriptionId);
         }
     }
 }
