@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.DTOs
 {
-    public class CreateSubscriptionDto
+    public record CreateSubscriptionDto
     {
-        public Guid MemberId { get; set; }
-        public Guid TrainerId { get; set; }
+        public Guid MemberId { get; init; }
+        public Guid TrainerId { get; init; }
 
       
     }

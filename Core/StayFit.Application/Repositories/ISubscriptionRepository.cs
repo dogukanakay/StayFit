@@ -1,4 +1,5 @@
-﻿using StayFit.Domain.Entities;
+﻿using StayFit.Application.DTOs;
+using StayFit.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace StayFit.Application.Repositories
 {
     public interface ISubscriptionRepository : IGenericRepository<Subscription>
     {
+        Task<List<Subscription>> GetTrainerSubscribers(Guid trainerId);
     }
 }
