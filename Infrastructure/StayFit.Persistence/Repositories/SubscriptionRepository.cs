@@ -20,27 +20,27 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
-        //public async Task<List<Subscription>> GetTrainerSubscribers(Guid trainerId)
-        //{
-        //    List<Subscription> result = await _context.Subscriptions
-        //                            .Where(s => s.TrainerId == trainerId && s.PaymentStatus == PaymentStatus.Completed)
-        //                            .AsNoTracking()
-        //                            .Include(s => s.Member)
-        //                            .Include(m => m.Member.User)
-        //                            .ToListAsync();
-        //    return result;
-        //}
+        public async Task<Subscription> GetMemberSubscribedTrainer(Guid memberId)
+        {
+            Subscription? subscription = await _context.Subscriptions
+                                        .Where(s=>s.MemberId == memberId && s.PaymentStatus == PaymentStatus.Completed)
+                                        .AsNoTracking()
+                                        .Include(s=> s.Trainer)
+                                        .Include(s=>s.Trainer.User)
+                                        .FirstOrDefaultAsync();
 
+            return subscription;
+        }
 
         public async Task<List<Subscription>> GetTrainerSubscribers(Guid trainerId)
         {
-            List<Subscription> result = await _context.Subscriptions
+            List<Subscription> subscriptions = await _context.Subscriptions
                                     .Where(s => s.TrainerId == trainerId && s.PaymentStatus == PaymentStatus.Completed)
                                     .AsNoTracking()
                                     .Include(s => s.Member)
                                     .Include(m => m.Member.User)
                                     .ToListAsync();
-            return result;
+            return subscriptions;
         }
 
     }

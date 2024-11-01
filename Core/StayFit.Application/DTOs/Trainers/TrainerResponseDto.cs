@@ -8,7 +8,7 @@ namespace StayFit.Application.DTOs
 {
     public record TrainerResponseDto
     {
-        public String Id { get; init; }
+        public string Id { get; init; }
         public DateTime CreatedDate { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }

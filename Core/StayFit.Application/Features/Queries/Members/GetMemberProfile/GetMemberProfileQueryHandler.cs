@@ -19,7 +19,7 @@ namespace StayFit.Application.Features.Queries.Members.GetMemberProfile
 
         public async Task<GetMemberProfileQueryResponse> Handle(GetMemberProfileQueryRequest request, CancellationToken cancellationToken)
         {
-            Member member = await _memberRepository.GetMemberProfile(request.MemberId);
+            Member member = await _memberRepository.GetMemberProfileAsync(request.MemberId);
             MemberResponseDto memberResponseDto = _mapper.Map<MemberResponseDto>(member);
 
             return new() { MemberResponseDto = memberResponseDto };

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StayFit.Application.DTOs.Trainers;
 using StayFit.Application.Features.Commands.Auths.Register.TrainerRegister;
+using StayFit.Application.Features.Commands.Trainers.UpdateTrainer;
 using StayFit.Application.Features.Queries.Trainers.GetAllTrainers;
 using StayFit.Application.Features.Queries.Trainers.GetTrainerProfile;
 using System.Security.Claims;
@@ -39,6 +41,14 @@ namespace StayFit.API.Controllers
             GetAllTrainersQueryResponse response = await _mediator.Send(request);
 
             return Ok(response.TrainerResponseDtos);
+        }
+
+        [HttpPut("UpdateTrainerProfile")]
+        public async Task<IActionResult> UpdateTrainerProfile(UpdateTrainerDto updateTrainerDto)
+        {
+            UpdateTrainerCommandRequest request = new() { UpdateTrainerDto = updateTrainerDto};
+            UpdateTrainerCommandResponse response = await _mediator.Send(request);
+            return Ok(response);
         }
 
     }
