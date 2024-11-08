@@ -19,8 +19,8 @@ namespace StayFit.Application.Features.Queries.Subscriptions.GetTrainerSubscribe
 
         public async Task<GetTrainerSubscribersQueryResponse> Handle(GetTrainerSubscribersQueryRequest request, CancellationToken cancellationToken)
         {
-            List<Subscription> subscriptions = await _subscriptionRepository.GetTrainerSubscribers(request.TrainerId);
-            List<GetTrainerSubscribersDto> getTrainerSubscribersDtos = _mapper.Map<List<GetTrainerSubscribersDto>>(subscriptions);
+            
+            List<GetTrainerSubscribersDto> getTrainerSubscribersDtos = await _subscriptionRepository.GetTrainerSubscribers(request.TrainerId);
 
             return new() { GetTrainerSubscribersDtos = getTrainerSubscribersDtos };
         }

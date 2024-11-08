@@ -20,11 +20,10 @@ namespace StayFit.Application.Features.Queries.Subscriptions.GetMemberSubscribed
 
         public async Task<GetMemberSubscribedTrainerQueryResponse> Handle(GetMemberSubscribedTrainerQueryRequest request, CancellationToken cancellationToken)
         {
-            Subscription subscription = await _subscriptionRepository.GetMemberSubscribedTrainer(request.MemberId);
-            if (subscription == null)
+            GetMemberSubscribedTrainerDto getMemberSubscribedTrainerDto = await _subscriptionRepository.GetMemberSubscribedTrainer(request.MemberId);
+            if (getMemberSubscribedTrainerDto is null)
                 throw new SubscribtionNotFound();
-            GetMemberSubscribedTrainerDto getMemberSubscribedTrainerDto = _mapper.Map<GetMemberSubscribedTrainerDto>(subscription);
-
+            
             return new() { GetMemberSubscribedTrainerDto = getMemberSubscribedTrainerDto };
         }
     }

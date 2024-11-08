@@ -36,26 +36,7 @@ namespace StayFit.Application.Mapping
                 .ForAllMembers(opts => opts.Condition((src, dest, srcTrainer) => srcTrainer != null));
 
             CreateMap<Subscription, CreateSubscriptionDto>().ReverseMap();
-            CreateMap<Subscription, GetTrainerSubscribersDto>()
-                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Member.User.FirstName))
-                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Member.User.LastName))
-                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.Member.User.BirthDate))
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Member.User.Gender))
-                .ForMember(dest => dest.Height, opt => opt.MapFrom(src => src.Member.Height))
-                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.Member.Weight))
-                .ForMember(dest => dest.PhotoPath, opt => opt.MapFrom(src => src.Member.User.PhotoPath))
-                .ReverseMap();
-
-
-            CreateMap<Subscription, GetMemberSubscribedTrainerDto>()
-                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
-                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Trainer.User.LastName))
-                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Trainer.User.FirstName))
-                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate))
-                .ForMember(dest => dest.PhotoPath, opt => opt.MapFrom(src => src.Trainer.User.PhotoPath))
-                .ForMember(dest => dest.TrainerId, opt => opt.MapFrom(src => src.Trainer.Id))
-                .ForMember(dest => dest.SubscriptionId, opt => opt.MapFrom(src => src.Id))
-                .ReverseMap();
+            
                 
                 
                 

@@ -20,27 +20,44 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<Subscription> GetMemberSubscribedTrainer(Guid memberId)
+        public async Task<GetMemberSubscribedTrainerDto> GetMemberSubscribedTrainer(Guid memberId)
         {
-            Subscription? subscription = await _context.Subscriptions
-                                        .Where(s=>s.MemberId == memberId && s.PaymentStatus == PaymentStatus.Completed)
-                                        .AsNoTracking()
-                                        .Include(s=> s.Trainer)
-                                        .Include(s=>s.Trainer.User)
-                                        .FirstOrDefaultAsync();
 
-            return subscription;
+            return await _context.Subscriptions
+                                       .Where(s => s.MemberId == memberId && s.PaymentStatus == PaymentStatus.Completed)
+                                       .Select(s => new GetMemberSubscribedTrainerDto
+                                       {
+                                           Amount = s.Amount,
+                                           EndDate = s.EndDate,
+                                           FirstName = s.Trainer.User.FirstName,
+                                           LastName = s.Trainer.User.LastName,
+                                           PhotoPath = s.Trainer.User.PhotoPath,
+                                           SubscriptionId = s.Id,
+                                           TrainerId = s.TrainerId
+                                       })
+                                       .FirstOrDefaultAsync();
+
         }
 
-        public async Task<List<Subscription>> GetTrainerSubscribers(Guid trainerId)
+        public async Task<List<GetTrainerSubscribersDto>> GetTrainerSubscribers(Guid trainerId)
         {
-            List<Subscription> subscriptions = await _context.Subscriptions
+            return await _context.Subscriptions
                                     .Where(s => s.TrainerId == trainerId && s.PaymentStatus == PaymentStatus.Completed)
-                                    .AsNoTracking()
-                                    .Include(s => s.Member)
-                                    .Include(m => m.Member.User)
-                                    .ToListAsync();
-            return subscriptions;
+                                    .Select(s => new GetTrainerSubscribersDto
+                                    {
+                                        Amount = s.Amount,
+                                        EndDate = s.EndDate,
+                                        BirthDate = s.Member.User.BirthDate,
+                                        FirstName = s.Member.User.FirstName,
+                                        LastName = s.Member.User.LastName,
+                                        Gender = s.Member.User.Gender,
+                                        Height = s.Member.Height,
+                                        Id = s.Id,
+                                        MemberId = s.MemberId,
+                                        PhotoPath = s.Member.User.PhotoPath,
+                                        Weight = s.Member.Weight
+
+                                    }).ToListAsync();
         }
 
     }
