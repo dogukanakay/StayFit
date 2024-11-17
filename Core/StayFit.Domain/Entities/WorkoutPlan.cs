@@ -11,6 +11,7 @@ namespace StayFit.Domain.Entities
     public class WorkoutPlan : BaseEntity<int>
     {
         public Guid SubscriptionId { get; set; }
+        public Guid MemberId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
@@ -19,6 +20,7 @@ namespace StayFit.Domain.Entities
 
 
         public Subscription Subscription { get; set; }
+        public Member Member { get; set; }
         public ICollection<WorkoutDay> WorkoutDays { get; set; }
 
 

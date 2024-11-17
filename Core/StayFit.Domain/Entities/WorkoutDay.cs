@@ -11,7 +11,7 @@ namespace StayFit.Domain.Entities
     public class WorkoutDay : BaseEntity<int>
     {
         public int WorkoutPlanId { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
+        public DateTime Day { get; set; }
         public string Notes { get; set; }
         public bool IsCompleted { get; set; }
 

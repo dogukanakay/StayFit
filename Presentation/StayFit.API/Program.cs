@@ -33,7 +33,6 @@ builder.Services.AddApplicationServices();
 builder.Services.AddStorage<AzureStorageService>();
 
 
-builder.Services.AddSingleton<JwtTokenGenerator>();
 
 
 builder.Services.AddAuthentication(options =>

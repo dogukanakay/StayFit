@@ -4,10 +4,12 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StayFit.Application.Abstracts.Security;
 using StayFit.Application.Settings;
 using StayFit.Domain.Entities;
 
-public class JwtTokenGenerator
+namespace StayFit.Infrastructure.Helpers;
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings;
 
@@ -18,7 +20,6 @@ public class JwtTokenGenerator
 
     public Task<string> GenerateToken(User user)
     {
-        // Anahtarı doğru şekilde SymmetricSecurityKey'e çeviriyoruz
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

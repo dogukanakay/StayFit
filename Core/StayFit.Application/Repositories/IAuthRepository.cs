@@ -1,4 +1,5 @@
 ﻿using StayFit.Application.DTOs;
+using StayFit.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace StayFit.Application.Repositories
     public interface IAuthRepository
     {
         Task<string> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto);
-        Task<string> MemberRegisterAsync(MemberRegisterDto memberRegisterDto);
-        Task<TokenDto> LoginAsync(LoginDto loginDto);
+        Task<int> MemberRegisterAsync(Member member);
+        Task<User> GetUserByEmail(string email);
 
         Task<bool> CheckIfEmailAlreadyExist(string email);
         Task<bool> CheckIfPhoneAlreadyExist(string phone);

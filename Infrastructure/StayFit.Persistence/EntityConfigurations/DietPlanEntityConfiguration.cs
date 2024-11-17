@@ -18,7 +18,10 @@ namespace StayFit.Persistence.EntityConfigurations
                 .HasForeignKey(dp => dp.SubscriptionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            
+            builder.HasOne(dp => dp.Member)
+               .WithMany()
+               .HasForeignKey(dp => dp.MemberId)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

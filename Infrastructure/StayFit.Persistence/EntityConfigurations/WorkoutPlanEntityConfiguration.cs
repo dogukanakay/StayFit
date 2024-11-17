@@ -18,7 +18,10 @@ namespace StayFit.Persistence.EntityConfigurations
                .HasForeignKey(wp => wp.SubscriptionId)
                .OnDelete(DeleteBehavior.Cascade);
 
-           
+            builder.HasOne(wp => wp.Member)
+                          .WithMany()
+                          .HasForeignKey(wp => wp.MemberId)
+                          .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using StayFit.Application.Abstracts.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Persistence.Helpers
+namespace StayFit.Infrastructure.Helpers
 {
-    public class HashingHelper
+    public class HashingHelper : IHashingHelper
     {
-        public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
@@ -18,7 +19,7 @@ namespace StayFit.Persistence.Helpers
             }
         }
 
-        public static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {

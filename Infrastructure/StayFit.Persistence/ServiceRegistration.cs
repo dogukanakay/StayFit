@@ -23,7 +23,7 @@ namespace StayFit.Persistence
             services.AddScoped<ITrainerRepository, TrainerRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-            services.AddSingleton<JwtTokenGenerator>();
+            services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
             
         }
     }

@@ -23,9 +23,6 @@ namespace StayFit.Domain.Entities
 
 
         public Subscription Subscription { get; set; }
-
-
-
         [NotMapped]
         public override DateTime? DeletedDate { get => base.DeletedDate; set => base.DeletedDate = value; }
     }
