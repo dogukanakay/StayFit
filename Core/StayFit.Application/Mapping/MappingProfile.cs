@@ -46,6 +46,7 @@ namespace StayFit.Application.Mapping
             //WorkoutPlan maps
             CreateMap<WorkoutPlan, CreateWorkoutPlanDto>().ReverseMap();
             CreateMap<WorkoutPlan, GetWorkoutPlansByMemberIdDto>().ReverseMap();
+            CreateMap<WorkoutPlan, GetWorkoutPlansBySubscriptionIdDto>().ReverseMap();
             
                 
                 

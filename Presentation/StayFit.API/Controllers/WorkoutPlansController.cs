@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.WorkoutPlans;
 using StayFit.Application.Features.Commands.WorkoutPlans.CreateWorkoutPlan;
 using StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansByMemberId;
+using StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansBySubscriptionId;
 using System.Security.Claims;
 
 namespace StayFit.API.Controllers
@@ -33,7 +34,6 @@ namespace StayFit.API.Controllers
 
         [HttpGet("GetWorkoutPlansByMemberId")]
         [Authorize(Roles = "Member")]
-
         public async Task<IActionResult> GetWorkoutPlansByMemberId()
         {
             var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -43,6 +43,17 @@ namespace StayFit.API.Controllers
                 return Ok(response);
             return BadRequest(response);
 
+        }
+
+        [HttpGet("GetWorkoutPlansBySubscriptionId")]
+       // [Authorize(Roles = "Trainer")]
+        public async Task<IActionResult> GetWorkoutPlansBySubscriptionId(Guid subscriptionId)
+        {
+            GetWorkoutPlansBySubscriptionIdQueryRequest request = new() { SubscriptionId = subscriptionId };
+            GetWorkoutPlansBySubscriptionIdQueryResponse response = await _mediator.Send(request);
+            if(response.Success)
+                return Ok(response);
+            return BadRequest(response);
         }
     }
 }
