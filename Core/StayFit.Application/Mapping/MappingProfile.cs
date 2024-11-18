@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using StayFit.Application.DTOs;
+using StayFit.Application.DTOs.Exercises;
 using StayFit.Application.DTOs.Members;
 using StayFit.Application.DTOs.Trainers;
 using StayFit.Application.DTOs.WorkoutPlans;
@@ -47,6 +48,11 @@ namespace StayFit.Application.Mapping
             CreateMap<WorkoutPlan, CreateWorkoutPlanDto>().ReverseMap();
             CreateMap<WorkoutPlan, GetWorkoutPlansByMemberIdDto>().ReverseMap();
             CreateMap<WorkoutPlan, GetWorkoutPlansBySubscriptionIdDto>().ReverseMap();
+
+            //Exercise and WorkoutDay maps
+
+            CreateMap<WorkoutDay, CreateExerciseDto>().ReverseMap();
+            CreateMap<Exercise, CreateExerciseDto>().ReverseMap();
             
                 
                 

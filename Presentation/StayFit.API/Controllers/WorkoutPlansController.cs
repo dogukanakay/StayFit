@@ -46,10 +46,10 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetWorkoutPlansBySubscriptionId")]
-       // [Authorize(Roles = "Trainer")]
-        public async Task<IActionResult> GetWorkoutPlansBySubscriptionId(Guid subscriptionId)
+        [Authorize(Roles = "Trainer")]
+        public async Task<IActionResult> GetWorkoutPlansBySubscriptionId(string subscriptionId)
         {
-            GetWorkoutPlansBySubscriptionIdQueryRequest request = new() { SubscriptionId = subscriptionId };
+            GetWorkoutPlansBySubscriptionIdQueryRequest request = new() { SubscriptionId = Guid.Parse(subscriptionId) };
             GetWorkoutPlansBySubscriptionIdQueryResponse response = await _mediator.Send(request);
             if(response.Success)
                 return Ok(response);

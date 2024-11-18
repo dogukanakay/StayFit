@@ -11,7 +11,6 @@ namespace StayFit.Domain.Entities
     public class Diet : BaseEntity<int>
     {
         public int DietDayId { get; set; }
-        public DateTime ScheduledDate { get; set; }
         public MealType MealType { get; set; }
         public TimeSpan TargetTime { get; set; }
         public string FoodName { get; set; }
