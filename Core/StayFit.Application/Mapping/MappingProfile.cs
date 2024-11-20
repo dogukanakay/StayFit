@@ -30,7 +30,7 @@ namespace StayFit.Application.Mapping
 
             //Auth update maps
             CreateMap<User, UpdateMemberDto>().ReverseMap()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); 
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<Member, UpdateMemberDto>().IncludeMembers(src => src.User).ReverseMap()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
@@ -53,11 +53,12 @@ namespace StayFit.Application.Mapping
 
             CreateMap<WorkoutDay, CreateExerciseDto>().ReverseMap();
             CreateMap<Exercise, CreateExerciseDto>().ReverseMap();
-            
-                
-                
-                
-                
+        
+
+
+
+
+
         }
     }
 }

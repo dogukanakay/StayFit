@@ -20,7 +20,9 @@ namespace StayFit.Application.Features.Commands.Exercises.CreateExercise
 
         public async Task<CreateExerciseCommandResponse> Handle(CreateExerciseCommandRequest request, CancellationToken cancellationToken)
         {
-            WorkoutDay workoutDay = _mapper.Map<WorkoutDay>(request.CreateExerciseDto);
+            WorkoutDay workoutDay = await _workoutDayRepository.CheckIfWorkoutDayAlreadyExist(request.CreateExerciseDto.WorkoutPlanId, request.CreateExerciseDto.Day); 
+            if(workoutDay is null)
+                workoutDay =  _mapper.Map<WorkoutDay>(request.CreateExerciseDto);
             Exercise exercise = _mapper.Map<Exercise>(request.CreateExerciseDto);
             exercise.WorkoutDay = workoutDay;
             await _exerciseRepository.AddAsync(exercise);

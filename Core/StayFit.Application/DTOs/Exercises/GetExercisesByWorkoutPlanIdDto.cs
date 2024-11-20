@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.DTOs.Exercises
 {
-    public record CreateExerciseDto
+    public record GetExercisesByWorkoutPlanIdDto
     {
-        public int WorkoutPlanId { get; init; }
+        public int ExerciseId { get; set; }
+        public int WorkoutDayId { get; init; }
         public DateTime Day { get; init; }
+        public bool IsCompleted { get; init; }
         public string Name { get; init; }
         public string Description { get; init; }
         public int SetCount { get; init; }

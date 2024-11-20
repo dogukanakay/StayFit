@@ -12,7 +12,6 @@ namespace StayFit.Domain.Entities
     {
         public int WorkoutPlanId { get; set; }
         public DateTime Day { get; set; }
-        public string Notes { get; set; }
         public bool IsCompleted { get; set; }
 
         public ICollection<Exercise> Exercises { get; set; }
