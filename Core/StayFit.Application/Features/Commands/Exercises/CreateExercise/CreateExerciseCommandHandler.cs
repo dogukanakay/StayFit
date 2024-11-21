@@ -20,16 +20,13 @@ namespace StayFit.Application.Features.Commands.Exercises.CreateExercise
 
         public async Task<CreateExerciseCommandResponse> Handle(CreateExerciseCommandRequest request, CancellationToken cancellationToken)
         {
-            WorkoutDay workoutDay = await _workoutDayRepository.CheckIfWorkoutDayAlreadyExist(request.CreateExerciseDto.WorkoutPlanId, request.CreateExerciseDto.Day); 
-            if(workoutDay is null)
-                workoutDay =  _mapper.Map<WorkoutDay>(request.CreateExerciseDto);
-            Exercise exercise = _mapper.Map<Exercise>(request.CreateExerciseDto);
-            exercise.WorkoutDay = workoutDay;
-            await _exerciseRepository.AddAsync(exercise);
+
+            List<Exercise> exercises = _mapper.Map<List<Exercise>>(request.CreateExerciseDtos);
+            await _exerciseRepository.AddRangeAsync(exercises);
             int result = await _exerciseRepository.SaveAsync();
             if (result > 0)
-                return new() { Message="Egzersiz başarıyla oluşturuldu.", Success =true };
-            return new() { Message="Egzersiz oluştururken bir hatayla karşılaşıldı.", Success=false };
+                return new() { Message = "Egzersiz başarıyla oluşturuldu.", Success = true };
+            return new() { Message = "Egzersiz oluştururken bir hatayla karşılaşıldı.", Success = false };
 
         }
     }

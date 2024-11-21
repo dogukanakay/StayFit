@@ -9,9 +9,9 @@ namespace StayFit.Application.DTOs.Exercises
 {
     public record CreateExerciseDto
     {
-        public int WorkoutPlanId { get; init; }
-        public DateTime Day { get; init; }
+        public int WorkoutDayId { get; init; }
         public string Name { get; init; }
+        public int Priority { get; init; }
         public string Description { get; init; }
         public int SetCount { get; init; }
         public int RepetitionCount { get; init; }

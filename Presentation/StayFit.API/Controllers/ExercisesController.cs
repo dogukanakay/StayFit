@@ -1,10 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.Exercises;
 using StayFit.Application.Features.Commands.Exercises.CreateExercise;
-using StayFit.Application.Features.Queries.Exercises.GetExercisesByWorkoutPlanId;
+using StayFit.Application.Features.Queries.Exercises.GetExercisesByWorkoutDayId;
 
 namespace StayFit.API.Controllers
 {
@@ -21,23 +19,19 @@ namespace StayFit.API.Controllers
 
         [HttpPost("CreateExercise")]
         //[Authorize(Roles ="Trainer")]
-        public async Task<IActionResult> CreateExercise(CreateExerciseDto createExerciseDto)
+        public async Task<IActionResult> CreateExercise(List<CreateExerciseDto> createExerciseDtos)
         {
-            CreateExerciseCommandRequest request = new() { CreateExerciseDto = createExerciseDto };
+            CreateExerciseCommandRequest request = new() { CreateExerciseDtos = createExerciseDtos };
             CreateExerciseCommandResponse response = await _mediator.Send(request);
-            if (response.Success)
-                return Ok(response);
-            return BadRequest(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpGet("GetExercisesByWorkoutPlanId")]
-        public async Task<IActionResult> GetExercisesByWorkoutPlanId(int workoutPlanId)
+        [HttpGet("GetExercisesByWorkoutDayId")]
+        public async Task<IActionResult> GetExercisesByWorkoutDayId(int workoutDayId)
         {
-            GetExercisesByWorkoutPlanIdQueryRequest request = new() { WorkoutPlanId = workoutPlanId };
-            GetExercisesByWorkoutPlanIdQueryResponse response = await _mediator.Send(request);
-            if (response.Success)
-                return Ok(response);
-            return BadRequest(response);
+            GetExercisesByWorkoutDayIdQueryRequest request = new() { WorkoutDayId = workoutDayId };
+            GetExercisesByWorkoutDayIdQueryResponse response = await _mediator.Send(request);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StayFit.Persistence.Contexts;
@@ -11,9 +12,11 @@ using StayFit.Persistence.Contexts;
 namespace StayFit.Persistence.Migrations
 {
     [DbContext(typeof(StayFitDbContext))]
-    partial class StayFitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241121200830_mig_9")]
+    partial class mig_9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,9 +194,6 @@ namespace StayFit.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("integer");
 
                     b.Property<int>("RepetitionCount")
                         .HasColumnType("integer");
@@ -583,7 +583,7 @@ namespace StayFit.Persistence.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Notes")
                         .IsRequired()
                         .HasColumnType("text");
 

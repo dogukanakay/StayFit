@@ -9,6 +9,6 @@ namespace StayFit.Application.Repositories
 {
     public interface IWorkoutDayRepository : IGenericRepository<WorkoutDay>
     {
-        public Task<WorkoutDay> CheckIfWorkoutDayAlreadyExist(int workoutPlanId, DateTime day);
+        public Task<bool> CheckIfWorkoutDayAlreadyExistAsync(int workoutPlanId, DayOfWeek day);
     }
 }

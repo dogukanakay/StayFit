@@ -9,6 +9,7 @@ namespace StayFit.Application.Repositories
 {
     public interface IExerciseRepository : IGenericRepository<Exercise>
     {
-        public Task<List<Exercise>> GetExercisesByWorkoutPlanId(int workoutPlanId);
+        public Task<List<Exercise>> GetExercisesByWorkoutDayId(int workoutDayId);
+        public Task AddRangeAsync(List<Exercise> exerciseList);
     }
 }

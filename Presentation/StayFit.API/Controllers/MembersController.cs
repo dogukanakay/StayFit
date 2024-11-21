@@ -46,10 +46,7 @@ namespace StayFit.API.Controllers
         {
             UpdateMemberCommandRequest request = new() { UpdateMemberDto = updateMemberDto };
             UpdateMemberCommandResponse response = await _mediator.Send(request);
-            if (response.Success)
-                return Ok(response);
-
-            return BadRequest(response);
+            return response.Success ? Ok(response) : BadRequest(response);
 
 
         }

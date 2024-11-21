@@ -18,10 +18,10 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<WorkoutDay> CheckIfWorkoutDayAlreadyExist(int workoutPlanId, DateTime day)
+        public async Task<bool> CheckIfWorkoutDayAlreadyExistAsync(int workoutPlanId, DayOfWeek day)
         {
-            WorkoutDay workoutDay = await _context.WorkoutDays.Where(wd => wd.Day.Date == day.Date && wd.WorkoutPlanId == workoutPlanId).FirstOrDefaultAsync();
-            return workoutDay;
+            bool isAlreadyExit = await _context.WorkoutDays.Where(wd => wd.DayOfWeek == day && wd.WorkoutPlanId == workoutPlanId).AnyAsync();
+            return isAlreadyExit;
         }
     }
 }

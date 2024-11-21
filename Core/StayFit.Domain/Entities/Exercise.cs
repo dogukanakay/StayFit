@@ -12,6 +12,7 @@ namespace StayFit.Domain.Entities
     {
         public int WorkoutDayId { get; set; }
         public string Name { get; set; }
+        public int Priority { get; set; }
         public string Description { get; set; }
         public int SetCount { get; set; }
         public int RepetitionCount { get; set; }

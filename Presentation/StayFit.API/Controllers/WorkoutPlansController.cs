@@ -27,9 +27,7 @@ namespace StayFit.API.Controllers
         {
             CreateWorkoutPlanCommandRequest request = new() { CreateWorkoutPlanDto = createWorkoutPlanDto };
             CreateWorkoutPlanCommandResponse response = await _mediator.Send(request);
-            if (response.Success)
-                return Ok(response);
-            return BadRequest(response);
+            return response.Success ? Ok(response) : BadRequest(response); ;
         }
 
         [HttpGet("GetWorkoutPlansByMemberId")]
@@ -39,21 +37,17 @@ namespace StayFit.API.Controllers
             var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             GetWorkoutPlansByMemberIdQueryRequest request = new() { MemberId = Guid.Parse(memberId) };
             GetWorkoutPlansByMemberIdQueryResponse response = await _mediator.Send(request);
-            if (response.Success)
-                return Ok(response);
-            return BadRequest(response);
+            return response.Success ? Ok(response) : BadRequest(response);
 
         }
 
         [HttpGet("GetWorkoutPlansBySubscriptionId")]
-        [Authorize(Roles = "Trainer")]
+        //[Authorize(Roles = "Trainer")]
         public async Task<IActionResult> GetWorkoutPlansBySubscriptionId(string subscriptionId)
         {
             GetWorkoutPlansBySubscriptionIdQueryRequest request = new() { SubscriptionId = Guid.Parse(subscriptionId) };
             GetWorkoutPlansBySubscriptionIdQueryResponse response = await _mediator.Send(request);
-            if(response.Success)
-                return Ok(response);
-            return BadRequest(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

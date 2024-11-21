@@ -18,8 +18,13 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<List<Exercise>> GetExercisesByWorkoutPlanId(int workoutPlanId)
-            => await _context.Exercises.Include(e=>e.WorkoutDay).Where(e=>e.WorkoutDay.WorkoutPlanId == workoutPlanId).AsNoTracking().ToListAsync();
+        public async Task AddRangeAsync(List<Exercise> exerciseList)
+        {
+            await _context.Exercises.AddRangeAsync(exerciseList);
+        }
+
+        public async Task<List<Exercise>> GetExercisesByWorkoutDayId(int workoutDayId)
+            => await _context.Exercises.Where(e=>e.WorkoutDayId == workoutDayId).AsNoTracking().ToListAsync();
     }
 }
 

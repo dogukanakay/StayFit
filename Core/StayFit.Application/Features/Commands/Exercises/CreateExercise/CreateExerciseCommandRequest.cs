@@ -10,6 +10,6 @@ namespace StayFit.Application.Features.Commands.Exercises.CreateExercise
 {
     public class CreateExerciseCommandRequest : IRequest<CreateExerciseCommandResponse>
     {
-        public CreateExerciseDto CreateExerciseDto { get; set; }
+        public List<CreateExerciseDto> CreateExerciseDtos { get; set; }
     }
 }
