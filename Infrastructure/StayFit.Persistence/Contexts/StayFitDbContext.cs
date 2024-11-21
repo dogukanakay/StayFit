@@ -45,7 +45,6 @@ namespace StayFit.Persistence.Contexts
             modelBuilder.ApplyConfiguration(new ReviewEntityConfiguration());
             modelBuilder.ApplyConfiguration(new WeeklyProgressEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new GoalEntityConfiguration());
 
             
         }
@@ -64,6 +63,5 @@ namespace StayFit.Persistence.Contexts
         public DbSet<ProgressImage> ProgressImages { get; set; }
         public DbSet<WeeklyProgress> WeeklyProgresses { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Goal> Goals { get; set; }
     }
 }

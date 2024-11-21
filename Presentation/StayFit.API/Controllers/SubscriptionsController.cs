@@ -25,13 +25,14 @@ namespace StayFit.API.Controllers
 
         [HttpPost("CreateSubscription")]
         [Authorize(Roles ="Member")]
-        public async Task<IActionResult> CreateSubscription(string trainerId)
+        public async Task<IActionResult> CreateSubscription(string trainerId, string? goal)
         {
             var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             CreateSubscriptionDto createSubscriptionDto = new()
             {
                 MemberId = Guid.Parse(memberId),
                 TrainerId = Guid.Parse(trainerId),
+                Goal = goal
             };
             CreateSubscriptionCommandRequest request = new() { CreateSubscriptionDto = createSubscriptionDto};
             CreateSubscriptionCommandResponse response = await _mediator.Send(request);

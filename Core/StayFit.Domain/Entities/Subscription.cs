@@ -13,6 +13,7 @@ namespace StayFit.Domain.Entities
         public Guid MemberId { get; set; }
         public Guid TrainerId { get; set; }
         public DateTime EndDate { get; set; }
+        public string? Goal { get; set; }
         public float Amount { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
 

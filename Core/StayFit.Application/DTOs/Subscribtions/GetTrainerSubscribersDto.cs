@@ -12,6 +12,7 @@ namespace StayFit.Application.DTOs
         public Guid Id { get; init; }
         public Guid MemberId { get; init; }
         public DateTime EndDate { get; init; }
+        public string? Goal { get; init; }
         public float Amount { get; init; }
         public int Height { get; init; }
         public float Weight { get; init; }
