@@ -23,5 +23,11 @@ namespace StayFit.Persistence.Repositories
             bool isAlreadyExit = await _context.WorkoutDays.Where(wd => wd.DayOfWeek == day && wd.WorkoutPlanId == workoutPlanId).AnyAsync();
             return isAlreadyExit;
         }
+
+        public async Task<bool> CheckIfWorkoutDayAlreadyExistUpdateAsync(int id, int workoutPlanId, DayOfWeek day)
+        {
+            bool isAlreadyExit = await _context.WorkoutDays.Where(wd => wd.DayOfWeek == day && wd.WorkoutPlanId == workoutPlanId && wd.Id != id).AnyAsync();
+            return isAlreadyExit;
+        }
     }
 }

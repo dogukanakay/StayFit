@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.WorkoutPlans;
 using StayFit.Application.Features.Commands.WorkoutPlans.CreateWorkoutPlan;
+using StayFit.Application.Features.Commands.WorkoutPlans.DeleteWorkoutPlan;
+using StayFit.Application.Features.Commands.WorkoutPlans.UpdateWorkoutPlan;
 using StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansByMemberId;
 using StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansBySubscriptionId;
 using System.Security.Claims;
@@ -42,12 +44,32 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetWorkoutPlansBySubscriptionId")]
-        //[Authorize(Roles = "Trainer")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> GetWorkoutPlansBySubscriptionId(string subscriptionId)
         {
             GetWorkoutPlansBySubscriptionIdQueryRequest request = new() { SubscriptionId = Guid.Parse(subscriptionId) };
             GetWorkoutPlansBySubscriptionIdQueryResponse response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
+
+        [HttpDelete("DeleteWorkoutPlanById/{id}")]
+        [Authorize(Roles = "Trainer")]
+        public async Task<IActionResult> DeleteWorkoutPlanById(int id)
+        {
+            DeleteWorkoutPlanCommandRequest request = new() { WorkoutPlanId = id };
+            DeleteWorkoutPlanCommandResponse response = await _mediator.Send(request);
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpPut("UpdateWorkoutPlan")]
+        [Authorize(Roles = "Trainer")]
+        public async Task<IActionResult> UpdateWorkoutPlan(UpdateWorkoutPlanDto updateWorkoutPlanDto)
+        {
+            UpdateWorkoutPlanCommandRequest request = new() { UpdateWorkoutPlanDto = updateWorkoutPlanDto };
+            UpdateWorkoutPlanCommandResponse response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
     }
 }
