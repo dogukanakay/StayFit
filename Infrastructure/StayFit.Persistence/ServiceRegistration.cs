@@ -26,6 +26,8 @@ namespace StayFit.Persistence
             services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
             services.AddScoped<IWorkoutDayRepository, WorkoutDayRepository>();
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            services.AddScoped<IWeeklyProgressRepository, WeeklyProgressRepository>();
+            services.AddScoped<IProgressImageRepository, ProgressImageRepository>();
             
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StayFit.Persistence.Contexts;
@@ -11,9 +12,11 @@ using StayFit.Persistence.Contexts;
 namespace StayFit.Persistence.Migrations
 {
     [DbContext(typeof(StayFitDbContext))]
-    partial class StayFitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124142618_mig_13")]
+    partial class mig_13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -482,25 +485,25 @@ namespace StayFit.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<float?>("BMI")
+                    b.Property<float>("BMI")
                         .HasColumnType("real");
 
-                    b.Property<float?>("ChestCircumference")
+                    b.Property<float>("ChestCircumference")
                         .HasColumnType("real");
 
-                    b.Property<int?>("CompletedWorkouts")
+                    b.Property<int>("CompletedWorkouts")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<float?>("Fat")
+                    b.Property<float>("Fat")
                         .HasColumnType("real");
 
                     b.Property<int>("Height")
                         .HasColumnType("integer");
 
-                    b.Property<float?>("NeckCircumference")
+                    b.Property<float>("NeckCircumference")
                         .HasColumnType("real");
 
                     b.Property<Guid>("SubscriptionId")
@@ -509,7 +512,7 @@ namespace StayFit.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<float?>("WaistCircumference")
+                    b.Property<float>("WaistCircumference")
                         .HasColumnType("real");
 
                     b.Property<float>("Weight")
@@ -517,7 +520,8 @@ namespace StayFit.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionId");
+                    b.HasIndex("SubscriptionId")
+                        .IsUnique();
 
                     b.ToTable("WeeklyProgresses");
                 });
@@ -734,8 +738,8 @@ namespace StayFit.Persistence.Migrations
             modelBuilder.Entity("StayFit.Domain.Entities.WeeklyProgress", b =>
                 {
                     b.HasOne("StayFit.Domain.Entities.Subscription", "Subscription")
-                        .WithMany()
-                        .HasForeignKey("SubscriptionId")
+                        .WithOne()
+                        .HasForeignKey("StayFit.Domain.Entities.WeeklyProgress", "SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

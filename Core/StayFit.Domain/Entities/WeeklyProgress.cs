@@ -12,13 +12,14 @@ namespace StayFit.Domain.Entities
     {
 
         public Guid SubscriptionId { get; set; }
+        public int Height { get; set; }
         public float Weight { get; set; }
-        public float Fat { get; set; }
-        public float BMI { get; set; }
-        public float WaistCircumference { get; set; }
-        public float NeckCircumference { get; set; }
-        public float ChestCircumference { get; set; }
-        public int CompletedWorkouts { get; set; }
+        public float? Fat { get; set; }
+        public float? BMI { get; set; }
+        public float? WaistCircumference { get; set; }
+        public float? NeckCircumference { get; set; }
+        public float? ChestCircumference { get; set; }
+        public int? CompletedWorkouts { get; set; }
 
         public Subscription Subscription { get; set; }
 

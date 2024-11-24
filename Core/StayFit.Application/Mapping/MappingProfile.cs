@@ -3,6 +3,7 @@ using StayFit.Application.DTOs;
 using StayFit.Application.DTOs.Exercises;
 using StayFit.Application.DTOs.Members;
 using StayFit.Application.DTOs.Trainers;
+using StayFit.Application.DTOs.WeeklyProgresses;
 using StayFit.Application.DTOs.WorkoutDays;
 using StayFit.Application.DTOs.WorkoutPlans;
 using StayFit.Domain.Entities;
@@ -54,8 +55,6 @@ namespace StayFit.Application.Mapping
 
 
             //Exercise maps
-
-
             CreateMap<Exercise, CreateExerciseDto>().ReverseMap();
             CreateMap<Exercise, GetExercisesByWorkoutDayIdDto>().ReverseMap();
 
@@ -64,6 +63,9 @@ namespace StayFit.Application.Mapping
             CreateMap<WorkoutDay, CreateWorkoutDayDto>().ReverseMap();
             CreateMap<WorkoutDay, GetWorkoutDaysByWorkoutPlanIdDto>().ReverseMap();
             CreateMap<WorkoutDay, UpdateWorkoutDayDto>().ReverseMap();
+
+            //WeeklyProgress maps
+            CreateMap<WeeklyProgress, CreateWeeklyProgressDto>().ReverseMap();
 
 
 

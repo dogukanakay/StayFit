@@ -13,7 +13,7 @@ namespace StayFit.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<WeeklyProgress> builder)
         {
-            builder.HasOne(wp => wp.Subscription).WithOne().HasForeignKey<WeeklyProgress>(wp => wp.SubscriptionId);
+            builder.HasOne(wp => wp.Subscription).WithMany().HasForeignKey(wp => wp.SubscriptionId);
         }
     }
 }
