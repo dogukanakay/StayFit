@@ -68,6 +68,7 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
                     CompletedWorkouts = 0,
                     Fat = (float?)(86.010 * Math.Log10(bodyAnalaysisResponseDto.WaistCircumference - bodyAnalaysisResponseDto.NeckCircumference) - 70.041 * Math.Log10(bodyAnalaysisResponseDto.Height) + 36.76),
                 };
+                weeklyProgress.BMI = weeklyProgress.Weight / (float)Math.Pow(weeklyProgress.Height / 100f, 2);
 
                 var imageUploads = await _storageService.UploadAsync("progress-images", request.Images);
                 foreach (var image in imageUploads)

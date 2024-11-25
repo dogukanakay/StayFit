@@ -14,6 +14,7 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
         public CreateWeeklyProgressByAIDto CreateWeeklyProgressByAIDto { get; set; }
         public IFormFileCollection Images { get; set; }
         public string BaseStorageUrl { get; set; }
+        public Guid UserId { get; set; }
 
     }
 }
