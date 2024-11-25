@@ -33,7 +33,8 @@ namespace StayFit.Persistence.Repositories
                                            LastName = s.Trainer.User.LastName,
                                            PhotoPath = s.Trainer.User.PhotoPath,
                                            SubscriptionId = s.Id,
-                                           TrainerId = s.TrainerId
+                                           TrainerId = s.TrainerId,
+                                           Goal = s.Goal
                                        })
                                        .FirstOrDefaultAsync();
 
@@ -55,7 +56,8 @@ namespace StayFit.Persistence.Repositories
                                         Id = s.Id,
                                         MemberId = s.MemberId,
                                         PhotoPath = s.Member.User.PhotoPath,
-                                        Weight = s.Member.Weight
+                                        Weight = s.Member.Weight,
+                                        Goal = s.Goal
 
                                     }).ToListAsync();
         }

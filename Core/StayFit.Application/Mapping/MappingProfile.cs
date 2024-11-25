@@ -66,6 +66,7 @@ namespace StayFit.Application.Mapping
 
             //WeeklyProgress maps
             CreateMap<WeeklyProgress, CreateWeeklyProgressDto>().ReverseMap();
+            CreateMap<WeeklyProgress, GetWeeklyProgressesBySubsIdDto>().ReverseMap();
 
 
 

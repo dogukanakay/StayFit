@@ -13,6 +13,7 @@ namespace StayFit.Application.DTOs
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public float Amount { get; init; }
+        public string? Goal { get; set; }
         public DateTime EndDate { get; init; }
         public string? PhotoPath { get; init; }
 

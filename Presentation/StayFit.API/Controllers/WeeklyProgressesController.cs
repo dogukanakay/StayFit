@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.WeeklyProgresses;
 using StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyProgress;
 using StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyProgressByAI;
+using StayFit.Application.Features.Queries.WeeklyProgresses.GetWeeklyProgressesBySubsId;
 
 namespace StayFit.API.Controllers
 {
@@ -52,6 +53,14 @@ namespace StayFit.API.Controllers
 
             CreateWeeklyProgressByAICommandResponse response = await _mediator.Send(request);
             return Ok(response);
+        }
+
+        [HttpGet("GetWeeklyProgressesBySubsId")]
+        public async Task<IActionResult> GetWeeklyProgressesBySubsId(string SubscriptionId)
+        {
+            GetWeeklyProgressesBySubsIdQueryRequest request = new() { SubscriptionId = Guid.Parse(SubscriptionId) };
+            GetWeeklyProgressesBySubsIdQueryResponse response = await _mediator.Send(request);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

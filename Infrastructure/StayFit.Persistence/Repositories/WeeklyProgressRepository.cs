@@ -1,4 +1,5 @@
-﻿using StayFit.Application.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Persistence.Contexts;
 using System;
@@ -11,8 +12,14 @@ namespace StayFit.Persistence.Repositories
 {
     public class WeeklyProgressRepository : GenericRepository<WeeklyProgress>, IWeeklyProgressRepository
     {
+        private readonly StayFitDbContext _context;
         public WeeklyProgressRepository(StayFitDbContext context) : base(context)
         {
+            _context = context;
         }
+
+        public async Task<List<WeeklyProgress>> GetWeeklyProgressBySubsIdDescAsync(Guid subscriptionId)
+           => await _context.WeeklyProgresses.Where(wp => wp.SubscriptionId == subscriptionId).OrderByDescending(wp => wp.Id).AsNoTracking().ToListAsync();
+
     }
 }

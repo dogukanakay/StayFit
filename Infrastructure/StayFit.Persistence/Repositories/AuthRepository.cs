@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using StayFit.Application.Abstracts.Security;
 using StayFit.Application.DTOs;
 using StayFit.Application.Exceptions;
 using StayFit.Application.Repositories;
@@ -12,12 +13,12 @@ namespace StayFit.Persistence.Repositories
     public class AuthRepository : IAuthRepository
     {
         private readonly StayFitDbContext _context;
+        private readonly IHashingHelper _hashingHelper;
 
-
-        public AuthRepository(StayFitDbContext context)
+        public AuthRepository(StayFitDbContext context, IHashingHelper hashingHelper)
         {
             _context = context;
-         
+            _hashingHelper = hashingHelper;
         }
 
         public async Task<bool> CheckIfEmailAlreadyExist(string email)
@@ -44,45 +45,45 @@ namespace StayFit.Persistence.Repositories
         public async Task<string> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto)
         {
 
-//            if (await CheckIfEmailAlreadyExist(trainerRegisterDto.Email))
-//                throw new EmailAlreadyExistException();
-//            if (await CheckIfPhoneAlreadyExist(trainerRegisterDto.Phone))
-//                throw new PhoneAlreadyExistException();
+            if (await CheckIfEmailAlreadyExist(trainerRegisterDto.Email))
+                throw new EmailAlreadyExistException();
+            if (await CheckIfPhoneAlreadyExist(trainerRegisterDto.Phone))
+                throw new PhoneAlreadyExistException();
 
-//            byte[] passwordHash, passwordSalt;
-//     //       HashingHelper.CreatePasswordHash(trainerRegisterDto.Password, out passwordHash, out passwordSalt);
-//            User user = new()
-//            {
-//                BirthDate = trainerRegisterDto.BirthDate,
-//                FirstName = trainerRegisterDto.FirstName,
-//                LastName = trainerRegisterDto.LastName,
-//                Email = trainerRegisterDto.Email,
-//                Gender = trainerRegisterDto.Gender,
-//                Phone = trainerRegisterDto.Phone,
-//                Status = UserStatus.Active,
-//                PasswordHash = passwordHash,
-//                PasswordSalt = passwordSalt,
-//                IsEmailConfirmed = true,
-//                CreatedDate = DateTime.UtcNow,
-//                UserRole = UserRole.Trainer
-//            };
+            byte[] passwordHash, passwordSalt;
+            _hashingHelper.CreatePasswordHash(trainerRegisterDto.Password, out passwordHash, out passwordSalt);
+            User user = new()
+            {
+                BirthDate = trainerRegisterDto.BirthDate,
+                FirstName = trainerRegisterDto.FirstName,
+                LastName = trainerRegisterDto.LastName,
+                Email = trainerRegisterDto.Email,
+                Gender = trainerRegisterDto.Gender,
+                Phone = trainerRegisterDto.Phone,
+                Status = UserStatus.Active,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                IsEmailConfirmed = true,
+                CreatedDate = DateTime.UtcNow,
+                UserRole = UserRole.Trainer
+            };
 
-////            await _context.AddAsync<User>(user);
+            await _context.AddAsync<User>(user);
 
-//            Trainer trainer = new()
-//            {
-//                User = user,
-//                Bio = trainerRegisterDto.Bio,
-//                CreatedDate = user.CreatedDate,
-//                MonthlyRate = trainerRegisterDto.MonthlyRate,
-//                Rate = 3,
-//                YearsOfExperience = trainerRegisterDto.YearsOfExperience,
-//                Specializations = trainerRegisterDto.Specializations,
-//            };
+            Trainer trainer = new()
+            {
+                User = user,
+                Bio = trainerRegisterDto.Bio,
+                CreatedDate = user.CreatedDate,
+                MonthlyRate = trainerRegisterDto.MonthlyRate,
+                Rate = 3,
+                YearsOfExperience = trainerRegisterDto.YearsOfExperience,
+                Specializations = trainerRegisterDto.Specializations,
+            };
 
-//            await _context.AddAsync<Trainer>(trainer);
+            await _context.AddAsync<Trainer>(trainer);
 
-//            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return "Kayıt Başarılı";
         }
 

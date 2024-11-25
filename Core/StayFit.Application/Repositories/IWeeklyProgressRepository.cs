@@ -9,5 +9,6 @@ namespace StayFit.Application.Repositories
 {
     public interface IWeeklyProgressRepository : IGenericRepository<WeeklyProgress>
     {
+        public Task<List<WeeklyProgress>> GetWeeklyProgressBySubsIdDescAsync(Guid subscriptionId);
     }
 }
