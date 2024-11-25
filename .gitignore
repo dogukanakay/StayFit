@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Presentation/StayFit.API/appsettings.json
+/Presentation/StayFit.API/appsettings.Development.json
