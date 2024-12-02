@@ -25,7 +25,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("CreateWeeklyProgress")]
-        //[Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> CreateWeeklyProgress([FromForm] CreateWeeklyProgressDto createWeeklyProgressDto, [FromForm] IFormFileCollection files)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
