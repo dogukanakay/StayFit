@@ -1,4 +1,5 @@
 ﻿using StayFit.Domain.Entities.Common;
+using StayFit.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,7 @@ namespace StayFit.Domain.Entities
         public float? NeckCircumference { get; set; }
         public float? ChestCircumference { get; set; }
         public int? CompletedWorkouts { get; set; }
+        public ProgressStatus? ProgressStatus { get; set; }
 
         public Subscription Subscription { get; set; }
 

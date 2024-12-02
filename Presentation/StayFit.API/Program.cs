@@ -8,6 +8,7 @@ using System.Text;
 using StayFit.Infrastructure;
 using StayFit.Infrastructure.Storage.Azure;
 using StayFit.Application;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddStorage<AzureStorageService>();
 
@@ -67,7 +68,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<StayFitDbContext>();
     context.Database.Migrate();
 }
-
+app.UseHangfireDashboard("/hangfire", new DashboardOptions());
 
 app.UseSwagger();
 app.UseSwaggerUI();

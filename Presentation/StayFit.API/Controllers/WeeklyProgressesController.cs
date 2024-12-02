@@ -24,6 +24,23 @@ namespace StayFit.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpPost("CreateWeeklyProgressByAI")]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> CreateWeeklyProgressByAI([FromForm] CreateWeeklyProgressByAIDto createWeeklyProgressByAIDto, [FromForm] IFormFileCollection files)
+        {
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new CreateWeeklyProgressByAICommandRequest
+            {
+                Images = files,
+                CreateWeeklyProgressByAIDto = createWeeklyProgressByAIDto,
+                BaseStorageUrl = _configuration["BaseStorageUrl"],
+                UserId = Guid.Parse(userId)
+            };
+
+            CreateWeeklyProgressByAICommandResponse response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
         [HttpPost("CreateWeeklyProgress")]
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> CreateWeeklyProgress([FromForm] CreateWeeklyProgressDto createWeeklyProgressDto, [FromForm] IFormFileCollection files)
@@ -42,22 +59,7 @@ namespace StayFit.API.Controllers
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPost("CreateWeeklyProgressByAI")]
-        [Authorize(Roles = "Member")]
-        public async Task<IActionResult> CreateWeeklyProgressByAI([FromForm] CreateWeeklyProgressByAIDto createWeeklyProgressByAIDto, [FromForm] IFormFileCollection files)
-        {
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var request = new CreateWeeklyProgressByAICommandRequest
-            {
-                Images = files,
-                CreateWeeklyProgressByAIDto = createWeeklyProgressByAIDto,
-                BaseStorageUrl = _configuration["BaseStorageUrl"],
-                UserId = Guid.Parse(userId)
-            };
-
-            CreateWeeklyProgressByAICommandResponse response = await _mediator.Send(request);
-            return Ok(response);
-        }
+       
 
         [HttpGet("GetWeeklyProgressesBySubsId")]
         [Authorize(Roles = "Member, Trainer")]

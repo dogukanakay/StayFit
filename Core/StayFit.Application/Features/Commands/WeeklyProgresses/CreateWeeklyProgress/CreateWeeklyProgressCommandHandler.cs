@@ -29,6 +29,7 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
         public async Task<CreateWeeklyProgressCommandResponse> Handle(CreateWeeklyProgressCommandRequest request, CancellationToken cancellationToken)
         {
             WeeklyProgress weeklyProgress = _mapper.Map<WeeklyProgress>(request.CreateWeeklyProgressDto);
+            weeklyProgress.ProgressStatus = ProgressStatus.Completed;
 
             weeklyProgress.Fat = (float?)(86.010 * Math.Log10((double)(weeklyProgress.WaistCircumference - weeklyProgress.NeckCircumference))
                 - 70.041 * Math.Log10((double)weeklyProgress.Height) + 36.76);

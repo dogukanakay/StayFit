@@ -3,6 +3,7 @@ using StayFit.Application.Abstracts.Services;
 using StayFit.Application.DTOs.WeeklyProgresses;
 using System.Text.Json;
 using System.Text;
+using MediatR;
 
 public class BodyAnalysisAIService : IBodyAnalysisAIService
 {

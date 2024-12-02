@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
+using StayFit.Domain.Enums;
 using StayFit.Persistence.Contexts;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace StayFit.Persistence.Repositories
         }
 
         public async Task<List<WeeklyProgress>> GetWeeklyProgressBySubsIdDescAsync(Guid subscriptionId)
-           => await _context.WeeklyProgresses.Where(wp => wp.SubscriptionId == subscriptionId).OrderByDescending(wp => wp.Id).AsNoTracking().ToListAsync();
+           => await _context.WeeklyProgresses.Where(wp => wp.SubscriptionId == subscriptionId && wp.ProgressStatus == ProgressStatus.Completed).OrderByDescending(wp => wp.Id).AsNoTracking().ToListAsync();
 
     }
 }

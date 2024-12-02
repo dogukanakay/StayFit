@@ -1,96 +1,90 @@
 ﻿using AutoMapper;
+using Hangfire;
 using MediatR;
 using StayFit.Application.Abstracts.Services;
+using StayFit.Application.Abstracts.Services.BackgroundServices;
 using StayFit.Application.Abstracts.Storage;
 using StayFit.Application.DTOs.WeeklyProgresses;
+using StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyProgressByAI;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
+using StayFit.Domain.Enums;
 
-namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyProgressByAI
+public class CreateWeeklyProgressByAICommandHandler : IRequestHandler<CreateWeeklyProgressByAICommandRequest, CreateWeeklyProgressByAICommandResponse>
 {
-    public class CreateWeeklyProgressByAICommandHandler : IRequestHandler<CreateWeeklyProgressByAICommandRequest, CreateWeeklyProgressByAICommandResponse>
+    private readonly IBackgroundJobClient _backgroundJobClient;
+    private readonly IWeeklyProgressRepository _weeklyProgressRepository;
+    private readonly IProgressImageRepository _progressImageRepository;
+    private readonly IMapper _mapper;
+    private readonly IStorageService _storageService;
+
+    public CreateWeeklyProgressByAICommandHandler(
+        IBackgroundJobClient backgroundJobClient,
+        IWeeklyProgressRepository weeklyProgressRepository,
+        IProgressImageRepository progressImageRepository,
+        IMapper mapper,
+        IStorageService storageService)
     {
-        private readonly IBodyAnalysisAIService _bodyAnalysisAIService;
-        private readonly IWeeklyProgressRepository _weeklyProgressRepository;
-        private readonly IProgressImageRepository _progressImageRepository;
-        private readonly IMapper _mapper;
-        private readonly IStorageService _storageService;
+        _backgroundJobClient = backgroundJobClient;
+        _weeklyProgressRepository = weeklyProgressRepository;
+        _progressImageRepository = progressImageRepository;
+        _mapper = mapper;
+        _storageService = storageService;
+    }
 
-
-        public CreateWeeklyProgressByAICommandHandler(
-            IBodyAnalysisAIService bodyAnalysisAIService,
-            IWeeklyProgressRepository weeklyProgressRepository,
-            IProgressImageRepository progressImageRepository,
-            IMapper mapper,
-            IStorageService storageService)
-        {
-            _bodyAnalysisAIService = bodyAnalysisAIService;
-            _weeklyProgressRepository = weeklyProgressRepository;
-            _progressImageRepository = progressImageRepository;
-            _mapper = mapper;
-            _storageService = storageService;
-        }
-
-        public async Task<CreateWeeklyProgressByAICommandResponse> Handle(CreateWeeklyProgressByAICommandRequest request, CancellationToken cancellationToken)
-        {
-            if (request.Images.Count == 2)
-            {
-                List<BodyAnalysisImageDto> bodyAnalysisImageDtos = new List<BodyAnalysisImageDto>();
-                foreach (var image in request.Images)
-                {
-                    using var memoryStream = new MemoryStream();
-                    await image.CopyToAsync(memoryStream);
-                    string base64String = Convert.ToBase64String(memoryStream.ToArray());
-                    BodyAnalysisImageDto bodyAnalysisImageDto = new()
-                    {
-                        Data = base64String,
-                        FileName = image.FileName,
-                    };
-                    bodyAnalysisImageDtos.Add(bodyAnalysisImageDto);
-                }
-                BodyAnalysisRequestDto bodyAnalysisRequestDto = new()
-                {
-                    Height = request.CreateWeeklyProgressByAIDto.Height.ToString()+"cm",
-                    Images = bodyAnalysisImageDtos
-                };
-
-                BodyAnalaysisResponseDto bodyAnalaysisResponseDto = await _bodyAnalysisAIService.AnalyzeBodyMetrics(bodyAnalysisRequestDto);
-
-                WeeklyProgress weeklyProgress = new()
-                {
-                    BMI = 0,
-                    Height = request.CreateWeeklyProgressByAIDto.Height,
-                    NeckCircumference = bodyAnalaysisResponseDto.NeckCircumference,
-                    WaistCircumference = bodyAnalaysisResponseDto.WaistCircumference,
-                    SubscriptionId = Guid.Parse(request.CreateWeeklyProgressByAIDto.SubscriptionId),
-                    Weight = request.CreateWeeklyProgressByAIDto.Weight,
-                    ChestCircumference = bodyAnalaysisResponseDto.ChestCircumference,
-                    CompletedWorkouts = 0,
-                    Fat = (float?)(86.010 * Math.Log10(bodyAnalaysisResponseDto.WaistCircumference - bodyAnalaysisResponseDto.NeckCircumference) - 70.041 * Math.Log10(bodyAnalaysisResponseDto.Height) + 36.76),
-                };
-                weeklyProgress.BMI = weeklyProgress.Weight / (float)Math.Pow(weeklyProgress.Height / 100f, 2);
-
-                var imageUploads = await _storageService.UploadAsync("progress-images", request.Images);
-                foreach (var image in imageUploads)
-                {
-                    ProgressImage progressImage = new()
-                    {
-                        WeeklyProgress = weeklyProgress,
-                        Path = $"{request.BaseStorageUrl}/{image.PathOrContainerName}",
-                        FileName = image.fileName,
-
-                    };
-                    await _progressImageRepository.AddAsync(progressImage);
-                }
-                int result = await _progressImageRepository.SaveAsync();
-
-                if (result > 0)
-                    return new() { Message = "Fotoğraflarının AI tarafından inceleniyor, sonuçları birazdan gelişim sayfasınızda göreceksiniz.", Success = true };
-                return new() { Message = "Haftalık gelişim eklenirken hata oluştu.", Success = false };
-
-                
-            }
+    public async Task<CreateWeeklyProgressByAICommandResponse> Handle(CreateWeeklyProgressByAICommandRequest request, CancellationToken cancellationToken)
+    {
+        if (request.Images.Count != 2)
             return new() { Message = "Hatalı fotoğraf gönderimi. 1 Tane önden, 1 tane yan taraftan çekilmiş 2 fotoğraf yollanmalı.", Success = false };
+
+        var imageUploads = await _storageService.UploadAsync("progress-images", request.Images);
+        var weeklyProgress = new WeeklyProgress
+        {
+            Height = request.CreateWeeklyProgressByAIDto.Height,
+            Weight = request.CreateWeeklyProgressByAIDto.Weight,
+            SubscriptionId = Guid.Parse(request.CreateWeeklyProgressByAIDto.SubscriptionId),
+            ProgressStatus = ProgressStatus.Progress 
+        };
+
+        foreach (var image in imageUploads)
+        {
+            var progressImage = new ProgressImage
+            {
+                WeeklyProgress = weeklyProgress,
+                Path = $"{request.BaseStorageUrl}/{image.PathOrContainerName}",
+                FileName = image.fileName,
+            };
+            await _progressImageRepository.AddAsync(progressImage);
         }
+
+        await _progressImageRepository.SaveAsync();
+
+        List<BodyAnalysisImageDto> bodyAnalysisImageDtos = new();
+        foreach (var image in request.Images)
+        {
+            using var memoryStream = new MemoryStream();
+            await image.CopyToAsync(memoryStream);
+            string base64String = Convert.ToBase64String(memoryStream.ToArray());
+            bodyAnalysisImageDtos.Add(new BodyAnalysisImageDto
+            {
+                Data = base64String,
+                FileName = image.FileName,
+            });
+        }
+
+        var bodyAnalysisRequestDto = new BodyAnalysisRequestDto
+        {
+            Height = $"{request.CreateWeeklyProgressByAIDto.Height}cm",
+            Images = bodyAnalysisImageDtos
+        };
+
+        _backgroundJobClient.Enqueue<IBodyAnalysisBackgroundService>(
+            service => service.ProcessBodyAnalysis(weeklyProgress.Id, bodyAnalysisRequestDto));
+
+        return new()
+        {
+            Message = "Fotoğraflarınız başarıyla yüklendi. AI analizi arka planda devam ediyor, sonuçlar hazır olduğunda bildirim alacaksınız.",
+            Success = true
+        };
     }
 }

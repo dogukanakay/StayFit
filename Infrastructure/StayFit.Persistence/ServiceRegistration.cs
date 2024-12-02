@@ -4,12 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using StayFit.Application.Repositories;
 using StayFit.Persistence.Contexts;
 using StayFit.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StayFit.Persistence
 {
@@ -28,7 +22,9 @@ namespace StayFit.Persistence
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             services.AddScoped<IWeeklyProgressRepository, WeeklyProgressRepository>();
             services.AddScoped<IProgressImageRepository, ProgressImageRepository>();
-            
+
+           
+
         }
     }
 }
