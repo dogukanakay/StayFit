@@ -21,7 +21,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("CreateWorkoutDay")]
-        [Authorize(Roles = "Trainer")]
+       // [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateWorkoutDay(CreateWorkoutDayDto createWorkoutDayDto)
         {
             CreateWorkoutDayCommandRequest request = new() { CreateWorkoutDayDto = createWorkoutDayDto };

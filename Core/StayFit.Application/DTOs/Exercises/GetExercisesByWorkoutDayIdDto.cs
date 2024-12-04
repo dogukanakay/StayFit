@@ -9,7 +9,7 @@ namespace StayFit.Application.DTOs.Exercises
 {
     public record GetExercisesByWorkoutDayIdDto
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
         public int WorkoutDayId { get; init; }
         public bool IsCompleted { get; init; }
         public int Priority { get; set; }
