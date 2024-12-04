@@ -11,8 +11,8 @@ namespace StayFit.Domain.Entities
     public class DietDay : BaseEntity<int>
     {
         public int DietPlanId { get; set; }
-        public DateTime Day { get; set; }
-        public string Notes { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
+        public string Title { get; set; }
         public bool IsCompleted { get; set; }
 
         public ICollection<Diet> Diets { get; set; }

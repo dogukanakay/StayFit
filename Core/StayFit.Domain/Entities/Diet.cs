@@ -12,7 +12,6 @@ namespace StayFit.Domain.Entities
     {
         public int DietDayId { get; set; }
         public MealType MealType { get; set; }
-        public TimeSpan TargetTime { get; set; }
         public string FoodName { get; set; }
         public float Portion { get; set; }
         public string Unit { get; set; }

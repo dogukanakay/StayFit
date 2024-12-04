@@ -1,4 +1,5 @@
-﻿using StayFit.Domain.Enums;
+﻿using StayFit.Application.DTOs.Abstracts;
+using StayFit.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.DTOs.Exercises
 {
-    public record CreateExerciseDto
+    public record CreateExerciseDto : IDto
     {
         public int WorkoutDayId { get; init; }
         public string Name { get; init; }

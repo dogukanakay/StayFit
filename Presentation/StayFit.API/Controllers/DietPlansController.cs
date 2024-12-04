@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.DietPlans;
 using StayFit.Application.Features.Commands.DietPlans.CreateDietPlan;
+using StayFit.Application.Features.Commands.DietPlans.DeleteDietPlan;
 using StayFit.Application.Features.Queries.DietPlans.GetDietPlansByMemberId;
 using StayFit.Application.Features.Queries.DietPlans.GetDietPlansBySubscriptionId;
 using System.Security.Claims;
@@ -54,6 +55,16 @@ namespace StayFit.API.Controllers
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : NotFound(response);
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteDietPlan(int dietPlanId)
+        {
+            var request = new DeleteDietPlanCommandRequest(dietPlanId);
+            var response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : NotFound(response);
+
         }
     }
 }

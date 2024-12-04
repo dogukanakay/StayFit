@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.DTOs.WorkoutDays
+namespace StayFit.Application.DTOs.DietDays
 {
-    public record GetWorkoutDaysByWorkoutPlanIdDto : IDto
+    public record GetDietDaysByDietPlanIdDto : IDto
     {
         public int Id { get; init; }
         public string Title { get; init; }

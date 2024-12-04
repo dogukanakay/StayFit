@@ -20,10 +20,12 @@ namespace StayFit.Application.Features.Queries.WorkoutDays.GetWorkoutDaysByWorko
         public async Task<GetWorkoutDaysByWorkoutPlanIdQueryResponse> Handle(GetWorkoutDaysByWorkoutPlanIdQueryRequest request, CancellationToken cancellationToken)
         {
             List<WorkoutDay> workoutDays = await _workoutDayRepository.GetWhere(wd => wd.WorkoutPlanId == request.WorkoutPlanId, tracking: false);
+            if (!workoutDays.Any())
+                return new() { Message = "Bu plana ait bir gün bulunamadı", Success = false };
             List<GetWorkoutDaysByWorkoutPlanIdDto> getWorkoutDaysByWorkoutPlanIdDtos = _mapper.Map<List<GetWorkoutDaysByWorkoutPlanIdDto>>(workoutDays);
-            if (workoutDays.Count > 0)
-                return new() { GetWorkoutDaysByWorkoutPlanIdDtos = getWorkoutDaysByWorkoutPlanIdDtos, Message = "Günler getirildi.", Success = true };
-            return new() { Message = "Bu plana ait bir gün bulunamadı", Success = false };
+
+            return new() { GetWorkoutDaysByWorkoutPlanIdDtos = getWorkoutDaysByWorkoutPlanIdDtos, Message = "Günler getirildi.", Success = true };
+
         }
     }
 }
