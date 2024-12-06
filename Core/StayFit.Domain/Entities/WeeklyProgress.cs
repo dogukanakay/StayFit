@@ -21,8 +21,8 @@ namespace StayFit.Domain.Entities
         public float? NeckCircumference { get; set; }
         public float? ChestCircumference { get; set; }
         public int? CompletedWorkouts { get; set; }
-        public ProgressStatus? ProgressStatus { get; set; }
-
+        public ProgressStatus ProgressStatus { get; set; }
+        public WeeklyProgressCreator Creator { get; set; }
         public Subscription Subscription { get; set; }
 
         [NotMapped]

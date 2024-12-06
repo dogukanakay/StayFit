@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.DTOs.Diets
 {
-    public record GetDietsByDietDayIdDto : IDto
+    public record GetNewDietByAIRequestDto : IDto
     {
-        public int Id { get; init; }
-        public MealType MealType { get; init; }
+        public string MealType { get; set; }
         public string FoodName { get; init; }
         public float Portion { get; init; }
         public string Unit { get; init; }
@@ -19,6 +18,5 @@ namespace StayFit.Application.DTOs.Diets
         public int Carbs { get; init; }
         public int Protein { get; init; }
         public int Fat { get; init; }
-        public DietCreator Creator { get; set; }
     }
 }

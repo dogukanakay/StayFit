@@ -43,7 +43,8 @@ public class CreateWeeklyProgressByAICommandHandler : IRequestHandler<CreateWeek
             Height = request.CreateWeeklyProgressByAIDto.Height,
             Weight = request.CreateWeeklyProgressByAIDto.Weight,
             SubscriptionId = Guid.Parse(request.CreateWeeklyProgressByAIDto.SubscriptionId),
-            ProgressStatus = ProgressStatus.Progress 
+            ProgressStatus = ProgressStatus.Progress,
+            Creator = WeeklyProgressCreator.AI
         };
 
         foreach (var image in imageUploads)

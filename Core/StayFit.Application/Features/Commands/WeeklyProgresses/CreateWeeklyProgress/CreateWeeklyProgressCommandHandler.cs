@@ -30,7 +30,7 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
         {
             WeeklyProgress weeklyProgress = _mapper.Map<WeeklyProgress>(request.CreateWeeklyProgressDto);
             weeklyProgress.ProgressStatus = ProgressStatus.Completed;
-
+            weeklyProgress.Creator = WeeklyProgressCreator.Member;
             weeklyProgress.Fat = (float?)(86.010 * Math.Log10((double)(weeklyProgress.WaistCircumference - weeklyProgress.NeckCircumference))
                 - 70.041 * Math.Log10((double)weeklyProgress.Height) + 36.76);
             weeklyProgress.BMI = weeklyProgress.Weight / (float)Math.Pow(weeklyProgress.Height / 100f, 2);

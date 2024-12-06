@@ -39,6 +39,7 @@ namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
                     - 70.041 * Math.Log10(analysisResult.Height) + 36.76);
                 weeklyProgress.BMI = weeklyProgress.Weight / (float)Math.Pow(weeklyProgress.Height / 100f, 2);
                 weeklyProgress.ProgressStatus = ProgressStatus.Completed;
+                
 
                 await _weeklyProgressRepository.SaveAsync();
 

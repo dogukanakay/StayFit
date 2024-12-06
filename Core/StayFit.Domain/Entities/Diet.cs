@@ -19,6 +19,7 @@ namespace StayFit.Domain.Entities
         public int Carbs { get; set; }
         public int Protein { get; set; }
         public int Fat { get; set; }
+        public DietCreator Creator { get; set; } = DietCreator.Trainer;
         public DietDay DietDay { get; set; }
     }
 }

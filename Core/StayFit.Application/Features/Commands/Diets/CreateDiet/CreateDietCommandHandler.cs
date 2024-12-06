@@ -19,6 +19,7 @@ namespace StayFit.Application.Features.Commands.Diets.CreateDiet
         public async Task<CreateDietCommandResponse> Handle(CreateDietCommandRequest request, CancellationToken cancellationToken)
         {
             List<Diet> diet = _mapper.Map<List<Diet>>(request.CreateDietDtos);
+            
             await _dietRepository.AddRangeAsync(diet);
 
             int result = await _dietRepository.SaveAsync();

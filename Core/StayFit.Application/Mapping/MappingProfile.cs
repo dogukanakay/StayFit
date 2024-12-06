@@ -84,7 +84,8 @@ namespace StayFit.Application.Mapping
 
             //Diets maps
             CreateMap<Diet, CreateDietDto>().ReverseMap();
-
+            CreateMap<Diet, GetDietsByDietDayIdDto>().ReverseMap();
+            CreateMap<Diet, GetNewDietByAIRequestDto>().ReverseMap();
 
 
         }

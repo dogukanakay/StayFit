@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.Diets;
 using StayFit.Application.Features.Commands.Diets.CreateDiet;
 using StayFit.Application.Features.Commands.Diets.DeleteDiet;
+using StayFit.Application.Features.Commands.Diets.UpdateDietByAI;
 using StayFit.Application.Features.Queries.Diets.GetDietsByDietDayId;
 
 namespace StayFit.API.Controllers
@@ -44,6 +45,14 @@ namespace StayFit.API.Controllers
 
             return response.Success ? Ok(response) : BadRequest(response);
 
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateDietByAI(int dietId)
+        {
+            var request = new UpdateDietByAICommandRequest(dietId);
+            var response = await _mediator.Send(request);
+            return response.Success ? Ok(response) : NotFound(response);
         }
     }
 }
