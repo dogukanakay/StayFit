@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.CustomAttributes.Caching;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -16,6 +17,7 @@ namespace StayFit.Application.Features.Commands.Diets.CreateDiet
             _mapper = mapper;
         }
 
+        [CacheRemove("diets_{DietDayId}")]
         public async Task<CreateDietCommandResponse> Handle(CreateDietCommandRequest request, CancellationToken cancellationToken)
         {
             List<Diet> diet = _mapper.Map<List<Diet>>(request.CreateDietDtos);

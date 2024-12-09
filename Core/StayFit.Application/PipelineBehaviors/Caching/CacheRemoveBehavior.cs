@@ -25,7 +25,11 @@ namespace StayFit.Application.PipelineBehaviors.Caching
             var response = await next();
 
 
-            var handlerType = next.Target?.GetType();
+            var handlerType = typeof(TRequest).Assembly.GetTypes()
+                .FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IRequestHandler<TRequest, TResponse>)));
+
+            if (handlerType == null) return await next();
+
             var methodInfo = handlerType?.GetMethod("Handle");
 
 
@@ -33,10 +37,11 @@ namespace StayFit.Application.PipelineBehaviors.Caching
             if (cacheRemoveAttribute == null)
                 return response;
 
-          
+
             if (IsSuccessful(response))
             {
-                await _cacheService.RemoveAsync(cacheRemoveAttribute.CacheKey);
+                var cacheKey = CreateKey.ReplacePlaceholders(cacheRemoveAttribute.CacheKey, request);
+                await _cacheService.RemoveAsync(cacheKey);
                 // eğer prefix ile sileeceksek
                 // await _cacheService.RemoveByPrefixAsync(cacheRemoveAttribute.CacheKey);
             }
@@ -46,11 +51,11 @@ namespace StayFit.Application.PipelineBehaviors.Caching
 
         private bool IsSuccessful(TResponse response)
         {
-           
+
             if (response?.GetType().GetProperty("Success")?.GetValue(response) is bool success)
                 return success;
 
-            return true; 
+            return true;
         }
     }
 }

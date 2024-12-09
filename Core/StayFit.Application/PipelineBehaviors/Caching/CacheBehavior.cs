@@ -21,33 +21,25 @@ namespace StayFit.Application.PipelineBehaviors.Caching
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            // Handler'ın tipini al
             var handlerType = typeof(TRequest).Assembly.GetTypes()
                 .FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IRequestHandler<TRequest, TResponse>)));
 
             if (handlerType == null) return await next();
 
-            // Handler üzerindeki methodu al
             var methodInfo = handlerType.GetMethod("Handle");
 
             if (methodInfo == null) return await next();
 
-            // Handle metodunda tanımlı CacheAttribute'ü al
             var cacheAttribute = methodInfo.GetCustomAttribute<CacheAttribute>();
 
             if (cacheAttribute == null) return await next();
 
-            var cacheKey = cacheAttribute.CacheKey;
-
-            // Cache'te var mı kontrol et
+            var cacheKey = CreateKey.ReplacePlaceholders(cacheAttribute.CacheKey, request);
             var cachedResponse = await _cacheService.GetAsync<TResponse>(cacheKey);
-            if (cachedResponse != null)
-                return cachedResponse;
+ 
+            if (cachedResponse != null) return cachedResponse;
 
-            // Cache yoksa, işleme devam et
             var response = await next();
-
-            // Cache'e ekle
             await _cacheService.SetAsync(cacheKey, response, TimeSpan.FromSeconds(cacheAttribute.ExpirationInSeconds));
 
             return response;
