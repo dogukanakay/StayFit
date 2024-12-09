@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hangfire.Logging.LogProviders;
 using MediatR;
 using StayFit.Application.CustomAttributes.Caching;
 using StayFit.Application.DTOs.Diets;

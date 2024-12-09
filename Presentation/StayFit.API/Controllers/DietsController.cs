@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using StayFit.Application.DTOs.Diets;
 using StayFit.Application.Features.Commands.Diets.CreateDiet;
 using StayFit.Application.Features.Commands.Diets.DeleteDiet;
@@ -31,6 +32,7 @@ namespace StayFit.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetDietSByDietDayId(int dietDayId)
         {
+            
             var request = new GetDietsByDietDayIdQueryRequest(dietDayId);
             var response = await _mediator.Send(request);
 

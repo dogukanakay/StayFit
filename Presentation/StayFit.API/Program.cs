@@ -9,6 +9,9 @@ using StayFit.Infrastructure;
 using StayFit.Infrastructure.Storage.Azure;
 using StayFit.Application;
 using Hangfire;
+using Serilog.Sinks.Graylog.Core.Transport;
+using Serilog.Sinks.Graylog;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +36,21 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddStorage<AzureStorageService>();
 
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.Graylog(new GraylogSinkOptions
+    {
+        HostnameOrAddress = "localhost",
+        Port = 12201,
+        Facility = "StayFit",
+        TransportType = TransportType.Udp
+    })
+    .CreateLogger();
 
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
 
 
 
