@@ -2,14 +2,16 @@
 using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
+using StayFit.Application.Abstracts.Caching;
 using StayFit.Application.Abstracts.Security;
 using StayFit.Application.Abstracts.Services;
 using StayFit.Application.Abstracts.Services.BackgroundServices;
 using StayFit.Application.Abstracts.Services.GenerativeAIServices;
 using StayFit.Application.Abstracts.Storage;
-using StayFit.Application.Settings;
 using StayFit.Infrastructure.Concretes.Services.AIServices.GenerativeAIServices;
 using StayFit.Infrastructure.Concretes.Services.BackgroundServices;
+using StayFit.Infrastructure.Concretes.Services.CachingServices;
 using StayFit.Infrastructure.Helpers;
 using StayFit.Infrastructure.Storage;
 
@@ -31,6 +33,12 @@ namespace StayFit.Infrastructure
                 config.UsePostgreSqlStorage(configuration.GetConnectionString("Hangfire")));
             service.AddHangfireServer();
 
+
+            service.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")));
+            service.AddSingleton<ICacheService, RedisCacheService>();
+
+
+            
 
         }
 

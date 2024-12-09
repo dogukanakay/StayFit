@@ -37,7 +37,8 @@ namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
 
 Yukaridaki degerlere sadik kalarak veya cok benzer degerler ile yeni bir yemek oner. 
 Portion ve Unit degisebilir onemli olan calories, carbs, protein ve fat yeni onerecegin yemekte de ayni veya benzer miktarda olmali. 
-Bunu onerirken hangi ogunun olduguna ve turk yemeklerinden olmasina dikkat et. 
+Bunu onerirken hangi ogunun olduguna ve turk yemeklerinden olmasina dikkat et.
+Biraz yaratici ol ve sporcuya yonelik yemekler oner.
 Bana donus degeri olarak sana verdigim yapinin aynisini tek don baska bir sey yazma. 
 Sadece JSON formatinda don.";
 
@@ -64,25 +65,32 @@ Sadece JSON formatinda don.";
                 {
                     throw new Exception("API boş yanıt döndü");
                 }
-
-                var jsonMatch = System.Text.RegularExpressions.Regex.Match(responseText, @"\{[^{}]*\}");
-                if (jsonMatch.Success)
+                try
                 {
-                    var extractedJson = jsonMatch.Value;
-                    var newDiet = JsonSerializer.Deserialize<GetNewDietByAIResponseDto>(extractedJson);
-                    Diet diet = await _dietRepository.GetByIdAsync(dietId);
-                    diet.Portion = newDiet.Portion;
-                    diet.Fat = newDiet.Fat;
-                    diet.FoodName = newDiet.FoodName;
-                    diet.Carbs = newDiet.Carbs;
-                    diet.Creator = DietCreator.AI;
-                    diet.Calories = newDiet.Calories;
-                    diet.Protein = newDiet.Protein;
-                    diet.Unit = newDiet.Unit;
-                    await _dietRepository.SaveAsync();
+                    var jsonMatch = System.Text.RegularExpressions.Regex.Match(responseText, @"\{[^{}]*\}");
+                    if (jsonMatch.Success)
+                    {
+                        var extractedJson = jsonMatch.Value;
+                        var newDiet = JsonSerializer.Deserialize<GetNewDietByAIResponseDto>(extractedJson);
+                        Diet diet = await _dietRepository.GetByIdAsync(dietId);
+                        diet.Portion = newDiet.Portion;
+                        diet.Fat = newDiet.Fat;
+                        diet.FoodName = newDiet.FoodName;
+                        diet.Carbs = newDiet.Carbs;
+                        diet.Creator = DietCreator.AI;
+                        diet.Calories = newDiet.Calories;
+                        diet.Protein = newDiet.Protein;
+                        diet.Unit = newDiet.Unit;
+                        await _dietRepository.SaveAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Yanıtta geçerli JSON bulunamadı :" +ex.Message);
                 }
 
-                throw new Exception("Yanıtta geçerli JSON bulunamadı");
+
+                
             }
             catch (Exception ex)
             {

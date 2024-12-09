@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StayFit.Application.CustomAttributes.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;

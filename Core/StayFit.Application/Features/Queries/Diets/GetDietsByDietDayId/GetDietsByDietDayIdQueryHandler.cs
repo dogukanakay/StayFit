@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.CustomAttributes.Caching;
 using StayFit.Application.DTOs.Diets;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -17,6 +18,8 @@ namespace StayFit.Application.Features.Queries.Diets.GetDietsByDietDayId
             _mapper = mapper;
         }
 
+
+        [Cache("diets", 1000)]
         public async Task<GetDietsByDietDayIdQueryResponse> Handle(GetDietsByDietDayIdQueryRequest request, CancellationToken cancellationToken)
         {
             List<Diet> diets = await _dietRepository.GetWhere(d=>d.DietDayId == request.DietDayId, false);

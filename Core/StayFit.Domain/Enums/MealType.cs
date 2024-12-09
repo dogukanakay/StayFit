@@ -2,9 +2,9 @@
 {
     public enum MealType
     {
-        Breakfast = 0,
-        Lunch = 1,
-        Dinner = 2,
-        Snack = 3
+        Kahvaltı = 0,
+        Öğle = 1,
+        Akşam = 2,
+        Atıştırmalık = 3
     }
 }
