@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.Exercises;
 using StayFit.Application.Features.Commands.Exercises.CreateExercise;
 using StayFit.Application.Features.Commands.Exercises.DeleteExercise;
+using StayFit.Application.Features.Queries.Diets.GetTodaysDietsByMemberId;
 using StayFit.Application.Features.Queries.Exercises.GetExercisesByWorkoutDayId;
+using System.Security.Claims;
 
 namespace StayFit.API.Controllers
 {
@@ -20,7 +22,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("CreateExercise")]
-        //[Authorize(Roles ="Trainer")]
+        [Authorize(Roles ="Trainer")]
         public async Task<IActionResult> CreateExercise(List<CreateExerciseDto> createExerciseDtos)
         {
             CreateExerciseCommandRequest request = new() { CreateExerciseDtos = createExerciseDtos };
@@ -29,6 +31,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetExercisesByWorkoutDayId")]
+        [Authorize(Roles ="Trainer, Member")]
         public async Task<IActionResult> GetExercisesByWorkoutDayId(int workoutDayId)
         {
             GetExercisesByWorkoutDayIdQueryRequest request = new() { WorkoutDayId = workoutDayId };
@@ -37,12 +40,24 @@ namespace StayFit.API.Controllers
         }
 
         [HttpDelete("DeleteExercise")]
+        [Authorize(Roles ="Trainer")]
         public async Task<IActionResult> DeleteExercise(int excersiceId)
         {
             var request = new DeleteExerciseCommandRequest(excersiceId);
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("[action]")]
+        [Authorize(Roles ="Member")]
+        public async Task<IActionResult> GetTodaysExercises()
+        {
+            string? memberId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new GetTodaysDietsByMemberIdQueryRequest(Guid.Parse(memberId));
+            var response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : NotFound(response);
         }
     }
 }

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.DTOs.Exercises
 {
-    public record GetExercisesByWorkoutDayIdDto : IDto
+    public record GetTodaysExercisesDto : IDto
     {
+
         public int Id { get; init; }
         public int WorkoutDayId { get; init; }
         public bool IsCompleted { get; init; }

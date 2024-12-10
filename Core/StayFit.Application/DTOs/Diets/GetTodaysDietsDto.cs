@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StayFit.Application.DTOs.Diets
 {
-    public record GetDietsByDietDayIdDto : IDto
+    public record GetTodaysDietsDto : IDto
     {
         public int Id { get; init; }
         public MealType MealType { get; init; }

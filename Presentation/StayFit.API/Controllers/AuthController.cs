@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using StayFit.Application.DTOs;
 using StayFit.Application.Features.Commands.Auths.Login;
 using StayFit.Application.Features.Commands.Auths.Register.MemberRegister;
@@ -43,6 +44,8 @@ namespace StayFit.API.Controllers
                 LoginModel = loginModel
             };
             LoginCommandResponse response = await _mediator.Send(loginCommandRequest);
+            if (response.TokenModel != null)
+                Log.Information($"{loginModel.Email} kullanıcı giriş yaptı.");
             return Ok(response.TokenModel);
         }
 

@@ -51,7 +51,7 @@ namespace StayFit.API.Controllers
                 Images = files,
                 CreateWeeklyProgressDto = createWeeklyProgressDto,
                 BaseStorageUrl = _configuration["BaseStorageUrl"],
-                UserId = null,
+                UserId = Guid.Parse(userId),
             };
 
             CreateWeeklyProgressCommandResponse response = await _mediator.Send(request);

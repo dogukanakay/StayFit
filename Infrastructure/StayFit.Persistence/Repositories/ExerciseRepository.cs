@@ -25,6 +25,18 @@ namespace StayFit.Persistence.Repositories
 
         public async Task<List<Exercise>> GetExercisesByWorkoutDayId(int workoutDayId)
             => await _context.Exercises.Where(e=>e.WorkoutDayId == workoutDayId).AsNoTracking().ToListAsync();
+
+        public async Task<List<Exercise>> GetTodaysExercisesAsync(Guid memberId)
+        {
+            return await _context.Exercises.Where(e=>
+            e.WorkoutDay.WorkoutPlan.MemberId == memberId &&
+            e.WorkoutDay.DayOfWeek == DateTime.Today.DayOfWeek &&
+            e.WorkoutDay.WorkoutPlan.StartDate <= DateTime.UtcNow &&
+            e.WorkoutDay.WorkoutPlan.EndDate >= DateTime.UtcNow)
+                .OrderBy(e=>e.Priority)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }
 

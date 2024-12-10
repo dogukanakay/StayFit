@@ -2,11 +2,6 @@
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Persistence.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StayFit.Persistence.Repositories
 {
@@ -21,6 +16,19 @@ namespace StayFit.Persistence.Repositories
         public async Task AddRangeAsync(List<Diet> dietList)
         {
             await _context.Diets.AddRangeAsync(dietList);
+        }
+
+        public async Task<List<Diet>> GetTodaysDietsAsync(Guid memberId)
+        {
+            return await _context.Diets
+                .Where(
+                d => d.DietDay.DietPlan.MemberId == memberId &&
+                d.DietDay.DayOfWeek == DateTime.Today.DayOfWeek &&
+                d.DietDay.DietPlan.StartDate <= DateTime.UtcNow &&
+                d.DietDay.DietPlan.EndDate >= DateTime.UtcNow)
+                    .OrderBy(d=>d.MealType)
+                    .AsNoTracking()
+                    .ToListAsync();
         }
     }
 }

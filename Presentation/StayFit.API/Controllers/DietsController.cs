@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using StayFit.Application.DTOs.Diets;
@@ -6,6 +7,8 @@ using StayFit.Application.Features.Commands.Diets.CreateDiet;
 using StayFit.Application.Features.Commands.Diets.DeleteDiet;
 using StayFit.Application.Features.Commands.Diets.UpdateDietByAI;
 using StayFit.Application.Features.Queries.Diets.GetDietsByDietDayId;
+using StayFit.Application.Features.Queries.Diets.GetTodaysDietsByMemberId;
+using System.Security.Claims;
 
 namespace StayFit.API.Controllers
 {
@@ -32,7 +35,7 @@ namespace StayFit.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetDietSByDietDayId(int dietDayId)
         {
-            
+
             var request = new GetDietsByDietDayIdQueryRequest(dietDayId);
             var response = await _mediator.Send(request);
 
@@ -45,6 +48,8 @@ namespace StayFit.API.Controllers
             var request = new DeleteDietCommandRequest(dietId);
             var response = await _mediator.Send(request);
 
+            if (response.Success)
+                Log.Warning($"{dietId} {DateTime.UtcNow} tarihinde silindi");
             return response.Success ? Ok(response) : BadRequest(response);
 
         }
@@ -55,6 +60,19 @@ namespace StayFit.API.Controllers
             var request = new UpdateDietByAICommandRequest(dietId);
             var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : NotFound(response);
+        }
+
+        [HttpGet("[action]")]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> GetTodaysDiets()
+        {
+            string? memberId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new GetTodaysDietsByMemberIdQueryRequest(Guid.Parse(memberId));
+            var response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : NotFound(response);
+
+
         }
     }
 }

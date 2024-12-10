@@ -60,6 +60,7 @@ namespace StayFit.Application.Mapping
             //Exercise maps
             CreateMap<Exercise, CreateExerciseDto>().ReverseMap();
             CreateMap<Exercise, GetExercisesByWorkoutDayIdDto>().ReverseMap();
+            CreateMap<Exercise, GetTodaysExercisesDto>().ReverseMap();
 
             //WorkoutDay maps
             CreateMap<WorkoutDay, CreateExerciseDto>().ReverseMap();
@@ -86,6 +87,7 @@ namespace StayFit.Application.Mapping
             CreateMap<Diet, CreateDietDto>().ReverseMap();
             CreateMap<Diet, GetDietsByDietDayIdDto>().ReverseMap();
             CreateMap<Diet, GetNewDietByAIRequestDto>().ReverseMap();
+            CreateMap<Diet, GetTodaysDietsDto>().ReverseMap();
 
 
         }
