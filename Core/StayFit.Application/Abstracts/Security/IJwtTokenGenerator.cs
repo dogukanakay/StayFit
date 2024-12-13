@@ -1,4 +1,5 @@
-﻿using StayFit.Domain.Entities;
+﻿using StayFit.Application.DTOs;
+using StayFit.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace StayFit.Application.Abstracts.Security
 {
     public interface IJwtTokenGenerator
     {
-        public Task<string> GenerateToken(User user);
+        public Task<TokenDto> GenerateToken(User user);
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StayFit.Application.Abstracts.Security;
+using StayFit.Application.DTOs;
 using StayFit.Application.Settings;
 using StayFit.Domain.Entities;
 
@@ -18,7 +19,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _jwtSettings = jwtSettings.Value;
     }
 
-    public Task<string> GenerateToken(User user)
+    public Task<TokenDto> GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -31,13 +32,21 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
+        var expires = DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes);
         var token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
+            expires: expires,
             signingCredentials: credentials);
 
-        return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+        TokenDto tokenDto = new()
+        {
+            Expires = expires,
+            Token = new JwtSecurityTokenHandler().WriteToken(token)
+        };
+
+
+        return Task.FromResult(tokenDto);
     }
 }

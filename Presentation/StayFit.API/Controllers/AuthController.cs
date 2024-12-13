@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using StayFit.Application.DTOs;
-using StayFit.Application.Features.Commands.Auths.Login;
+using StayFit.Application.Features.Commands.Auths.Login.MemberLogin;
+using StayFit.Application.Features.Commands.Auths.Login.TrainerLogin;
 using StayFit.Application.Features.Commands.Auths.Register.MemberRegister;
 using StayFit.Application.Features.Commands.Auths.Register.TrainerRegister;
 
@@ -31,22 +32,30 @@ namespace StayFit.API.Controllers
         [HttpPost("TrainerRegister")]
         public async Task<IActionResult> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto)
         {
-            TrainerRegisterCommandRequest request = new() { TrainerRegisterDto = trainerRegisterDto};
+            TrainerRegisterCommandRequest request = new() { TrainerRegisterDto = trainerRegisterDto };
             var result = await _mediator.Send(request);
             return Ok(result);
         }
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> LoginAsync(LoginDto loginModel)
+        [HttpPost("MemberLogin")]
+        public async Task<IActionResult> MemberLoginAsync(LoginDto loginModel)
         {
-            LoginCommandRequest loginCommandRequest = new()
-            {
-                LoginModel = loginModel
-            };
-            LoginCommandResponse response = await _mediator.Send(loginCommandRequest);
-            if (response.TokenModel != null)
+            var request = new MemberLoginCommandRequest(loginModel);
+            var response = await _mediator.Send(request);
+            if (response.Success)
                 Log.Information($"{loginModel.Email} kullanıcı giriş yaptı.");
-            return Ok(response.TokenModel);
+            return Ok(response);
+        }
+
+
+        [HttpPost("TrainerLogin")]
+        public async Task<IActionResult> TrainerLoginAsync(LoginDto loginModel)
+        {
+            var request = new TrainerLoginCommandRequest(loginModel);
+            var response = await _mediator.Send(request);
+            if (response.Success)
+                Log.Information($"{loginModel.Email} kullanıcı giriş yaptı.");
+            return Ok(response);
         }
 
 

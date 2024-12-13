@@ -9,7 +9,7 @@ namespace StayFit.Application.DTOs
     public record TokenDto
     {
         public string Token { get; init; }
-        public string Message { get; init; }
-        public bool Success { get; init; }
+        public DateTime Expires { get; set; }
+
     }
 }
