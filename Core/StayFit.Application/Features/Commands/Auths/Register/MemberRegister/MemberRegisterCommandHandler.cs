@@ -52,7 +52,7 @@ namespace StayFit.Application.Features.Commands.Auths.Register.MemberRegister
 
             
             
-            return new() { Message = "Kayıt başarılı.", Success = true };
+            return response>0 ? new("Kayıt başarılı.",true) { } : new("Kayıt başarısız.", false);
         }
     }
 }

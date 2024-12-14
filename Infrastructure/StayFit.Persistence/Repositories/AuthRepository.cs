@@ -31,64 +31,27 @@ namespace StayFit.Persistence.Repositories
         public async Task<User> GetUserByEmail(string email)
             => await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == email);
 
-       
+
 
         public async Task<int> MemberRegisterAsync(Member member)
         {
             await _context.Members.AddAsync(member);
 
-            
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<string> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto)
+        public async Task<int> TrainerRegisterAsync(Trainer trainer)
         {
 
-            if (await CheckIfEmailAlreadyExist(trainerRegisterDto.Email))
-                throw new EmailAlreadyExistException();
-            if (await CheckIfPhoneAlreadyExist(trainerRegisterDto.Phone))
-                throw new PhoneAlreadyExistException();
+            await _context.Trainers.AddAsync(trainer);
 
-            byte[] passwordHash, passwordSalt;
-            _hashingHelper.CreatePasswordHash(trainerRegisterDto.Password, out passwordHash, out passwordSalt);
-            User user = new()
-            {
-                BirthDate = trainerRegisterDto.BirthDate,
-                FirstName = trainerRegisterDto.FirstName,
-                LastName = trainerRegisterDto.LastName,
-                Email = trainerRegisterDto.Email,
-                Gender = trainerRegisterDto.Gender,
-                Phone = trainerRegisterDto.Phone,
-                Status = UserStatus.Active,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                IsEmailConfirmed = true,
-                CreatedDate = DateTime.UtcNow,
-                UserRole = UserRole.Trainer
-            };
 
-            await _context.AddAsync<User>(user);
-
-            Trainer trainer = new()
-            {
-                User = user,
-                Bio = trainerRegisterDto.Bio,
-                CreatedDate = user.CreatedDate,
-                MonthlyRate = trainerRegisterDto.MonthlyRate,
-                Rate = 3,
-                YearsOfExperience = trainerRegisterDto.YearsOfExperience,
-                Specializations = trainerRegisterDto.Specializations,
-            };
-
-            await _context.AddAsync<Trainer>(trainer);
-
-            await _context.SaveChangesAsync();
-            return "Kayıt Başarılı";
+            return await _context.SaveChangesAsync();
         }
 
 
 
-        
+
     }
 }

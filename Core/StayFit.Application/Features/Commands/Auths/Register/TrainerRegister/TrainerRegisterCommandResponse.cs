@@ -2,8 +2,14 @@
 {
     public class TrainerRegisterCommandResponse
     {
-        public string Message { get; set; }
-        public bool Success { get; set; }
+        public string Message { get;}
+        public bool Success { get;}
+
+        public TrainerRegisterCommandResponse(string message, bool success)
+        {
+            Message = message;
+            Success = success;
+        }
     }
 
 }

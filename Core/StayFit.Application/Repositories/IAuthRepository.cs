@@ -10,7 +10,7 @@ namespace StayFit.Application.Repositories
 {
     public interface IAuthRepository
     {
-        Task<string> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto);
+        Task<int> TrainerRegisterAsync(Trainer trainer);
         Task<int> MemberRegisterAsync(Member member);
         Task<User> GetUserByEmail(string email);
 
