@@ -12,6 +12,11 @@ using Hangfire;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog;
 using Serilog;
+using Microsoft.ApplicationInsights.Extensibility;
+using StayFit.Infrastructure.Filters;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using StayFit.Application.Validatiors.Auths;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,13 +51,22 @@ Log.Logger = new LoggerConfiguration()
         Facility = "StayFit",
         TransportType = TransportType.Udp
     })
+    .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
     .CreateLogger();
 
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();
 
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
 
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<RegisterValidator>(); 
 
 
 builder.Services.AddAuthentication(options =>

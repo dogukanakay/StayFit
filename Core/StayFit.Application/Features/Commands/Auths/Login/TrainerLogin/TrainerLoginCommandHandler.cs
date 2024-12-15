@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Security;
 using StayFit.Application.Exceptions;
+using StayFit.Application.Exceptions.Auths;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Domain.Enums;
@@ -22,10 +23,9 @@ namespace StayFit.Application.Features.Commands.Auths.Login.TrainerLogin
         public async Task<TrainerLoginCommandResponse> Handle(TrainerLoginCommandRequest request, CancellationToken cancellationToken)
         {
             User user = await _authRepository.GetUserByEmail(request.LoginDto.Email);
-            if (user == null)
-                throw new UserNotFoundException();
-            if (user.UserRole != UserRole.Trainer)
-                throw new UserNotFoundException("Bu kayıtlara ait bir üye bulunmamaktadır.");
+
+            if (user == null || user.UserRole != UserRole.Trainer)
+                throw new UserNotFoundException("Hatalı şifre veya kullanıcı adı.");
             if (_hashingHelper.VerifyPasswordHash(request.LoginDto.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return new("Giriş başarılı", true, await _jwtTokenGenerator.GenerateToken(user));

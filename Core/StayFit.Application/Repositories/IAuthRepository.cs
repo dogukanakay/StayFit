@@ -13,7 +13,8 @@ namespace StayFit.Application.Repositories
         Task<int> TrainerRegisterAsync(Trainer trainer);
         Task<int> MemberRegisterAsync(Member member);
         Task<User> GetUserByEmail(string email);
-
+        Task<User> GetUserByIdAsync(Guid userId);
+        Task<int> SaveChangesAsync();
         Task<bool> CheckIfEmailAlreadyExist(string email);
         Task<bool> CheckIfPhoneAlreadyExist(string phone);
     }

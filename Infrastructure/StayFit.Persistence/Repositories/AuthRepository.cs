@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using StayFit.Application.Abstracts.Security;
 using StayFit.Application.DTOs;
+using StayFit.Application.DTOs.Gemini;
 using StayFit.Application.Exceptions;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -31,7 +32,10 @@ namespace StayFit.Persistence.Repositories
         public async Task<User> GetUserByEmail(string email)
             => await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == email);
 
-
+        public async Task<User> GetUserByIdAsync(Guid userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
 
         public async Task<int> MemberRegisterAsync(Member member)
         {
@@ -40,6 +44,9 @@ namespace StayFit.Persistence.Repositories
 
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<int> SaveChangesAsync()
+             => await _context.SaveChangesAsync();
 
         public async Task<int> TrainerRegisterAsync(Trainer trainer)
         {

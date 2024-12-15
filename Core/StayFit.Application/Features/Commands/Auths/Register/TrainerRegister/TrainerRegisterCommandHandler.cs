@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using StayFit.Application.Abstracts.Security;
-using StayFit.Application.DTOs;
-using StayFit.Application.Exceptions;
+using StayFit.Application.Exceptions.Auths;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StayFit.Application.Features.Commands.Auths.Register.TrainerRegister
 {

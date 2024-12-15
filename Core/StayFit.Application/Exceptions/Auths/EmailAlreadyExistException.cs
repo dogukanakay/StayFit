@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.Exceptions
+namespace StayFit.Application.Exceptions.Auths
 {
     public class EmailAlreadyExistException : Exception
     {

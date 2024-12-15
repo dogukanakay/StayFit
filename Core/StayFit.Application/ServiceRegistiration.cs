@@ -17,6 +17,8 @@ namespace StayFit.Application
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(CacheRemoveBehavior<,>));
             });
 
+            
+
         }
     }
 }

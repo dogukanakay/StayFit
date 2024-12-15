@@ -1,4 +1,4 @@
-﻿namespace StayFit.Application.Exceptions
+﻿namespace StayFit.Application.Exceptions.Auths
 {
     public class PhoneAlreadyExistException : Exception
     {
