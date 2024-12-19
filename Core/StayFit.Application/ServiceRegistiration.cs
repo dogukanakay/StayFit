@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using StayFit.Application.PipelineBehaviors.Caching;
+using StayFit.Application.PipelineBehaviors.Logging;
+using StayFit.Application.PipelineBehaviors.Performance;
 using System.Reflection;
 
 namespace StayFit.Application
@@ -15,6 +17,8 @@ namespace StayFit.Application
                 cfg.RegisterServicesFromAssembly(typeof(ServiceRegistiration).Assembly);
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(CacheBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(CacheRemoveBehavior<,>));
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             });
 
             

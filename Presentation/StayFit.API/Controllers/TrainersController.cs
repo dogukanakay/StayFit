@@ -16,10 +16,12 @@ namespace StayFit.API.Controllers
     public class TrainersController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<TrainersController> _logger;
 
-        public TrainersController(IMediator mediator)
+        public TrainersController(IMediator mediator, ILogger<TrainersController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpGet("GetTrainerProfile")]
@@ -39,6 +41,8 @@ namespace StayFit.API.Controllers
         {
             GetAllTrainersQueryRequest request = new();
             GetAllTrainersQueryResponse response = await _mediator.Send(request);
+
+            _logger.LogInformation("He calistim he");
 
             return Ok(response.TrainerResponseDtos);
         }

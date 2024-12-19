@@ -17,6 +17,7 @@ using StayFit.Infrastructure.Filters;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using StayFit.Application.Validatiors.Auths;
+using Microsoft.ApplicationInsights.DependencyCollector;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,19 +42,34 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddStorage<AzureStorageService>();
 
+builder.Services.AddApplicationInsightsTelemetry();
+
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .WriteTo.Console()
-    .WriteTo.Graylog(new GraylogSinkOptions
-    {
-        HostnameOrAddress = "localhost",
-        Port = 12201,
-        Facility = "StayFit",
-        TransportType = TransportType.Udp
-    })
-    .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithEnvironmentName()
     .CreateLogger();
 
+builder.Services.AddApplicationInsightsTelemetry(options =>
+{
+    options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+});
+
+builder.Services.Configure<TelemetryConfiguration>(config =>
+{
+    config.TelemetryInitializers.Add(new HttpDependenciesParsingTelemetryInitializer());
+});
+
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+        .Enrich.WithMachineName()
+        .Enrich.WithEnvironmentName();
+});
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();
