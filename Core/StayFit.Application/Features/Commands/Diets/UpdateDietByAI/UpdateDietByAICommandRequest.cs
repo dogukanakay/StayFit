@@ -10,10 +10,12 @@ namespace StayFit.Application.Features.Commands.Diets.UpdateDietByAI
     public class UpdateDietByAICommandRequest : IRequest<UpdateDietByAICommandResponse>
     {
         public int DietId { get;}
+        public string Prompt { get; }
 
-        public UpdateDietByAICommandRequest(int dietId)
+        public UpdateDietByAICommandRequest(int dietId, string prompt)
         {
             DietId = dietId;
+            Prompt = prompt;
         }
     }
 }

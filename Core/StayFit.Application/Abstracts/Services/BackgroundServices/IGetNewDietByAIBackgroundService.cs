@@ -10,6 +10,6 @@ namespace StayFit.Application.Abstracts.Services.BackgroundServices
 {
     public interface IGetNewDietByAIBackgroundService
     {
-        Task GetNewDietByAIAsync(GetNewDietByAIRequestDto getNewDietByAIRequestDto, int dietId);
+        Task GetNewDietByAIAsync(GetNewDietByAIRequestDto getNewDietByAIRequestDto, int dietId, string prompt);
     }
 }

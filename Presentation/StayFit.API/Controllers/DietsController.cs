@@ -17,10 +17,12 @@ namespace StayFit.API.Controllers
     public class DietsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IConfiguration _configuration;
 
-        public DietsController(IMediator mediator)
+        public DietsController(IMediator mediator, IConfiguration configuration)
         {
             _mediator = mediator;
+            _configuration = configuration;
         }
 
         [HttpPost("[action]")]
@@ -57,7 +59,8 @@ namespace StayFit.API.Controllers
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateDietByAI(int dietId)
         {
-            var request = new UpdateDietByAICommandRequest(dietId);
+            string prompt = _configuration["Prompts:GetNewDiet"];
+            var request = new UpdateDietByAICommandRequest(dietId, prompt);
             var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : NotFound(response);
         }

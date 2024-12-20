@@ -18,6 +18,7 @@ namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
     {
         private readonly IGeminiService _geminiService;
         private readonly IDietRepository _dietRepository;
+        
 
         public GetNewDietByAIBackgroundService(IGeminiService geminiService, IDietRepository dietRepository)
         {
@@ -25,24 +26,22 @@ namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
             _dietRepository = dietRepository;
         }
 
-        public async Task GetNewDietByAIAsync(GetNewDietByAIRequestDto getNewDietByAIRequestDto, int dietId)
+        public async Task GetNewDietByAIAsync(GetNewDietByAIRequestDto getNewDietByAIRequestDto, int dietId, string prompt)
         {
             var mealJson = JsonSerializer.Serialize(getNewDietByAIRequestDto, new JsonSerializerOptions
             {
                 WriteIndented = true
             });
 
-            var promptTemplate = @"Bu modele gore yeni bir oneri yap:
+            
+
+            var promptTemplate = @"Bu modele gore yeni bir diyet onerisi yap:
 {0}
 
-Yukaridaki degerlere sadik kalarak veya cok benzer degerler ile yeni bir yemek oner. 
-Portion ve Unit degisebilir onemli olan calories, carbs, protein ve fat yeni onerecegin yemekte de ayni veya benzer miktarda olmali. 
-Bunu onerirken hangi ogunun olduguna ve turk yemeklerinden olmasina dikkat et.
-Biraz yaratici ol ve sporcuya yonelik yemekler oner.
-Bana donus degeri olarak sana verdigim yapinin aynisini tek don baska bir sey yazma. 
-Sadece JSON formatinda don.";
+{1}
+";
 
-            var formattedPrompt = string.Format(promptTemplate, mealJson);
+            var formattedPrompt = string.Format(promptTemplate, mealJson, prompt);
 
             try
             {

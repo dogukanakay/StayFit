@@ -29,7 +29,7 @@ namespace StayFit.Application.Features.Commands.Diets.UpdateDietByAI
             GetNewDietByAIRequestDto getNewDietByAIRequestDto = _mapper.Map<GetNewDietByAIRequestDto>(diet);
 
             _backgroundJobClient.Enqueue<IGetNewDietByAIBackgroundService>(service =>
-                     service.GetNewDietByAIAsync(getNewDietByAIRequestDto, diet.Id));
+                     service.GetNewDietByAIAsync(getNewDietByAIRequestDto, diet.Id, request.Prompt));
 
             return new("Yeni diyetiniz kısa süre içerisinde hazır olacak", true);
 
