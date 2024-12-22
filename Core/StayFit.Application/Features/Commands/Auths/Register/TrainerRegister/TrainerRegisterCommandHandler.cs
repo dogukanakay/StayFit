@@ -36,7 +36,7 @@ namespace StayFit.Application.Features.Commands.Auths.Register.TrainerRegister
             user.PasswordSalt = passwordSalt;
             user.Status = UserStatus.Active;
             user.IsEmailConfirmed = true;
-            user.UserRole = UserRole.Member;
+            user.UserRole = UserRole.Trainer;
 
             
 

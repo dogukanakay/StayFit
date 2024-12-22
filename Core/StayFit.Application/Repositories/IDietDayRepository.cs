@@ -10,7 +10,7 @@ namespace StayFit.Application.Repositories
     public interface IDietDayRepository : IGenericRepository<DietDay>
     {
         Task<bool> CheckIfDietDayAlreadyExistAsync(int dietPlanId, DayOfWeek day);
-        Task<bool> CheckIfDietDayAlreadyExistUpdateAsync(int id, int workoutPlanId, DayOfWeek day);
+        Task<bool> CheckIfDietDayAlreadyExistUpdateAsync(int id, int dietPlanId, DayOfWeek day);
 
     }
 }

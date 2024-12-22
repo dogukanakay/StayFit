@@ -15,5 +15,8 @@ namespace StayFit.Persistence.Repositories
 
         public async Task<bool> CheckIfDietDayAlreadyExistAsync(int dietPlanId, DayOfWeek day)
             => await _context.DietDays.Where(dp => dp.DayOfWeek == day && dp.DietPlanId == dietPlanId).AnyAsync();
+
+        public async Task<bool> CheckIfDietDayAlreadyExistUpdateAsync(int id, int dietPlanId, DayOfWeek day)
+            =>await _context.DietDays.Where(dd => dd.DayOfWeek == day && dd.DietPlanId == dietPlanId && dd.Id != id).AnyAsync();
     }
 }
