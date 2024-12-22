@@ -37,17 +37,17 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetAllTrainersIncludeUser")]
+        [Authorize(Roles ="Member")]
         public async Task<IActionResult> GetAllTrainersIncludeUser()
         {
             GetAllTrainersQueryRequest request = new();
             GetAllTrainersQueryResponse response = await _mediator.Send(request);
 
-            _logger.LogInformation("He calistim he");
-
             return Ok(response.TrainerResponseDtos);
         }
 
         [HttpPut("UpdateTrainerProfile")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> UpdateTrainerProfile(UpdateTrainerDto updateTrainerDto)
         {
             UpdateTrainerCommandRequest request = new() { UpdateTrainerDto = updateTrainerDto};

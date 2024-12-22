@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.WorkoutDays;
 using StayFit.Application.Features.Commands.WorkoutDays.CreateWorkoutDay;
 using StayFit.Application.Features.Commands.WorkoutDays.DeleteWorkoutDay;
+using StayFit.Application.Features.Commands.WorkoutDays.UpdateWorkoutDayCompleted;
 using StayFit.Application.Features.Queries.WorkoutDays.GetWorkoutDaysByWorkoutPlanId;
+using System.Security.Claims;
 
 namespace StayFit.API.Controllers
 {
@@ -21,7 +23,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("CreateWorkoutDay")]
-       // [Authorize(Roles = "Trainer")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateWorkoutDay(CreateWorkoutDayDto createWorkoutDayDto)
         {
             CreateWorkoutDayCommandRequest request = new() { CreateWorkoutDayDto = createWorkoutDayDto };
@@ -30,7 +32,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetWorkoutDaysByWorkoutPlanId")]
-        [Authorize]
+        [Authorize (Roles ="Trainer, Member")]
         public async Task<IActionResult> GetWorkoutDaysByWorkoutPlanId(int workoutPlanId)
         {
             GetWorkoutDaysByWorkoutPlanIdQueryRequest request = new() { WorkoutPlanId = workoutPlanId };
@@ -39,10 +41,22 @@ namespace StayFit.API.Controllers
         }
 
         [HttpDelete("DeleteWorkoutDay/{workoutDayId}")]
+        [Authorize (Roles = "Trainer")]
         public async Task<IActionResult> DeleteWorkoutDay(int workoutDayId)
         {
             DeleteWorkoutDayCommandRequest request = new() { WorkoutDayId = workoutDayId };
             DeleteWorkoutDayCommandResponse response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpPut("WorkoutDayCompleted")]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> WorkoutDayCompleted(int workoutDayId)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new UpdateWorkoutDayCompletedCommandRequest(Guid.Parse(userId), workoutDayId);
+            var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
         }

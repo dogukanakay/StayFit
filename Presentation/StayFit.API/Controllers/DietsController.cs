@@ -26,6 +26,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateDietList(List<CreateDietDto> createDietDtos)
         {
             var request = new CreateDietCommandRequest(createDietDtos);
@@ -35,6 +36,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles = "Trainer, MemberId")]
         public async Task<IActionResult> GetDietSByDietDayId(int dietDayId)
         {
 
@@ -45,6 +47,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpDelete("[action]")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> DeleteDiet(int dietId)
         {
             var request = new DeleteDietCommandRequest(dietId);
@@ -57,6 +60,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPut("[action]")]
+        [Authorize(Roles = "Trainer, MemberId")]
         public async Task<IActionResult> UpdateDietByAI(int dietId)
         {
             string prompt = _configuration["Prompts:GetNewDiet"];

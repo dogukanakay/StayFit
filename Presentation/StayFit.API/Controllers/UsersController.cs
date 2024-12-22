@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.Features.Commands.Users.UpdateUserPhoto;
@@ -20,7 +21,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPut("UpdateProfilePhoto")]
-
+        [Authorize(Roles = "Trainer, Member")]
         public async Task<IActionResult> UpdateProfilePhoto()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

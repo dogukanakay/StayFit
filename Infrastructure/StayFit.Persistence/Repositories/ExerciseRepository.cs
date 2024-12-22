@@ -23,6 +23,8 @@ namespace StayFit.Persistence.Repositories
             await _context.Exercises.AddRangeAsync(exerciseList);
         }
 
+        
+
         public async Task<List<Exercise>> GetExercisesByWorkoutDayId(int workoutDayId)
             => await _context.Exercises.Where(e=>e.WorkoutDayId == workoutDayId).AsNoTracking().ToListAsync();
 

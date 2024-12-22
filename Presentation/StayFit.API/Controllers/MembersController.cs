@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.Members;
@@ -23,6 +24,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetMemberProfile")]
+        [Authorize(Roles ="Member")]
         public async Task<IActionResult> GetMyProfile()
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -34,6 +36,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("GetAllMembersIncludeUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllMembersIncludeUser()
         {
             GetAllMembersQueryRequest request = new();
@@ -42,6 +45,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPut("UpdateMemberProfile")]
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> UpdateMemberProfile(UpdateMemberDto updateMemberDto)
         {
             UpdateMemberCommandRequest request = new() { UpdateMemberDto = updateMemberDto };

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.DietDays;
 using StayFit.Application.Features.Commands.DietDays.CreateDietDay;
@@ -19,6 +20,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles ="Trainer")]
         public async Task<IActionResult> CreateDietDay(CreateDietDayDto createDietDayDto)
         {
             var request = new CreateDietDayCommandRequest(createDietDayDto);
@@ -28,6 +30,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpDelete("[action]")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> DeleteDietDay(int dietDayId)
         {
             var request = new DeleteDietDayCommandRequest(dietDayId);
@@ -37,6 +40,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles = "Trainer, Member")]
         public async Task<IActionResult> GetDietDaysByDietPlanId(int dietPlanId)
         {
             var request = new GetDietDaysByDietPlanIdQueryRequest(dietPlanId);

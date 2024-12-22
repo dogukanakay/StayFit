@@ -14,5 +14,7 @@ namespace StayFit.Application.Repositories
 
         Task<List<Exercise>> GetTodaysExercisesAsync(Guid memberId);
 
+        
+
     }
 }

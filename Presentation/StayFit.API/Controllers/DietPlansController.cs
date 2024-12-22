@@ -23,6 +23,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("CreateDietPlan")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateDietPlan(CreateDietPlanDto createDietPlanDto)
         {
             CreateDietPlanCommandRequest request = new() { CreateDietPlanDto = createDietPlanDto };
@@ -32,6 +33,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles = "Trainer, Member")]
         public async Task<IActionResult> GetDietPlansBySubscriptionId(string subscriptionId)
         {
             if (!Guid.TryParse(subscriptionId, out var subscriptionIdGuid))
@@ -58,6 +60,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpDelete("[action]")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> DeleteDietPlan(int dietPlanId)
         {
             var request = new DeleteDietPlanCommandRequest(dietPlanId);
