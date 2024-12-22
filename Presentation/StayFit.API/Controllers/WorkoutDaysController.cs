@@ -50,7 +50,7 @@ namespace StayFit.API.Controllers
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPut("WorkoutDayCompleted")]
+        [HttpPut("[action]")]
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> WorkoutDayCompleted(int workoutDayId)
         {

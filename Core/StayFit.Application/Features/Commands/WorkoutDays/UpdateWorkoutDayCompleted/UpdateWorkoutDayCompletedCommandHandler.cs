@@ -16,10 +16,12 @@ namespace StayFit.Application.Features.Commands.WorkoutDays.UpdateWorkoutDayComp
 
         public async Task<UpdateWorkoutDayCompletedCommandResponse> Handle(UpdateWorkoutDayCompletedCommandRequest request, CancellationToken cancellationToken)
         {
-            if(!await _workoutDayRepository.CheckIfMemberHasThisWorkoutDay(request.WorkoutDayId,request.MemberId))
-                throw new UnauthorizedAccessException();
+            WorkoutDay workoutDay = await _workoutDayRepository
+                .GetSingleAsync(wD => wD.Id == request.WorkoutDayId && wD.WorkoutPlan.MemberId == request.MemberId);
 
-            WorkoutDay workoutDay  = await _workoutDayRepository.GetByIdAsync(request.WorkoutDayId);
+            if (workoutDay is null)
+                return new("Böyle bir diyet gününüz bulunmamaktadır.", false);
+
             workoutDay.IsCompleted = true;
 
             int result = await _workoutDayRepository.SaveAsync();

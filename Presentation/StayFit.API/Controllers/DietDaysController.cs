@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.DietDays;
 using StayFit.Application.Features.Commands.DietDays.CreateDietDay;
 using StayFit.Application.Features.Commands.DietDays.DeleteDietDay;
+using StayFit.Application.Features.Commands.DietDays.UpdateDietDayCompleted;
 using StayFit.Application.Features.Queries.DietDays.GetDietDaysByDietPlanId;
+using System.Security.Claims;
 
 namespace StayFit.API.Controllers
 {
@@ -20,7 +22,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpPost("[action]")]
-        [Authorize(Roles ="Trainer")]
+        [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateDietDay(CreateDietDayDto createDietDayDto)
         {
             var request = new CreateDietDayCommandRequest(createDietDayDto);
@@ -48,7 +50,18 @@ namespace StayFit.API.Controllers
 
             return response.Success ? Ok(response) : BadRequest(response);
 
+        }
 
+        [HttpPut("[action]")]
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> DietDayCompleted(int dietDayId)
+        {
+            string memberId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var request = new UpdateDietDayCompletedCommandRequest(Guid.Parse(memberId), dietDayId);
+            var response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
 

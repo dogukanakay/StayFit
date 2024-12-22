@@ -18,9 +18,6 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<bool> CheckIfMemberHasThisWorkoutDay(int id, Guid MemberId)
-                => await _context.WorkoutDays.Where(wd=>wd.Id == id && wd.WorkoutPlan.MemberId == MemberId).AnyAsync();
-
         public async Task<bool> CheckIfWorkoutDayAlreadyExistAsync(int workoutPlanId, DayOfWeek day)
                 => await _context.WorkoutDays.Where(wd => wd.DayOfWeek == day && wd.WorkoutPlanId == workoutPlanId).AnyAsync();
 
