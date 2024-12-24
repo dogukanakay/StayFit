@@ -16,10 +16,10 @@ namespace StayFit.Application.Features.Commands.DietDays.UpdateDietDayCompleted
         public async Task<UpdateDietDayCompletedCommandResponse> Handle(UpdateDietDayCompletedCommandRequest request, CancellationToken cancellationToken)
         {
             DietDay dietDay = await _dietDayRepository
-                .GetSingleAsync(dd => dd.Id == request.DietDayId && dd.DietPlan.MemberId == request.MemberId);
+                .GetSingleAsync(dd => dd.Id == request.DietDayId && dd.DietPlan.MemberId == request.MemberId && dd.DayOfWeek == DateTime.Today.DayOfWeek);
 
             if (dietDay is null)
-                return new("Gün bulunamadı.", false);
+                return new("Vayyy çakal :)) Sadece bugünün tamamlandığını girebilirsin.", false);
 
             dietDay.IsCompleted = true;
 

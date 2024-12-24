@@ -36,7 +36,7 @@ namespace StayFit.API.Controllers
         }
 
         [HttpGet("[action]")]
-        [Authorize(Roles = "Trainer, MemberId")]
+        [Authorize(Roles = "Trainer, Member")]
         public async Task<IActionResult> GetDietSByDietDayId(int dietDayId)
         {
 
@@ -53,14 +53,12 @@ namespace StayFit.API.Controllers
             var request = new DeleteDietCommandRequest(dietId);
             var response = await _mediator.Send(request);
 
-            if (response.Success)
-                Log.Warning($"{dietId} {DateTime.UtcNow} tarihinde silindi");
             return response.Success ? Ok(response) : BadRequest(response);
 
         }
 
         [HttpPut("[action]")]
-        [Authorize(Roles = "Trainer, MemberId")]
+        [Authorize(Roles = "Trainer, Member")]
         public async Task<IActionResult> UpdateDietByAI(int dietId)
         {
             string prompt = _configuration["Prompts:GetNewDiet"];

@@ -29,6 +29,8 @@ namespace StayFit.Persistence.Repositories
                     .OrderBy(d=>d.MealType)
                     .AsNoTracking()
                     .ToListAsync();
+
+            
         }
     }
 }

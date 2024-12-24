@@ -9,5 +9,6 @@ namespace StayFit.Application.Repositories
 {
     public interface IWorkoutPlanRepository : IGenericRepository<WorkoutPlan>
     {
+        Task<bool> CheckIfAlreadyExistPlanOnTimeRange(DateTime startDate, DateTime endDate);
     }
 }

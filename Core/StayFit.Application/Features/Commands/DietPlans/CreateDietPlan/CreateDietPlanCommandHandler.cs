@@ -19,6 +19,8 @@ namespace StayFit.Application.Features.Commands.DietPlans.CreateDietPlan
 
         public async Task<CreateDietPlanCommandResponse> Handle(CreateDietPlanCommandRequest request, CancellationToken cancellationToken)
         {
+            if (await _dietPlanRepository.CheckIfAlreadyExistPlanOnTimeRange(request.CreateDietPlanDto.StartDate, request.CreateDietPlanDto.EndDate))
+                return new() { Message = "Bu aralıklarda zaten bir çalışma planı var.", Success = false };
             DietPlan dietPlan = _mapper.Map<DietPlan>(request.CreateDietPlanDto);
             dietPlan.Status = PlanStatus.Active;
             await _dietPlanRepository.AddAsync(dietPlan);
