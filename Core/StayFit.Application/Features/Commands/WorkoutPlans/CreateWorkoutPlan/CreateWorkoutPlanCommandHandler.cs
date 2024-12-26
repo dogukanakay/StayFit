@@ -19,7 +19,8 @@ namespace StayFit.Application.Features.Commands.WorkoutPlans.CreateWorkoutPlan
 
         public async Task<CreateWorkoutPlanCommandResponse> Handle(CreateWorkoutPlanCommandRequest request, CancellationToken cancellationToken)
         {
-            if (await _workoutPlanRepository.CheckIfAlreadyExistPlanOnTimeRange(request.CreateWorkoutPlanDto.StartDate, request.CreateWorkoutPlanDto.EndDate))
+            if (await _workoutPlanRepository.CheckIfAlreadyExistPlanOnTimeRange
+                (Guid.Parse(request.CreateWorkoutPlanDto.MemberId),request.CreateWorkoutPlanDto.StartDate, request.CreateWorkoutPlanDto.EndDate))
                 return new() { Message = "Bu aralıklarda zaten bir çalışma planı var.", Success = false };
             WorkoutPlan workoutPlan = _mapper.Map<WorkoutPlan>(request.CreateWorkoutPlanDto);
             workoutPlan.Status = PlanStatus.Active;

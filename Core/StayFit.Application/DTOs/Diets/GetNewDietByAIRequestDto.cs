@@ -10,13 +10,13 @@ namespace StayFit.Application.DTOs.Diets
 {
     public record GetNewDietByAIRequestDto : IDto
     {
-        public string MealType { get; set; }
+        public string MealType { get; init; }
         public string FoodName { get; init; }
         public float Portion { get; init; }
         public string Unit { get; init; }
-        public int Calories { get; init; }
-        public int Carbs { get; init; }
-        public int Protein { get; init; }
-        public int Fat { get; init; }
+        public float Calories { get; init; }
+        public float Carbohydrate { get; init; }
+        public float Protein { get; init; }
+        public float Fat { get; init; }
     }
 }

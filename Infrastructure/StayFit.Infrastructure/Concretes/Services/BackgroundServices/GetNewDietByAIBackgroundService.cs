@@ -75,7 +75,7 @@ namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
                         diet.Portion = newDiet.Portion;
                         diet.Fat = newDiet.Fat;
                         diet.FoodName = newDiet.FoodName;
-                        diet.Carbs = newDiet.Carbs;
+                        diet.Carbohydrate = newDiet.Carbohydrate;
                         diet.Creator = DietCreator.AI;
                         diet.Calories = newDiet.Calories;
                         diet.Protein = newDiet.Protein;

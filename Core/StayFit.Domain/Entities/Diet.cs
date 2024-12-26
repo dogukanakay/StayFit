@@ -15,10 +15,10 @@ namespace StayFit.Domain.Entities
         public string FoodName { get; set; }
         public float Portion { get; set; }
         public string Unit { get; set; }
-        public int Calories { get; set; }
-        public int Carbs { get; set; }
-        public int Protein { get; set; }
-        public int Fat { get; set; }
+        public float Calories { get; set; }
+        public float Carbohydrate { get; set; }
+        public float Protein { get; set; }
+        public float Fat { get; set; }
         public DietCreator Creator { get; set; } = DietCreator.Trainer;
         public DietDay DietDay { get; set; }
     }

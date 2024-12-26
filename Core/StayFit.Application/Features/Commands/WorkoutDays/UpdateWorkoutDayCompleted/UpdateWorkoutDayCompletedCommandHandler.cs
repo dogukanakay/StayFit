@@ -26,7 +26,7 @@ namespace StayFit.Application.Features.Commands.WorkoutDays.UpdateWorkoutDayComp
 
             int result = await _workoutDayRepository.SaveAsync();
 
-            return result > 1 ? new("Günün egzersizi tamamlandı olarak işaretlendi.", true) : new("İşlem başarısız", false);
+            return result > 0 ? new("Günün egzersizi tamamlandı olarak işaretlendi.", true) : new("İşlem başarısız", false);
         }
     }
 }
