@@ -2,8 +2,7 @@
 
 namespace StayFit.Application.Abstracts.Services.FoodInformationServices.FatsecretService
 {
-    public interface IFatsecretService
+    public interface IFatsecretService : IFoodInformationService
     {
-        Task<List<Food>> SearchFoodsByNameAsync(string foodName, int pageNumber, int maxResults, string region = null, string language = null, bool includeFoodImages = false);
     }
 }

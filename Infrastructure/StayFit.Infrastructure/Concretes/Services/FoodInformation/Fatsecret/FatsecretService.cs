@@ -18,7 +18,7 @@ public class FatsecretService : IFatsecretService
         _tokenService = tokenService;
     }
 
-    public async Task<List<Food>> SearchFoodsByNameAsync(string foodName, int pageNumber, int maxResults, string region, string language, bool includeFoodImages)
+    public async Task<List<Food>> SearchFoodsByNameAsync(string foodName, int pageNumber, int maxResults, bool includeFoodImages)
     {
         var token = await _tokenService.GetAccessTokenAsync();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -31,11 +31,6 @@ public class FatsecretService : IFatsecretService
             { "max_results", maxResults.ToString() }
         };
 
-        if (!string.IsNullOrEmpty(region))
-            queryParams.Add("region", region);
-
-        if (!string.IsNullOrEmpty(language))
-            queryParams.Add("language", language);
 
         if (includeFoodImages)
             queryParams.Add("include_food_images", "true");

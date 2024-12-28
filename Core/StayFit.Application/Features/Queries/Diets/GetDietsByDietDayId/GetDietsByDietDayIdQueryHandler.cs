@@ -20,7 +20,7 @@ namespace StayFit.Application.Features.Queries.Diets.GetDietsByDietDayId
         }
 
 
-        [Cache("diets_{DietDayId}", 1000)]
+        //[Cache("diets_{DietDayId}", 1000)]
         public async Task<GetDietsByDietDayIdQueryResponse> Handle(GetDietsByDietDayIdQueryRequest request, CancellationToken cancellationToken)
         {
             List<Diet> diets = await _dietRepository.GetWhere(d=>d.DietDayId == request.DietDayId, false);

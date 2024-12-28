@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StayFit.Application.Abstracts.Services.FoodInformationServices;
 using StayFit.Application.Abstracts.Services.FoodInformationServices.FatsecretService;
 using StayFit.Application.Abstracts.Services.TranslationServices;
 
@@ -9,10 +10,10 @@ namespace StayFit.API.Controllers
     [ApiController]
     public class TestsController : ControllerBase
     {
-        private readonly IFatsecretService _fatsecretService;
+        private readonly IFoodInformationService _fatsecretService;
         private readonly ITranslationService _translationService;
 
-        public TestsController(IFatsecretService fatsecretService, ITranslationService translationService)
+        public TestsController(IFoodInformationService fatsecretService, ITranslationService translationService)
         {
             _fatsecretService = fatsecretService;
             _translationService = translationService;
@@ -22,7 +23,7 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> GetFoods(string foodName)
         {
             var response = await _translationService.TranslateTextAsync(foodName, "en", "tr");
-            var foods = await _fatsecretService.SearchFoodsByNameAsync(response, 1, 10, "tr", "TR", true);
+            var foods = await _fatsecretService.SearchFoodsByNameAsync(response, 1, 10, true);
 
             foreach (var food in foods)
             {

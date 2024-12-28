@@ -7,6 +7,7 @@ using StayFit.Application.Abstracts.Caching;
 using StayFit.Application.Abstracts.Security;
 using StayFit.Application.Abstracts.Services;
 using StayFit.Application.Abstracts.Services.BackgroundServices;
+using StayFit.Application.Abstracts.Services.FoodInformationServices;
 using StayFit.Application.Abstracts.Services.FoodInformationServices.FatsecretService;
 using StayFit.Application.Abstracts.Services.GenerativeAIServices;
 using StayFit.Application.Abstracts.Services.TranslationServices;
@@ -38,7 +39,7 @@ namespace StayFit.Infrastructure
             services.AddMemoryCache();
             services.AddScoped<IFatsecretTokenService, FatsecretTokenService>();
 
-            services.AddHttpClient<IFatsecretService, FatsecretService>(client =>
+            services.AddHttpClient<IFoodInformationService, FatsecretService>(client =>
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
