@@ -18,6 +18,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using StayFit.Application.Validatiors.Auths;
 using Microsoft.ApplicationInsights.DependencyCollector;
+using StayFit.Infrastructure.Storage.Local;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddStorage<AzureStorageService>();
+builder.Services.AddStorage<LocalStorageService>();
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -120,6 +121,7 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions());
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

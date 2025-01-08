@@ -37,8 +37,8 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto)
         {
             TrainerRegisterCommandRequest request = new() { TrainerRegisterDto = trainerRegisterDto };
-            var result = await _mediator.Send(request);
-            return Ok(result);
+            var response = await _mediator.Send(request);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("MemberLogin")]
