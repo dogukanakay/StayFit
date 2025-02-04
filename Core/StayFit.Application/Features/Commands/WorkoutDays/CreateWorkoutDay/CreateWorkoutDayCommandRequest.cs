@@ -10,6 +10,11 @@ namespace StayFit.Application.Features.Commands.WorkoutDays.CreateWorkoutDay
 {
     public class CreateWorkoutDayCommandRequest : IRequest<CreateWorkoutDayCommandResponse>
     {
-        public CreateWorkoutDayDto CreateWorkoutDayDto { get; set; }
+        public CreateWorkoutDayDto CreateWorkoutDayDto { get; }
+
+        public CreateWorkoutDayCommandRequest(CreateWorkoutDayDto createWorkoutDayDto)
+        {
+            CreateWorkoutDayDto = createWorkoutDayDto;
+        }
     }
 }

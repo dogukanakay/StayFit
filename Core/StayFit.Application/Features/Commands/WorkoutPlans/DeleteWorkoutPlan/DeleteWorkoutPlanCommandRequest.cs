@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Commands.WorkoutPlans.DeleteWorkoutPlan
 {
     public class DeleteWorkoutPlanCommandRequest : IRequest<DeleteWorkoutPlanCommandResponse>
     {
-        public int WorkoutPlanId { get; set; }
+        public int WorkoutPlanId { get; }
+
+        public DeleteWorkoutPlanCommandRequest(int workoutPlanId)
+        {
+            WorkoutPlanId = workoutPlanId;
+        }
     }
 }

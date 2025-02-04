@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Security;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Exceptions;
 using StayFit.Application.Exceptions.Auths;
 using StayFit.Application.Repositories;
@@ -25,13 +26,15 @@ namespace StayFit.Application.Features.Commands.Auths.Login.TrainerLogin
             User user = await _authRepository.GetUserByEmail(request.LoginDto.Email);
 
             if (user == null || user.UserRole != UserRole.Trainer)
-                throw new UserNotFoundException("Hatalı şifre veya kullanıcı adı.");
-            if (_hashingHelper.VerifyPasswordHash(request.LoginDto.Password, user.PasswordHash, user.PasswordSalt))
-            {
-                return new("Giriş başarılı", true, await _jwtTokenGenerator.GenerateToken(user));
+                return new(Messages.LoginFailed, false, null);
 
-            }
-            throw new UserNotFoundException("Hatalı şifre veya kullanıcı adı.");
+
+            if (_hashingHelper.VerifyPasswordHash(request.LoginDto.Password, user.PasswordHash, user.PasswordSalt))
+                return new(Messages.LoginSuccessful, true, await _jwtTokenGenerator.GenerateToken(user));
+
+
+            return new(Messages.LoginFailed, false, null);
+
         }
     }
 }

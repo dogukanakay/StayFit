@@ -17,6 +17,7 @@ namespace StayFit.Application.Repositories
         Task<T> GetSingleAsync(Expression<Func<T, bool>> method, bool tracking = true);
         Task<T> GetByIdAsync(object id, bool tracking = true);
         Task<bool> AddAsync(T entity);
+        Task AddRangeAsync(List<T> entities);
         Task<bool> Remove(T entity);
         bool Update(T entity);
         Task<int> SaveAsync();

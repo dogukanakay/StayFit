@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.DietPlans;
 using StayFit.Application.Features.Commands.DietPlans.CreateDietPlan;
 using StayFit.Application.Features.Commands.DietPlans.DeleteDietPlan;
@@ -26,7 +27,7 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateDietPlan(CreateDietPlanDto createDietPlanDto)
         {
-            CreateDietPlanCommandRequest request = new() { CreateDietPlanDto = createDietPlanDto };
+            CreateDietPlanCommandRequest request = new(createDietPlanDto);
             CreateDietPlanCommandResponse response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
@@ -37,7 +38,7 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> GetDietPlansBySubscriptionId(string subscriptionId)
         {
             if (!Guid.TryParse(subscriptionId, out var subscriptionIdGuid))
-                return BadRequest("Hatalı subscription id.");
+                return BadRequest(Messages.SubscriptionIdWrong);
 
             var request = new GetDietPlansBySubscriptionIdQueryRequest(subscriptionIdGuid);
             var response = await _mediator.Send(request);
@@ -50,10 +51,8 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> GetDietPlansByMemberId()
         {
             var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!Guid.TryParse(memberId, out var memberIdIdGuid))
-                return BadRequest("Hatalı Kullanıcı id.");
 
-            var request = new GetDietPlansByMemberIdQueryRequest(memberIdIdGuid);
+            var request = new GetDietPlansByMemberIdQueryRequest(Guid.Parse(memberId));
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : NotFound(response);

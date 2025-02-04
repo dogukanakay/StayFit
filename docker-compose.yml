@@ -1,6 +1,94 @@
+version: '3.7'
 services:
   stayfit.api:
     image: ${DOCKER_REGISTRY-}stayfitapi
     build:
       context: .
       dockerfile: Presentation/StayFit.API/Dockerfile
+    depends_on:
+      - graylog
+      - redis
+      - postgres
+    networks:
+      - stayfit_network
+
+
+  graylog:
+    container_name: graylog
+    image: graylog/graylog:4.2
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=stayfitlogsworkongraylog
+      - GRAYLOG_HTTP_BIND_ADDRESS=0.0.0.0:9000
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://localhost:9000/
+    depends_on:
+      - mongo
+      - elasticsearch
+    networks:
+      - stayfit_network
+    ports:
+      - "9000:9000"
+      - "12201:12201/udp"
+    volumes:
+      - graylog_data:/var/lib/graylog/data
+
+  redis:
+    container_name: redis
+    image: redis/redis-stack:latest
+    networks:
+      - stayfit_network
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+
+  mongo:
+    container_name: mongo
+    image: mongo:4.2
+    networks:
+      - stayfit_network
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+  
+
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: StayFitDb
+    networks:
+      - stayfit_network
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      - discovery.type=single-node
+    networks:
+      - stayfit_network
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+networks:
+  stayfit_network:
+    driver: bridge
+
+volumes:
+  graylog_data:
+  redis_data:
+  mongo_data:
+  postgres_data:
+  elasticsearch_data:

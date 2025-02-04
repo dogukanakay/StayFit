@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.CustomAttributes.Caching;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -17,7 +18,6 @@ namespace StayFit.Application.Features.Commands.Diets.CreateDiet
             _mapper = mapper;
         }
 
-        [CacheRemove("diets_{DietDayId}")]
         public async Task<CreateDietCommandResponse> Handle(CreateDietCommandRequest request, CancellationToken cancellationToken)
         {
             List<Diet> diet = _mapper.Map<List<Diet>>(request.CreateDietDtos);
@@ -26,8 +26,7 @@ namespace StayFit.Application.Features.Commands.Diets.CreateDiet
 
             int result = await _dietRepository.SaveAsync();
 
-            return result > 0 ? new CreateDietCommandResponse("Diet listesi başarıyla oluşturuldu", true)
-                : new("Diet listesi oluşturulurken bir hata oluştu.", false);
+            return result > 0 ? new(Messages.DietCreatedSuccessful, true): new(Messages.DietCreatedFailed, false);
         }
     }
 }

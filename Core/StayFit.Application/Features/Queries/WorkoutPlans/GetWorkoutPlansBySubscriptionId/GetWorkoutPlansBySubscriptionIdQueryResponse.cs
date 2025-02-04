@@ -4,8 +4,15 @@ namespace StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansBySub
 {
     public class GetWorkoutPlansBySubscriptionIdQueryResponse
     {
-        public List<GetWorkoutPlansBySubscriptionIdDto>? GetWorkoutPlansBySubscriptionIdDtos { get; set; }
-        public bool Success { get; set; }
-        public string Message { get; set; }
+        public string Message { get; }
+        public bool Success { get; }
+        public List<GetWorkoutPlansBySubscriptionIdDto>? GetWorkoutPlansBySubscriptionIdDtos { get; }
+
+        public GetWorkoutPlansBySubscriptionIdQueryResponse(string message, bool success, List<GetWorkoutPlansBySubscriptionIdDto>? getWorkoutPlansBySubscriptionIdDtos)
+        {
+            Message = message;
+            Success = success;
+            GetWorkoutPlansBySubscriptionIdDtos = getWorkoutPlansBySubscriptionIdDtos;
+        }
     }
 }

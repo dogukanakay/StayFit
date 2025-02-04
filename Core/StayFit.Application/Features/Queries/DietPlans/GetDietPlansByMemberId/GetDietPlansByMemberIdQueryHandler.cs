@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.DietPlans;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -21,9 +22,9 @@ namespace StayFit.Application.Features.Queries.DietPlans.GetDietPlansByMemberId
         {
             List<DietPlan> dietPlans = await _dietPlanRepository.GetWhere(dp => dp.MemberId == request.MemberId, tracking: false);
             if (!dietPlans.Any())
-                return new() { Message = "Bu aboneliğe ait kayıt bulunamadı.", Success = false };
+                return new(Messages.DietPlanNotFoundForMember, false, null);
             List<GetDietPlansByMemberIdDto> getDietPlansByMemberIdDtos = _mapper.Map<List<GetDietPlansByMemberIdDto>>(dietPlans);
-            return new() { GetDietPlansByMemberIdDtos = getDietPlansByMemberIdDtos, Message = "Diyet planları listelendi.", Success = true };
+            return new(Messages.DietPlanListedSuccessful, true, getDietPlansByMemberIdDtos);
         }
     }
 }

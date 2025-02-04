@@ -11,12 +11,10 @@ namespace StayFit.Application.Features.Commands.Diets.CreateDiet
     public class CreateDietCommandRequest : IRequest<CreateDietCommandResponse>
     {
         public List<CreateDietDto> CreateDietDtos { get;}
-        public int DietDayId { get;}
 
         public CreateDietCommandRequest(List<CreateDietDto> createDietDtos)
         {
             CreateDietDtos = createDietDtos;
-            DietDayId =createDietDtos.FirstOrDefault().DietDayId;
         }
     }
 }

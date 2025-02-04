@@ -29,7 +29,7 @@ namespace StayFit.API.Controllers
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            GetMemberProfileQueryRequest request = new() { MemberId = Guid.Parse(userId) };
+            GetMemberProfileQueryRequest request = new(Guid.Parse(userId));
             GetMemberProfileQueryResponse response = await _mediator.Send(request);
 
             return Ok(response.MemberResponseDto);
@@ -48,7 +48,7 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> UpdateMemberProfile(UpdateMemberDto updateMemberDto)
         {
-            UpdateMemberCommandRequest request = new() { UpdateMemberDto = updateMemberDto };
+            UpdateMemberCommandRequest request = new(updateMemberDto);
             UpdateMemberCommandResponse response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
 

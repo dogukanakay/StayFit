@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.Diets;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -21,9 +22,9 @@ namespace StayFit.Application.Features.Queries.Diets.GetTodaysDietsByMemberId
         {
             List<Diet> diets = await _dietRepository.GetTodaysDietsAsync(request.MemberId);
             if (diets == null)
-                return new("Bugüne ait bir diyet planınız yoktur.", false, null);
+                return new(Messages.DietNotFoundForToday, false, null);
             List<GetTodaysDietsDto> getTodaysDietsDtos = _mapper.Map<List<GetTodaysDietsDto>>(diets);
-            return new("Günün diyetleri listelendi.", true, getTodaysDietsDtos);
+            return new(Messages.DietListedSuccessful, true, getTodaysDietsDtos);
         }
     }
 }

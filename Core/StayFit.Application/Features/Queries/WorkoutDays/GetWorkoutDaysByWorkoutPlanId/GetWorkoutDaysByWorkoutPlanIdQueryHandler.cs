@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.WorkoutDays;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -21,11 +22,10 @@ namespace StayFit.Application.Features.Queries.WorkoutDays.GetWorkoutDaysByWorko
         {
             List<WorkoutDay> workoutDays = await _workoutDayRepository.GetWhere(wd => wd.WorkoutPlanId == request.WorkoutPlanId, tracking: false);
             if (!workoutDays.Any())
-                return new() { Message = "Bu plana ait bir gün bulunamadı", Success = false };
+                return new(Messages.WorkoutDayNotFound, false, null);
             List<GetWorkoutDaysByWorkoutPlanIdDto> getWorkoutDaysByWorkoutPlanIdDtos = _mapper.Map<List<GetWorkoutDaysByWorkoutPlanIdDto>>(workoutDays);
 
-            return new() { GetWorkoutDaysByWorkoutPlanIdDtos = getWorkoutDaysByWorkoutPlanIdDtos, Message = "Günler getirildi.", Success = true };
-
+            return new(Messages.WorkoutDayListedSuccessful, true, getWorkoutDaysByWorkoutPlanIdDtos);
         }
     }
 }

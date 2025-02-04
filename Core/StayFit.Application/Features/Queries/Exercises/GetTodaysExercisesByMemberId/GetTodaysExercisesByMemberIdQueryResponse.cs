@@ -9,12 +9,7 @@ namespace StayFit.Application.Features.Queries.Exercises.GetTodaysExercisesByMem
         public bool Success { get; }
         public List<GetTodaysExercisesDto>? GetTodaysExercisesDtos { get;}
 
-        public GetTodaysExercisesByMemberIdQueryResponse(string messsage, bool success)
-        {
-            Messsage = messsage;
-            Success = success;
-        }
-
+  
         public GetTodaysExercisesByMemberIdQueryResponse(string messsage, bool success, List<GetTodaysExercisesDto>? getTodaysExercisesDtos)
         {
             Messsage = messsage;

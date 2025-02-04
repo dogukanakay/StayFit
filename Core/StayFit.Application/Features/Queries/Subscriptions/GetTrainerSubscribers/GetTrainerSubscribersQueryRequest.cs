@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.Subscriptions.GetTrainerSubscribe
 {
     public class GetTrainerSubscribersQueryRequest : IRequest<GetTrainerSubscribersQueryResponse>
     {
-        public Guid TrainerId { get; set; }
+        public Guid TrainerId { get; }
+
+        public GetTrainerSubscribersQueryRequest(Guid trainerId)
+        {
+            TrainerId = trainerId;
+        }
     }
 }

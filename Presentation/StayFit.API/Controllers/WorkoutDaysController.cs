@@ -26,8 +26,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateWorkoutDay(CreateWorkoutDayDto createWorkoutDayDto)
         {
-            CreateWorkoutDayCommandRequest request = new() { CreateWorkoutDayDto = createWorkoutDayDto };
-            CreateWorkoutDayCommandResponse response = await _mediator.Send(request);
+            CreateWorkoutDayCommandRequest request = new(createWorkoutDayDto);
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
@@ -35,8 +35,8 @@ namespace StayFit.API.Controllers
         [Authorize (Roles ="Trainer, Member")]
         public async Task<IActionResult> GetWorkoutDaysByWorkoutPlanId(int workoutPlanId)
         {
-            GetWorkoutDaysByWorkoutPlanIdQueryRequest request = new() { WorkoutPlanId = workoutPlanId };
-            GetWorkoutDaysByWorkoutPlanIdQueryResponse response = await _mediator.Send(request);
+            GetWorkoutDaysByWorkoutPlanIdQueryRequest request = new(workoutPlanId);
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
@@ -44,7 +44,7 @@ namespace StayFit.API.Controllers
         [Authorize (Roles = "Trainer")]
         public async Task<IActionResult> DeleteWorkoutDay(int workoutDayId)
         {
-            DeleteWorkoutDayCommandRequest request = new() { WorkoutDayId = workoutDayId };
+            DeleteWorkoutDayCommandRequest request = new(workoutDayId);
             DeleteWorkoutDayCommandResponse response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);

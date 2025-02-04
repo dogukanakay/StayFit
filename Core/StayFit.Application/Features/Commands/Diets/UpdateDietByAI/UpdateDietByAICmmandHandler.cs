@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using Hangfire;
 using MediatR;
 using StayFit.Application.Abstracts.Services.BackgroundServices;
+using StayFit.Application.Abstracts.Services.Hangfire;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.Diets;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -11,13 +12,13 @@ namespace StayFit.Application.Features.Commands.Diets.UpdateDietByAI
     public class UpdateDietByAICmmandHandler : IRequestHandler<UpdateDietByAICommandRequest, UpdateDietByAICommandResponse>
     {
         private readonly IDietRepository _dietRepository;
-        private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IJobSchedulerService _jobSchedulerService;
         private readonly IMapper _mapper;
 
-        public UpdateDietByAICmmandHandler(IDietRepository dietRepository, IBackgroundJobClient backgroundJobClient, IMapper mapper)
+        public UpdateDietByAICmmandHandler(IDietRepository dietRepository, IJobSchedulerService jobSchedulerService, IMapper mapper)
         {
             _dietRepository = dietRepository;
-            _backgroundJobClient = backgroundJobClient;
+            _jobSchedulerService = jobSchedulerService;
             _mapper = mapper;
         }
 
@@ -25,13 +26,13 @@ namespace StayFit.Application.Features.Commands.Diets.UpdateDietByAI
         {
             Diet diet = await _dietRepository.GetByIdAsync(request.DietId);
             if (diet == null)
-                return new("Böyle bir diyet bulunamadı.", false);
+                return new(Messages.DietNotFound, false);
             GetNewDietByAIRequestDto getNewDietByAIRequestDto = _mapper.Map<GetNewDietByAIRequestDto>(diet);
 
-            _backgroundJobClient.Enqueue<IGetNewDietByAIBackgroundService>(service =>
+            _jobSchedulerService.Enqueue<IGetNewDietByAIBackgroundService>(service =>
                      service.GetNewDietByAIAsync(getNewDietByAIRequestDto, diet.Id, request.Prompt));
 
-            return new("Yeni diyetiniz kısa süre içerisinde hazır olacak", true);
+            return new(Messages.DietUpdatedByAI, true);
 
         }
     }

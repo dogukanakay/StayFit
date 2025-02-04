@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -18,17 +19,16 @@ namespace StayFit.Application.Features.Commands.WorkoutDays.CreateWorkoutDay
 
         public async Task<CreateWorkoutDayCommandResponse> Handle(CreateWorkoutDayCommandRequest request, CancellationToken cancellationToken)
         {
-            if(await _workoutDayRepository.CheckIfWorkoutDayAlreadyExistAsync(request.CreateWorkoutDayDto.WorkoutPlanId, request.CreateWorkoutDayDto.DayOfWeek))
-                return new() { Message = "Bu gün zaten mevcut. Aynı gün tekrardan oluşturulamaz", Success = false };
+            if (await _workoutDayRepository.CheckIfWorkoutDayAlreadyExistAsync(request.CreateWorkoutDayDto.WorkoutPlanId, request.CreateWorkoutDayDto.DayOfWeek))
+                return new(Messages.WorkoutDayAlreadyExist, false);
 
             WorkoutDay workoutDay = _mapper.Map<WorkoutDay>(request.CreateWorkoutDayDto);
 
             await _workoutDayRepository.AddAsync(workoutDay);
 
             int result = await _workoutDayRepository.SaveAsync();
-            if (result > 0)
-                return new() { Message = "Gün başarıyla oluşturuldu", Success = true };
-            return new() { Message ="Gün oluşturulurken bir hata ile meydana geldi", Success = false };
+            
+            return result > 0 ? new(Messages.WorkoutDayCreatedSuccessful, true) : new(Messages.WorkoutDayCreateFailed, false);
         }
     }
 }

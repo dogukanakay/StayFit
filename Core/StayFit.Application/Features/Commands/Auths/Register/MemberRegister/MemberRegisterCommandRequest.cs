@@ -10,6 +10,11 @@ namespace StayFit.Application.Features.Commands.Auths.Register.MemberRegister
 {
     public class MemberRegisterCommandRequest : IRequest<MemberRegisterCommandResponse>
     {
-        public MemberRegisterDto MemberRegisterDto { get; set; }
+        public MemberRegisterDto MemberRegisterDto { get;}
+
+        public MemberRegisterCommandRequest(MemberRegisterDto memberRegisterDto)
+        {
+            MemberRegisterDto = memberRegisterDto;
+        }
     }
 }

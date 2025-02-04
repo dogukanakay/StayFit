@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -24,9 +25,8 @@ namespace StayFit.Application.Features.Commands.Exercises.CreateExercise
             List<Exercise> exercises = _mapper.Map<List<Exercise>>(request.CreateExerciseDtos);
             await _exerciseRepository.AddRangeAsync(exercises);
             int result = await _exerciseRepository.SaveAsync();
-            if (result > 0)
-                return new() { Message = "Egzersiz başarıyla oluşturuldu.", Success = true };
-            return new() { Message = "Egzersiz oluştururken bir hatayla karşılaşıldı.", Success = false };
+
+            return result > 0 ? new(Messages.ExerciseCreatedSuccessful, true) : new(Messages.ExerciseCreatedFailed, false);
 
         }
     }

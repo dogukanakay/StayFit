@@ -25,7 +25,7 @@ namespace StayFit.API.Controllers
         [Authorize(Roles ="Trainer")]
         public async Task<IActionResult> CreateExercise(List<CreateExerciseDto> createExerciseDtos)
         {
-            CreateExerciseCommandRequest request = new() { CreateExerciseDtos = createExerciseDtos };
+            CreateExerciseCommandRequest request = new(createExerciseDtos);
             CreateExerciseCommandResponse response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
@@ -34,7 +34,7 @@ namespace StayFit.API.Controllers
         [Authorize(Roles ="Trainer, Member")]
         public async Task<IActionResult> GetExercisesByWorkoutDayId(int workoutDayId)
         {
-            GetExercisesByWorkoutDayIdQueryRequest request = new() { WorkoutDayId = workoutDayId };
+            GetExercisesByWorkoutDayIdQueryRequest request = new(workoutDayId);
             GetExercisesByWorkoutDayIdQueryResponse response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }

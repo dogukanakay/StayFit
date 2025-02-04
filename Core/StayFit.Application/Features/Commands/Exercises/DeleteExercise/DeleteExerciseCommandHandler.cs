@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -15,14 +16,13 @@ namespace StayFit.Application.Features.Commands.Exercises.DeleteExercise
 
         public async Task<DeleteExerciseCommandResponse> Handle(DeleteExerciseCommandRequest request, CancellationToken cancellationToken)
         {
-            Exercise exercise = await _exerciseRepository.GetByIdAsync(request.ExerciseId, tracking :false);
+            Exercise exercise = await _exerciseRepository.GetByIdAsync(request.ExerciseId, tracking: false);
             if (exercise == null)
-                return new() { Message="Hatalı id", Success=false };
+                return new(Messages.ExerciseNotFound, false);
             await _exerciseRepository.Remove(exercise);
             int result = await _exerciseRepository.SaveAsync();
-            if (result >0)
-                return new() { Message = $"{exercise.Name} isimli egzersiz başarıyla silindi.", Success = true };
-            return new() { Message = "Egzersis silinirken bir hata ile karşılaşıldı", Success = false };
+
+            return result > 0 ? new(Messages.ExerciseDeletedSuccessful, true) : new(Messages.ExerciseDeletedFailed, false);
 
         }
     }

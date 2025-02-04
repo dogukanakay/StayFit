@@ -10,6 +10,11 @@ namespace StayFit.Application.Features.Commands.WorkoutPlans.UpdateWorkoutPlan
 {
     public class UpdateWorkoutPlanCommandRequest : IRequest<UpdateWorkoutPlanCommandResponse>  
     {
-        public UpdateWorkoutPlanDto UpdateWorkoutPlanDto { get; set; }
+        public UpdateWorkoutPlanDto UpdateWorkoutPlanDto { get; }
+
+        public UpdateWorkoutPlanCommandRequest(UpdateWorkoutPlanDto updateWorkoutPlanDto)
+        {
+            UpdateWorkoutPlanDto = updateWorkoutPlanDto;
+        }
     }
 }

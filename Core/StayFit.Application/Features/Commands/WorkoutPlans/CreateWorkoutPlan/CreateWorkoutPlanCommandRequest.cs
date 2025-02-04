@@ -10,6 +10,11 @@ namespace StayFit.Application.Features.Commands.WorkoutPlans.CreateWorkoutPlan
 {
     public class CreateWorkoutPlanCommandRequest : IRequest<CreateWorkoutPlanCommandResponse>
     {
-        public CreateWorkoutPlanDto CreateWorkoutPlanDto { get; set; }
+        public CreateWorkoutPlanDto CreateWorkoutPlanDto { get; }
+
+        public CreateWorkoutPlanCommandRequest(CreateWorkoutPlanDto createWorkoutPlanDto)
+        {
+            CreateWorkoutPlanDto = createWorkoutPlanDto;
+        }
     }
 }

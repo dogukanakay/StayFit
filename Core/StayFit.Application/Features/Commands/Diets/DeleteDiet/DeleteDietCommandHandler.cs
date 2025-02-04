@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -17,12 +18,12 @@ namespace StayFit.Application.Features.Commands.Diets.DeleteDiet
         {
             Diet diet = await _dietRepository.GetByIdAsync(request.DietId);
             if (diet == null)
-                return new("Bu id'ye ait bir diyet bulunamadı", false);
+                return new(Messages.DietNotFound, false);
 
             await _dietRepository.Remove(diet);
             int result = await _dietRepository.SaveAsync();
 
-            return result > 0 ? new("Diyet başarıyla silindi.", true) : new("Diyet silinirken bir hata oluştu.", false);
+            return result > 0 ? new(Messages.DietDeletedSuccessful, true) : new(Messages.DietDeletedFailed, false);
 
         }
     }

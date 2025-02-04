@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.Members.GetMemberProfile
 {
     public class GetMemberProfileQueryRequest : IRequest<GetMemberProfileQueryResponse>
     {
-        public Guid MemberId { get; set; }
+        public Guid MemberId { get;}
+
+        public GetMemberProfileQueryRequest(Guid memberId)
+        {
+            MemberId = memberId;
+        }
     }
 }

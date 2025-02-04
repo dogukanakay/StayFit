@@ -2,7 +2,13 @@
 {
     public class UpdateTrainerCommandResponse
     {
-        public string Message { get; set; }
-        public bool Success { get; set; }
+        public string Message { get; }
+        public bool Success { get; }
+
+        public UpdateTrainerCommandResponse(string message, bool success)
+        {
+            Message = message;
+            Success = success;
+        }
     }
 }

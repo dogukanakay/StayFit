@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.Members.GetAllMembers
 {
     public class GetAllMembersQueryResult
     {
-        public List<MemberResponseDto> MemberResponseDtos { get; set; }
+        public List<MemberResponseDto> MemberResponseDtos { get; }
+
+        public GetAllMembersQueryResult(List<MemberResponseDto> memberResponseDtos)
+        {
+            MemberResponseDtos = memberResponseDtos;
+        }
     }
 }

@@ -10,6 +10,7 @@ using StayFit.Application.Abstracts.Services.BackgroundServices;
 using StayFit.Application.Abstracts.Services.FoodInformationServices;
 using StayFit.Application.Abstracts.Services.FoodInformationServices.FatsecretService;
 using StayFit.Application.Abstracts.Services.GenerativeAIServices;
+using StayFit.Application.Abstracts.Services.Hangfire;
 using StayFit.Application.Abstracts.Services.TranslationServices;
 using StayFit.Application.Abstracts.Storage;
 using StayFit.Application.DTOs.FoodInformations.Fatsecrets;
@@ -17,6 +18,7 @@ using StayFit.Infrastructure.Concretes.Services.AIServices.GenerativeAIServices;
 using StayFit.Infrastructure.Concretes.Services.BackgroundServices;
 using StayFit.Infrastructure.Concretes.Services.CachingServices;
 using StayFit.Infrastructure.Concretes.Services.FoodInformation.Fatsecret;
+using StayFit.Infrastructure.Concretes.Services.Hangfire;
 using StayFit.Infrastructure.Concretes.Services.TranslationServices;
 using StayFit.Infrastructure.Helpers;
 using StayFit.Infrastructure.Storage;
@@ -47,7 +49,7 @@ namespace StayFit.Infrastructure
             services.AddHangfire(config =>
                 config.UsePostgreSqlStorage(configuration.GetConnectionString("Hangfire")));
             services.AddHangfireServer();
-
+            services.AddScoped<IJobSchedulerService, HangfireJobScheduler>();
 
             services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")));
             services.AddSingleton<ICacheService, RedisCacheService>();

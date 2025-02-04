@@ -10,6 +10,11 @@ namespace StayFit.Application.Features.Commands.Members.UpdateMember
 {
     public class UpdateMemberCommandRequest : IRequest<UpdateMemberCommandResponse>
     {
-        public UpdateMemberDto UpdateMemberDto { get; set; }
+        public UpdateMemberDto UpdateMemberDto { get;}
+
+        public UpdateMemberCommandRequest(UpdateMemberDto updateMemberDto)
+        {
+            UpdateMemberDto = updateMemberDto;
+        }
     }
 }

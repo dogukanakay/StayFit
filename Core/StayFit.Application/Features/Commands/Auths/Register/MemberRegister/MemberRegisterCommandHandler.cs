@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using StayFit.Application.Abstracts.Security;
+using StayFit.Application.Constants.Messages;
+using StayFit.Application.DTOs;
 using StayFit.Application.Exceptions.Auths;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -14,7 +16,10 @@ namespace StayFit.Application.Features.Commands.Auths.Register.MemberRegister
         private readonly IHashingHelper _hashingHelper;
         private readonly IMapper _mapper;
 
-        public MemberRegisterCommandHandler(IAuthRepository authRepository, IHashingHelper hashingHelper, IMapper mapper)
+        public MemberRegisterCommandHandler(
+            IAuthRepository authRepository,
+            IHashingHelper hashingHelper,
+            IMapper mapper)
         {
             _authRepository = authRepository;
             _hashingHelper = hashingHelper;
@@ -24,34 +29,43 @@ namespace StayFit.Application.Features.Commands.Auths.Register.MemberRegister
         public async Task<MemberRegisterCommandResponse> Handle(MemberRegisterCommandRequest request, CancellationToken cancellationToken)
         {
             if (await _authRepository.CheckIfEmailAlreadyExist(request.MemberRegisterDto.Email))
-                throw new EmailAlreadyExistException();
+                return new(Messages.EmailAlreadyExists, false);
             if (await _authRepository.CheckIfPhoneAlreadyExist(request.MemberRegisterDto.Phone))
-                throw new PhoneAlreadyExistException();
+                return new(Messages.PhoneAlreadyExists, false);
 
-            byte[] passwordHash, passwordSalt;
-            _hashingHelper.CreatePasswordHash(request.MemberRegisterDto.Password, out passwordHash, out passwordSalt);
+            var user = CreateUser(request.MemberRegisterDto);
+            var member = CreateMember(user, request.MemberRegisterDto);
 
-            User user = _mapper.Map<User>(request.MemberRegisterDto);
+            int response = await _authRepository.MemberRegisterAsync(member);
+
+            return response > 0
+                ? new(Messages.RegistrationSuccessful, true)
+                : new(Messages.RegistrationFailed, false);
+        }
+
+        private User CreateUser(MemberRegisterDto dto)
+        {
+            _hashingHelper.CreatePasswordHash(dto.Password, out var passwordHash, out var passwordSalt);
+
+            var user = _mapper.Map<User>(dto);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             user.Status = UserStatus.Active;
             user.IsEmailConfirmed = true;
             user.UserRole = UserRole.Member;
 
-            Member member = new()
+            return user;
+        }
+
+        private Member CreateMember(User user, MemberRegisterDto dto)
+        {
+            return new Member
             {
                 CreatedDate = user.CreatedDate,
-                Id = user.Id,
-                Height = request.MemberRegisterDto.Height,
-                Weight = request.MemberRegisterDto.Weight,
+                Height = dto.Height,
+                Weight = dto.Weight,
                 User = user
             };
-
-            int response = await _authRepository.MemberRegisterAsync(member);
-
-            
-            
-            return response>0 ? new("Kayıt başarılı.",true) { } : new("Kayıt başarısız.", false);
         }
     }
 }

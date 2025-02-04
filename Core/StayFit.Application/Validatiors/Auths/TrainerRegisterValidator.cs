@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs;
+using StayFit.Application.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,37 +15,39 @@ namespace StayFit.Application.Validatiors.Auths
         public TrainerRegisterValidator()
         {
             RuleFor(r => r.Password)
-                .NotEmpty().WithMessage("Şifre boş bırakılamaz")
-                .MinimumLength(8).WithMessage("Şifre en az 8 karakter olmalıdır.")
-                .Matches(@"[A-Z]").WithMessage("Şifre en az bir büyük harf içermelidir.")
-                .Matches(@"[a-z]").WithMessage("Şifre en az bir küçük harf içermelidir.")
-                .Matches(@"[0-9]").WithMessage("Şifre en az bir rakam içermelidir.")
-                .Must(password => !password.Contains(" ")).WithMessage("Şifre boşluk içeremez.");
+                .NotEmpty().WithMessage(Messages.PasswordCannotBeEmpty)
+                .MinimumLength(8).WithMessage(Messages.PasswordMinLength)
+                .MaximumLength(36).WithMessage(Messages.PasswordMaxLength)
+                .Matches(@"[A-Z]").WithMessage(Messages.PasswordMustContainUppercase)
+                .Matches(@"[a-z]").WithMessage(Messages.PasswordMustContainLowercase)
+                .Matches(@"[0-9]").WithMessage(Messages.PasswordMustContainDigit)
+                .Must(password => !password.Contains(" ")).WithMessage(Messages.PasswordCannotContainSpaces);
 
             RuleFor(r => r.Email)
-                .NotEmpty().WithMessage("E-posta adresi boş geçilemez.")
-                .EmailAddress().WithMessage("Geçerli bir e-posta adresi giriniz.")
+                .NotEmpty().WithMessage(Messages.EmailCannotBeEmpty)
+                .EmailAddress().WithMessage(Messages.InvalidEmailFormat)
                 .Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-                .WithMessage("E-posta adresi uygun formatta değil.");
+                .WithMessage(Messages.EmailFormatNotValid);
 
             RuleFor(r => r.Phone)
-                .NotEmpty().WithMessage("Telefon numarası boş geçilemez.")
-                .Matches(@"^\+?[1-9][0-9]{7,14}$")
-                .WithMessage("Geçerli bir telefon numarası giriniz. (Örnek: +905555555555 veya 05555555555)")
-                .MaximumLength(15).WithMessage("Telefon numarası 15 karakterden uzun olamaz.");
-
+                .NotEmpty().WithMessage(Messages.PhoneCannotBeEmpty)
+                .Matches(@"^\+?[1-9][0-9]{7,14}$").WithMessage(Messages.InvalidPhoneNumber)
+                .MaximumLength(15).WithMessage(Messages.PhoneMaxLengthExceeded);
 
             RuleFor(r => r.FirstName)
-                .NotEmpty().WithMessage("İsim boş geçilemez.")
-                .MaximumLength(50).WithMessage("İsim 50 karakterden fazla olamaz.");
+                .NotEmpty().WithMessage(Messages.FirstNameCannotBeEmpty)
+                .MaximumLength(50).WithMessage(Messages.FirstNameMaxLengthExceeded);
 
             RuleFor(r => r.LastName)
-                .NotEmpty().WithMessage("İsim boş geçilemez.")
-                .MaximumLength(50).WithMessage("İsim 50 karakterden fazla olamaz.");
+                .NotEmpty().WithMessage(Messages.LastNameCannotBeEmpty)
+                .MaximumLength(50).WithMessage(Messages.LastNameMaxLengthExceeded);
+
             RuleFor(r => r.Bio)
-                 .NotEmpty().WithMessage("Bio boş bırakalamaz.")
-                 .MinimumLength(30).WithMessage("Bio en az 30 karakter olmalıdır.")
-                 .MaximumLength(200).WithMessage("Bio en fazla 200 karakter olabilir.");
+                .NotEmpty().WithMessage(Messages.BioCannotBeEmpty)
+                .MinimumLength(30).WithMessage(Messages.BioMinLength)
+                .MaximumLength(200).WithMessage(Messages.BioMaxLength);
+
         }
+
     }
 }

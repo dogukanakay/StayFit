@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Commands.WorkoutDays.DeleteWorkoutDay
 {
     public class DeleteWorkoutDayCommandRequest : IRequest<DeleteWorkoutDayCommandResponse>
     {
-        public int WorkoutDayId { get; set; }
+        public int WorkoutDayId { get;}
+
+        public DeleteWorkoutDayCommandRequest(int workoutDayId)
+        {
+            WorkoutDayId = workoutDayId;
+        }
     }
 }

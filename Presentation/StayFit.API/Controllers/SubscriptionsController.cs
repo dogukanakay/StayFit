@@ -34,8 +34,8 @@ namespace StayFit.API.Controllers
                 TrainerId = Guid.Parse(trainerId),
                 Goal = goal
             };
-            CreateSubscriptionCommandRequest request = new() { CreateSubscriptionDto = createSubscriptionDto};
-            CreateSubscriptionCommandResponse response = await _mediator.Send(request);
+            CreateSubscriptionCommandRequest request = new(createSubscriptionDto);
+            var response = await _mediator.Send(request);
 
             return Ok(response);
         }
@@ -45,8 +45,8 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> GetTrainerSubscribers()
         {
             var trainerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            GetTrainerSubscribersQueryRequest request = new() { TrainerId = Guid.Parse(trainerId) };
-            GetTrainerSubscribersQueryResponse response = await _mediator.Send(request);
+            GetTrainerSubscribersQueryRequest request = new(Guid.Parse(trainerId));
+            var response = await _mediator.Send(request);
 
             return Ok(response.GetTrainerSubscribersDtos);
         }
@@ -56,8 +56,8 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> GetMemberSubscribedTrainer()
         {
             var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            GetMemberSubscribedTrainerQueryRequest request = new() { MemberId = Guid.Parse(memberId) };
-            GetMemberSubscribedTrainerQueryResponse response = await _mediator.Send(request);
+            GetMemberSubscribedTrainerQueryRequest request = new(Guid.Parse(memberId));
+            var response = await _mediator.Send(request);
 
             return Ok(response.GetMemberSubscribedTrainerDto);
         }

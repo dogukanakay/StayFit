@@ -50,7 +50,7 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> UpdateTrainerProfile(UpdateTrainerDto updateTrainerDto)
         {
-            UpdateTrainerCommandRequest request = new() { UpdateTrainerDto = updateTrainerDto};
+            UpdateTrainerCommandRequest request = new(updateTrainerDto);
             UpdateTrainerCommandResponse response = await _mediator.Send(request);
             return Ok(response);
         }

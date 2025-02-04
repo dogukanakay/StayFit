@@ -4,6 +4,15 @@ namespace StayFit.Application.Features.Queries.Subscriptions.GetTrainerSubscribe
 {
     public class GetTrainerSubscribersQueryResponse
     {
-        public List<GetTrainerSubscribersDto> GetTrainerSubscribersDtos { get; set; }
+        public string Message { get; }
+        public bool Success { get; }
+        public List<GetTrainerSubscribersDto>? GetTrainerSubscribersDtos { get; }
+
+        public GetTrainerSubscribersQueryResponse(string message, bool success, List<GetTrainerSubscribersDto>? getTrainerSubscribersDtos)
+        {
+            Message = message;
+            Success = success;
+            GetTrainerSubscribersDtos = getTrainerSubscribersDtos;
+        }
     }
 }

@@ -10,6 +10,11 @@ namespace StayFit.Application.Features.Commands.Subscriptions.CreateSubscription
 {
     public class CreateSubscriptionCommandRequest : IRequest<CreateSubscriptionCommandResponse>
     {
-        public CreateSubscriptionDto CreateSubscriptionDto { get; set; }
+        public CreateSubscriptionDto CreateSubscriptionDto { get; }
+
+        public CreateSubscriptionCommandRequest(CreateSubscriptionDto createSubscriptionDto)
+        {
+            CreateSubscriptionDto = createSubscriptionDto;
+        }
     }
 }

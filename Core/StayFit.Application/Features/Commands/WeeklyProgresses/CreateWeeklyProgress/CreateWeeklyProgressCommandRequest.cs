@@ -11,9 +11,20 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
 {
     public class CreateWeeklyProgressCommandRequest : IRequest<CreateWeeklyProgressCommandResponse>
     {
-        public IFormFileCollection Images { get; set; }
-        public CreateWeeklyProgressDto CreateWeeklyProgressDto { get; set; }
-        public string BaseStorageUrl { get; set; }
-        public Guid? UserId { get; set; }
+        public IFormFileCollection Images { get; }
+        public CreateWeeklyProgressDto CreateWeeklyProgressDto { get; }
+        public string BaseStorageUrl { get; }
+        public Guid? UserId { get; }
+
+        public CreateWeeklyProgressCommandRequest(IFormFileCollection images, 
+            CreateWeeklyProgressDto createWeeklyProgressDto, 
+            string baseStorageUrl, 
+            Guid? userId)
+        {
+            Images = images;
+            CreateWeeklyProgressDto = createWeeklyProgressDto;
+            BaseStorageUrl = baseStorageUrl;
+            UserId = userId;
+        }
     }
 }

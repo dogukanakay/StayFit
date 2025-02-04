@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansBySub
 {
     public class GetWorkoutPlansBySubscriptionIdQueryRequest : IRequest<GetWorkoutPlansBySubscriptionIdQueryResponse>
     {
-        public Guid SubscriptionId { get; set; }
+        public Guid SubscriptionId { get; }
+
+        public GetWorkoutPlansBySubscriptionIdQueryRequest(Guid subscriptionId)
+        {
+            SubscriptionId = subscriptionId;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.WorkoutPlans;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -19,11 +20,13 @@ namespace StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansBySub
 
         public async Task<GetWorkoutPlansBySubscriptionIdQueryResponse> Handle(GetWorkoutPlansBySubscriptionIdQueryRequest request, CancellationToken cancellationToken)
         {
-            List<WorkoutPlan> workoutPlans = await _workoutPlanRepository.GetWhere(wp => wp.SubscriptionId == request.SubscriptionId,tracking: false);
+            List<WorkoutPlan> workoutPlans = await _workoutPlanRepository.GetWhere(wp => wp.SubscriptionId == request.SubscriptionId, tracking: false);
+
+            if (workoutPlans is null)
+                return new(Messages.WorkoutPlanNotFound, false, null);
             List<GetWorkoutPlansBySubscriptionIdDto> getWorkoutPlansBySubscriptionIdDtos = _mapper.Map<List<GetWorkoutPlansBySubscriptionIdDto>>(workoutPlans);
-            if(workoutPlans is not null)
-                return new() { GetWorkoutPlansBySubscriptionIdDtos = getWorkoutPlansBySubscriptionIdDtos, Message = "Abonenin çalışma planı listelendi", Success = true };
-            return new() { GetWorkoutPlansBySubscriptionIdDtos = null, Message = "Aboneye tanımlı çalışma planı bulunamadı", Success = false };
+            
+            return new(Messages.WorkoutPlanListedSuccessful, true, getWorkoutPlansBySubscriptionIdDtos);
         }
     }
 }

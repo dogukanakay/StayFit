@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.WeeklyProgresses.GetWeeklyProgres
 {
     public class GetWeeklyProgressesBySubsIdQueryRequest : IRequest<GetWeeklyProgressesBySubsIdQueryResponse>
     {
-        public  Guid SubscriptionId { get; set; }
+        public  Guid SubscriptionId { get; }
+
+        public GetWeeklyProgressesBySubsIdQueryRequest(Guid subscriptionId)
+        {
+            SubscriptionId = subscriptionId;
+        }
     }  
 }

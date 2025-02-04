@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Hangfire.Logging.LogProviders;
 using MediatR;
-using StayFit.Application.CustomAttributes.Caching;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.Diets;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -25,9 +24,9 @@ namespace StayFit.Application.Features.Queries.Diets.GetDietsByDietDayId
         {
             List<Diet> diets = await _dietRepository.GetWhere(d=>d.DietDayId == request.DietDayId, false);
             if (!diets.Any())
-                return new(null, "Bu güne ait diyet listesi bulunamadı", false);
+                return new( Messages.DietNotFoundForToday, false, null);
             List<GetDietsByDietDayIdDto> getDietsByDietDayIdDtos = _mapper.Map<List<GetDietsByDietDayIdDto>>(diets);
-            return new(getDietsByDietDayIdDtos, "İlgili güne ait diyet listesi getirildi", true);
+            return new(Messages.DietListedSuccessful, true, getDietsByDietDayIdDtos);
         }
     }
 }

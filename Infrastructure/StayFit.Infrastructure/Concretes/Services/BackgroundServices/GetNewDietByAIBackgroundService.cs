@@ -5,12 +5,7 @@ using StayFit.Application.DTOs.Gemini;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
 {

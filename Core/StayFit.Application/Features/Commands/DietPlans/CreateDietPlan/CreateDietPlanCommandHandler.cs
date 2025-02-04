@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Domain.Enums;
@@ -21,14 +22,14 @@ namespace StayFit.Application.Features.Commands.DietPlans.CreateDietPlan
         {
             if (await _dietPlanRepository.CheckIfAlreadyExistPlanOnTimeRange
                         (Guid.Parse(request.CreateDietPlanDto.MemberId), request.CreateDietPlanDto.StartDate, request.CreateDietPlanDto.EndDate))
-                return new() { Message = "Bu aralıklarda zaten bir çalışma planı var.", Success = false };
+                return new(Messages.DietPlanAlreadyExist, false);
+
             DietPlan dietPlan = _mapper.Map<DietPlan>(request.CreateDietPlanDto);
             dietPlan.Status = PlanStatus.Active;
             await _dietPlanRepository.AddAsync(dietPlan);
             int result = await _dietPlanRepository.SaveAsync();
-            if (result > 0)
-                return new() { Message = "Diyet planı başarıyla oluşturuldu.", Success = true };
-            return new() { Message = "Diyet planı oluşturulurken bir hatayla karşılaşıldı.", Success = false };
+            
+            return result > 0  ? new(Messages.DietPlanCreatedSuccessful, true) : new(Messages.DietPlanCreatedFailed, false);
 
         }
     }

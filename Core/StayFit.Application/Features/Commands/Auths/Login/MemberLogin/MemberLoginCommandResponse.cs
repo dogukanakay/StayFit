@@ -8,12 +8,6 @@ namespace StayFit.Application.Features.Commands.Auths.Login.MemberLogin
         public bool Success { get; }
         public TokenDto? TokenDto { get; }
 
-        public MemberLoginCommandResponse(string message, bool success)
-        {
-            Message = message;
-            Success = success;
-        }
-
         public MemberLoginCommandResponse(string message, bool success, TokenDto? tokenDto)
         {
             Message = message;

@@ -4,8 +4,15 @@ namespace StayFit.Application.Features.Queries.WeeklyProgresses.GetWeeklyProgres
 {
     public class GetWeeklyProgressesBySubsIdQueryResponse
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public List<GetWeeklyProgressesBySubsIdDto>? GetWeeklyProgressesBySubsIdDtos { get; set; }
+        public string Message { get; }
+        public bool Success { get; }
+        public List<GetWeeklyProgressesBySubsIdDto>? GetWeeklyProgressesBySubsIdDtos { get; }
+
+        public GetWeeklyProgressesBySubsIdQueryResponse(string message, bool success, List<GetWeeklyProgressesBySubsIdDto>? getWeeklyProgressesBySubsIdDtos)
+        {
+            Message = message;
+            Success = success;
+            GetWeeklyProgressesBySubsIdDtos = getWeeklyProgressesBySubsIdDtos;
+        }
     }  
 }

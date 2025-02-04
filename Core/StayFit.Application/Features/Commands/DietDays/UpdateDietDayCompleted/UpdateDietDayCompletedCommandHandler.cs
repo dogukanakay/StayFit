@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -19,13 +20,13 @@ namespace StayFit.Application.Features.Commands.DietDays.UpdateDietDayCompleted
                 .GetSingleAsync(dd => dd.Id == request.DietDayId && dd.DietPlan.MemberId == request.MemberId && dd.DayOfWeek == DateTime.Today.DayOfWeek);
 
             if (dietDay is null)
-                return new("Vayyy çakal :)) Sadece bugünün tamamlandığını girebilirsin.", false);
+                return new(Messages.DietDayCannotCompleted , false);
 
             dietDay.IsCompleted = true;
 
             int result = await _dietDayRepository.SaveAsync();
             
-            return result>0 ? new("Gün tamamlandı olarak güncellendi.",  true) : new("İşlem başarısız.", false);
+            return result>0 ? new(Messages.DietDayComletedSuccessful,  true) : new(Messages.DietDayComletedFailed, false);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.DietDays;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -21,10 +22,10 @@ namespace StayFit.Application.Features.Queries.DietDays.GetDietDaysByDietPlanId
         {
             List<DietDay> dietDays = await _dietDayRepository.GetWhere(dd=>dd.DietPlanId == request.DietPlanId, tracking : false);
             if (!dietDays.Any())
-                return new("Bu plana ait bir gün bulunamadı", false, null);
+                return new(Messages.DietDayNotFound, false, null);
             List<GetDietDaysByDietPlanIdDto> getDietDaysByDietPlanIdDtos = _mapper.Map<List<GetDietDaysByDietPlanIdDto>>(dietDays);
 
-            return new("Diyet günleri başarıyla listelendi.", true, getDietDaysByDietPlanIdDtos);
+            return new(Messages.DietDayListedSuccessful, true, getDietDaysByDietPlanIdDtos);
 
         }
     }

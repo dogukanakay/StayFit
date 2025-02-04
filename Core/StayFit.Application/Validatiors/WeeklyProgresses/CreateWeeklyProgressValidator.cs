@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.WeeklyProgresses;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,14 @@ namespace StayFit.Application.Validatiors.WeeklyProgresses
         public CreateWeeklyProgressValidator()
         {
             RuleFor(wp => wp.WaistCircumference)
-                .NotEmpty().WithMessage("Bel çevresi boş bırakılamaz");
-            RuleFor(wp => wp.NeckCircumference)
-                .NotEmpty().WithMessage("Boyun çevresi boş bırakılamaz.");
-            RuleFor(wp => wp)
-                .Must(wp => wp.WaistCircumference > wp.NeckCircumference).WithMessage("Bel çevresi boyun çevresinden uzun olmalı.");
+                .NotEmpty().WithMessage(Messages.WaistCircumferenceCannotBeEmpty);
 
+            RuleFor(wp => wp.NeckCircumference)
+                .NotEmpty().WithMessage(Messages.NeckCircumferenceCannotBeEmpty);
+
+            RuleFor(wp => wp)
+                .Must(wp => wp.WaistCircumference > wp.NeckCircumference)
+                .WithMessage(Messages.WaistMustBeGreaterThanNeck);
         }
     }
 }

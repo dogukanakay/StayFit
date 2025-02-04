@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.WorkoutPlans.GetWorkoutPlansByMem
 {
     public class GetWorkoutPlansByMemberIdQueryRequest : IRequest<GetWorkoutPlansByMemberIdQueryResponse>
     {
-        public Guid MemberId { get; set; }
+        public Guid MemberId { get; }
+
+        public GetWorkoutPlansByMemberIdQueryRequest(Guid memberId)
+        {
+            MemberId = memberId;
+        }
     }
 }

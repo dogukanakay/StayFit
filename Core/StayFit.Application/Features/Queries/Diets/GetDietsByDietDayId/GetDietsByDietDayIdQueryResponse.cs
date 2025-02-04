@@ -4,15 +4,16 @@ namespace StayFit.Application.Features.Queries.Diets.GetDietsByDietDayId
 {
     public class GetDietsByDietDayIdQueryResponse
     {
-        public List<GetDietsByDietDayIdDto>? GetDietsByDietDayIdDtos { get; set; }
-        public string Message { get; set; }
-        public bool Success { get; set; }
+        
+        public string Message { get; }
+        public bool Success { get;  }
+        public List<GetDietsByDietDayIdDto>? GetDietsByDietDayIdDtos { get; }
 
-        public GetDietsByDietDayIdQueryResponse(List<GetDietsByDietDayIdDto>? getDietsByDietDayIdDtos, string message, bool success)
+        public GetDietsByDietDayIdQueryResponse(string message, bool success, List<GetDietsByDietDayIdDto>? getDietsByDietDayIdDtos)
         {
-            GetDietsByDietDayIdDtos = getDietsByDietDayIdDtos;
             Message = message;
             Success = success;
+            GetDietsByDietDayIdDtos = getDietsByDietDayIdDtos;
         }
     }
 }

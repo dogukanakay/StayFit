@@ -4,8 +4,16 @@ namespace StayFit.Application.Features.Queries.WorkoutDays.GetWorkoutDaysByWorko
 {
     public class GetWorkoutDaysByWorkoutPlanIdQueryResponse
     {
-        public List<GetWorkoutDaysByWorkoutPlanIdDto>? GetWorkoutDaysByWorkoutPlanIdDtos { get; set; }
-        public string Message { get; set; }
-        public bool Success { get; set; }
+
+        public string Message { get; }
+        public bool Success { get; }
+        public List<GetWorkoutDaysByWorkoutPlanIdDto>? GetWorkoutDaysByWorkoutPlanIdDtos { get; }
+
+        public GetWorkoutDaysByWorkoutPlanIdQueryResponse(string message, bool success, List<GetWorkoutDaysByWorkoutPlanIdDto>? getWorkoutDaysByWorkoutPlanIdDtos)
+        {
+            Message = message;
+            Success = success;
+            GetWorkoutDaysByWorkoutPlanIdDtos = getWorkoutDaysByWorkoutPlanIdDtos;
+        }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Services.FoodInformationServices;
 using StayFit.Application.Abstracts.Services.TranslationServices;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.FoodInformations.Fatsecrets;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StayFit.Application.Features.Queries.FoodInformations.GetFoodInformationsByName
 {
@@ -31,9 +28,8 @@ namespace StayFit.Application.Features.Queries.FoodInformations.GetFoodInformati
             List<Food> foods = await _foodInformationService.SearchFoodsByNameAsync(translatedFoodName, includeFoodImages: true);
 
             if (!foods.Any())
-            {
-                return new GetFoodInformationsByNameQueryResponse("Yemek bulunamadı", false, null);
-            }
+                return new(Messages.FoodInformationsNotFound, false, null);
+
 
             var foodNames = foods.Select(f => f.FoodName).ToList();
             var servingDescriptions = foods.SelectMany(f => f.Servings.Serving.Select(s => s.ServingDescription)).ToList();
@@ -48,10 +44,10 @@ namespace StayFit.Application.Features.Queries.FoodInformations.GetFoodInformati
 
             var translatedFoodNames = translationTasks[0].Result;
             var translatedServingDescriptions = translationTasks[1].Result;
-           
+
             ApplyTranslationsToFoods(foods, translatedFoodNames, translatedServingDescriptions);
 
-            return new GetFoodInformationsByNameQueryResponse("Yemekler listelendi", true, foods);
+            return new GetFoodInformationsByNameQueryResponse(Messages.FoodInformationsListedSuccessful, true, foods);
         }
 
         private void ApplyTranslationsToFoods(

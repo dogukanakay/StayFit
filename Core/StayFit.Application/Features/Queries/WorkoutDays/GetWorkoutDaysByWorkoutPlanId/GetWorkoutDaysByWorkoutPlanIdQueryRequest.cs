@@ -9,6 +9,11 @@ namespace StayFit.Application.Features.Queries.WorkoutDays.GetWorkoutDaysByWorko
 {
     public class GetWorkoutDaysByWorkoutPlanIdQueryRequest : IRequest<GetWorkoutDaysByWorkoutPlanIdQueryResponse>
     {
-        public int WorkoutPlanId { get; set; }
+        public int WorkoutPlanId { get; }
+
+        public GetWorkoutDaysByWorkoutPlanIdQueryRequest(int workoutPlanId)
+        {
+            WorkoutPlanId = workoutPlanId;
+        }
     }
 }

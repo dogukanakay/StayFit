@@ -28,7 +28,7 @@ namespace StayFit.API.Controllers
         [HttpPost("MemberRegister")]
         public async Task<IActionResult> MemberRegisterAsync(MemberRegisterDto memberRegisterDto)
         {
-            MemberRegisterCommandRequest request = new() { MemberRegisterDto = memberRegisterDto };
+            MemberRegisterCommandRequest request = new(memberRegisterDto);
             var result = await _mediator.Send(request);
             return Ok(result);
         }
@@ -36,7 +36,7 @@ namespace StayFit.API.Controllers
         [HttpPost("TrainerRegister")]
         public async Task<IActionResult> TrainerRegisterAsync(TrainerRegisterDto trainerRegisterDto)
         {
-            TrainerRegisterCommandRequest request = new() { TrainerRegisterDto = trainerRegisterDto };
+            TrainerRegisterCommandRequest request = new(trainerRegisterDto);
             var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
@@ -46,8 +46,6 @@ namespace StayFit.API.Controllers
         {
             var request = new MemberLoginCommandRequest(loginModel);
             var response = await _mediator.Send(request);
-            if (response.Success)
-                Log.Information($"{loginModel.Email} kullanıcı giriş yaptı.");
             return Ok(response);
         }
 
@@ -57,8 +55,6 @@ namespace StayFit.API.Controllers
         {
             var request = new TrainerLoginCommandRequest(loginModel);
             var response = await _mediator.Send(request);
-            if (response.Success)
-                Log.Information($"{loginModel.Email} kullanıcı giriş yaptı.");
             return Ok(response);
         }
 

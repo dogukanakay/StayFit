@@ -27,8 +27,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateWorkoutPlan(CreateWorkoutPlanDto createWorkoutPlanDto)
         {
-            CreateWorkoutPlanCommandRequest request = new() { CreateWorkoutPlanDto = createWorkoutPlanDto };
-            CreateWorkoutPlanCommandResponse response = await _mediator.Send(request);
+            CreateWorkoutPlanCommandRequest request = new(createWorkoutPlanDto);
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response); ;
         }
 
@@ -37,8 +37,8 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> GetWorkoutPlansByMemberId()
         {
             var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            GetWorkoutPlansByMemberIdQueryRequest request = new() { MemberId = Guid.Parse(memberId) };
-            GetWorkoutPlansByMemberIdQueryResponse response = await _mediator.Send(request);
+            GetWorkoutPlansByMemberIdQueryRequest request = new(Guid.Parse(memberId));
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
 
         }
@@ -47,8 +47,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> GetWorkoutPlansBySubscriptionId(string subscriptionId)
         {
-            GetWorkoutPlansBySubscriptionIdQueryRequest request = new() { SubscriptionId = Guid.Parse(subscriptionId) };
-            GetWorkoutPlansBySubscriptionIdQueryResponse response = await _mediator.Send(request);
+            GetWorkoutPlansBySubscriptionIdQueryRequest request = new(Guid.Parse(subscriptionId));
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
@@ -56,8 +56,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> DeleteWorkoutPlanById(int id)
         {
-            DeleteWorkoutPlanCommandRequest request = new() { WorkoutPlanId = id };
-            DeleteWorkoutPlanCommandResponse response = await _mediator.Send(request);
+            DeleteWorkoutPlanCommandRequest request = new(id);
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
@@ -65,8 +65,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> UpdateWorkoutPlan(UpdateWorkoutPlanDto updateWorkoutPlanDto)
         {
-            UpdateWorkoutPlanCommandRequest request = new() { UpdateWorkoutPlanDto = updateWorkoutPlanDto };
-            UpdateWorkoutPlanCommandResponse response = await _mediator.Send(request);
+            UpdateWorkoutPlanCommandRequest request = new(updateWorkoutPlanDto);
+            var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
         }

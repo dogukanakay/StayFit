@@ -29,13 +29,12 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> CreateWeeklyProgressByAI([FromForm] CreateWeeklyProgressByAIDto createWeeklyProgressByAIDto, [FromForm] IFormFileCollection files)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var request = new CreateWeeklyProgressByAICommandRequest
-            {
-                Images = files,
-                CreateWeeklyProgressByAIDto = createWeeklyProgressByAIDto,
-                BaseStorageUrl = _configuration["BaseStorageUrl"],
-                UserId = Guid.Parse(userId)
-            };
+            var request = new CreateWeeklyProgressByAICommandRequest(
+                createWeeklyProgressByAIDto,
+                files,
+                _configuration["BaseStorageUrl"],
+                Guid.Parse(userId)
+                );
 
             CreateWeeklyProgressByAICommandResponse response = await _mediator.Send(request);
             return Ok(response);
@@ -46,27 +45,27 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> CreateWeeklyProgress([FromForm] CreateWeeklyProgressDto createWeeklyProgressDto, [FromForm] IFormFileCollection files)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var request = new CreateWeeklyProgressCommandRequest
-            {
-                Images = files,
-                CreateWeeklyProgressDto = createWeeklyProgressDto,
-                BaseStorageUrl = _configuration["BaseStorageUrl"],
-                UserId = Guid.Parse(userId),
-            };
+            var request = new CreateWeeklyProgressCommandRequest(
+                files,
+                createWeeklyProgressDto,
+                _configuration["BaseStorageUrl"],
+                Guid.Parse(userId)
+                );
 
-            CreateWeeklyProgressCommandResponse response = await _mediator.Send(request);
+
+            var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
-       
+
 
         [HttpGet("GetWeeklyProgressesBySubsId")]
         [Authorize(Roles = "Member, Trainer")]
-        public async Task<IActionResult> GetWeeklyProgressesBySubsId(string SubscriptionId)
+        public async Task<IActionResult> GetWeeklyProgressesBySubsId(string subscriptionId)
         {
-            GetWeeklyProgressesBySubsIdQueryRequest request = new() { SubscriptionId = Guid.Parse(SubscriptionId) };
-            GetWeeklyProgressesBySubsIdQueryResponse response = await _mediator.Send(request);
+            GetWeeklyProgressesBySubsIdQueryRequest request = new(Guid.Parse(subscriptionId));
+            var response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
         }
     }

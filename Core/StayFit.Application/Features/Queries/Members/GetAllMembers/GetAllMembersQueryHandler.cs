@@ -22,7 +22,7 @@ namespace StayFit.Application.Features.Queries.Members.GetAllMembers
             List<Member> members = await _memberRepository.GetAllMembersIncludeUserAsync();
             List<MemberResponseDto> memberResponseDtos = _mapper.Map<List<MemberResponseDto>>(members);
 
-            return new() { MemberResponseDtos = memberResponseDtos };
+            return new(memberResponseDtos);
         }
     }
 }

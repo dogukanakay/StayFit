@@ -1,14 +1,8 @@
 ﻿using StayFit.Application.Abstracts.Services;
 using StayFit.Application.Abstracts.Services.BackgroundServices;
 using StayFit.Application.DTOs.WeeklyProgresses;
-using StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyProgressByAI;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
 {
@@ -35,7 +29,7 @@ namespace StayFit.Infrastructure.Concretes.Services.BackgroundServices
                 weeklyProgress.NeckCircumference = analysisResult.NeckCircumference;
                 weeklyProgress.WaistCircumference = analysisResult.WaistCircumference;
                 weeklyProgress.ChestCircumference = analysisResult.ChestCircumference;
-                weeklyProgress.Fat = (float?)(86.010 * Math.Log10(analysisResult.WaistCircumference - analysisResult.NeckCircumference)
+                weeklyProgress.Fat = (float)(86.010 * Math.Log10(analysisResult.WaistCircumference - analysisResult.NeckCircumference)
                     - 70.041 * Math.Log10(analysisResult.Height) + 36.76);
                 weeklyProgress.BMI = weeklyProgress.Weight / (float)Math.Pow(weeklyProgress.Height / 100f, 2);
                 weeklyProgress.ProgressStatus = ProgressStatus.Completed;

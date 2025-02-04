@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -20,13 +21,12 @@ namespace StayFit.Application.Features.Commands.WorkoutPlans.UpdateWorkoutPlan
         {
             WorkoutPlan workoutPlan = await _workoutPlanRepository.GetByIdAsync(request.UpdateWorkoutPlanDto.Id);
             if (workoutPlan is null)
-                return new() { Message = "Hatalı bir istek yolladınız. Bu Id için bir plan bulunmamakta.", Success = false };
+                return new(Messages.WorkoutPlanNotFoundById, false);
             _mapper.Map(request.UpdateWorkoutPlanDto, workoutPlan);
 
             int result = await _workoutPlanRepository.SaveAsync();
-            if (result > 0)
-                return new() { Message = "Plan başarıyla güncellendi.", Success = true };
-            return new() { Message = "Plan  güncellenemedi.", Success = false };
+
+            return result > 0 ? new(Messages.WorkoutPlanUpdatedSuccessful, true) : new(Messages.WorkoutPlanUpdateFailed, false); 
         }
     }
 }

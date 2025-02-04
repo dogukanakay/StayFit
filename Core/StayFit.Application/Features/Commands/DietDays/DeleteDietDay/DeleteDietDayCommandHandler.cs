@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Features.Commands.DietDays.CreateDietDay;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -19,14 +20,13 @@ namespace StayFit.Application.Features.Commands.DietDays.DeleteDietDay
         {
             DietDay dietDay = await _dietDayRepository.GetByIdAsync(request.DietDayId);
             if (dietDay == null)
-                return new() { Message = "Böyle bir gün bulunamadı.", Success = false };
+                return new(Messages.DietDayNotFound, false);
 
             await _dietDayRepository.Remove(dietDay);
 
             int result = await _dietDayRepository.SaveAsync();
 
-            return result > 0 ? new DeleteDietDayCommandResponse() { Message = $"{dietDay.Title} başlıklı gün başarıyla silindi.", Success = true } :
-                new() { Message = $"{dietDay.Title} başlıklı gün silinirken bir hata oluştu.", Success = false };
+            return result > 0 ? new(Messages.DietDayDeletedSuccessful, true) : new(Messages.DietDayDeletedFailed, false);
         }
     }
 }

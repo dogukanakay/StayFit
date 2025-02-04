@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.Exercises;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -20,12 +21,13 @@ namespace StayFit.Application.Features.Queries.Exercises.GetExercisesByWorkoutDa
         public async Task<GetExercisesByWorkoutDayIdQueryResponse> Handle(GetExercisesByWorkoutDayIdQueryRequest request, CancellationToken cancellationToken)
         {
             List<Exercise> exercises = await _exerciseRepository.GetExercisesByWorkoutDayId(request.WorkoutDayId);
-            if (exercises.Any())
-            {
-                List<GetExercisesByWorkoutDayIdDto> getExercisesByWorkoutDayIdDtos = _mapper.Map<List<GetExercisesByWorkoutDayIdDto>>(exercises);
-                return new() { GetExercisesByWorkoutDayIdDtos = getExercisesByWorkoutDayIdDtos, Success = true, Messages = "Bu plana ait egzersizler başarı ile getirildi." };
-            }
-            return new() { Success = false, Messages = "Egzersiz bilgileri getirilemedi." };
+            if (!exercises.Any())
+                return new(Messages.ExerciseNotFoundForToday, false, null);
+
+            List<GetExercisesByWorkoutDayIdDto> getExercisesByWorkoutDayIdDtos = _mapper.Map<List<GetExercisesByWorkoutDayIdDto>>(exercises);
+            return new(Messages.ExerciseListedSuccessful,true, getExercisesByWorkoutDayIdDtos);
+
+
         }
     }
 }

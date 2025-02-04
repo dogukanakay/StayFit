@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs;
 using StayFit.Application.Exceptions.Subscriptions;
 using StayFit.Application.Repositories;
@@ -21,9 +22,9 @@ namespace StayFit.Application.Features.Queries.Subscriptions.GetMemberSubscribed
         {
             GetMemberSubscribedTrainerDto getMemberSubscribedTrainerDto = await _subscriptionRepository.GetMemberSubscribedTrainer(request.MemberId);
             if (getMemberSubscribedTrainerDto is null)
-                throw new SubscribtionNotFound();
-            
-            return new() { GetMemberSubscribedTrainerDto = getMemberSubscribedTrainerDto };
+                return new(Messages.SubscriptionNotFound, false, null);
+
+            return new(Messages.SubscriptionListedSuccessfuly, true, getMemberSubscribedTrainerDto);
         }
     }
 }

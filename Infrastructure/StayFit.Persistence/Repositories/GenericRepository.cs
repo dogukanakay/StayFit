@@ -30,6 +30,11 @@ namespace StayFit.Persistence.Repositories
             return entityEntry.State == EntityState.Added;
         }
 
+        public async Task AddRangeAsync(List<TEntity> entities)
+        {
+            await _context.Set<TEntity>().AddRangeAsync(entities);
+        }
+
         public async Task<List<TEntity>> GetAllAsync(bool tracking = true)
         {
             if (!tracking)
@@ -52,7 +57,7 @@ namespace StayFit.Persistence.Repositories
             throw new ArgumentException("Invalid ID type");
         }
 
-       
+
 
         public async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> method, bool tracking = true)
         {

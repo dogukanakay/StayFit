@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 
@@ -19,17 +20,14 @@ namespace StayFit.Application.Features.Commands.Members.UpdateMember
         public async Task<UpdateMemberCommandResponse> Handle(UpdateMemberCommandRequest request, CancellationToken cancellationToken)
         {
             Member member = await _memberRepository.GetMemberProfileAsync(Guid.Parse(request.UpdateMemberDto.Id));
-             _mapper.Map(request.UpdateMemberDto, member);
-            var result = _memberRepository.Update(member);
+            _mapper.Map(request.UpdateMemberDto, member);
+            _memberRepository.Update(member);
 
-            if (result)
-            {
-                await _memberRepository.SaveAsync();
-                return new() { Message = "Profil bilgileri başarıyla güncellendi.", Success = true };
-            }
-                
+
+            int result = await _memberRepository.SaveAsync();
+
+            return result > 0 ? new(Messages.MemberProfileUpdatedSuccessful, true) : new(Messages.MemberProfileUpdatedFailed, false);
             
-            return new() {Message="HATA. Profil bilgileri güncellenemedi.", Success = false };
         }
     }
 }

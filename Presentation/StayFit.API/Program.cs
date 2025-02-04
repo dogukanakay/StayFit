@@ -1,24 +1,21 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Hangfire;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using StayFit.Application;
 using StayFit.Application.Settings;
+using StayFit.Application.Validatiors.Auths;
+using StayFit.Infrastructure;
+using StayFit.Infrastructure.Filters;
+using StayFit.Infrastructure.Storage.Azure;
 using StayFit.Persistence;
 using StayFit.Persistence.Contexts;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using StayFit.Infrastructure;
-using StayFit.Infrastructure.Storage.Azure;
-using StayFit.Application;
-using Hangfire;
-using Serilog.Sinks.Graylog.Core.Transport;
-using Serilog.Sinks.Graylog;
-using Serilog;
-using Microsoft.ApplicationInsights.Extensibility;
-using StayFit.Infrastructure.Filters;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using StayFit.Application.Validatiors.Auths;
-using Microsoft.ApplicationInsights.DependencyCollector;
-using StayFit.Infrastructure.Storage.Local;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,15 +38,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddStorage<LocalStorageService>();
+builder.Services.AddStorage<AzureStorageService>();
 
 builder.Services.AddApplicationInsightsTelemetry();
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
-    .Enrich.FromLogContext()
-    .Enrich.WithMachineName()
-    .Enrich.WithEnvironmentName()
+    .WriteTo.Seq(builder.Configuration["Seq:ServerUrl"])
     .CreateLogger();
 
 builder.Services.AddApplicationInsightsTelemetry(options =>
@@ -83,7 +78,7 @@ builder.Services.AddControllers(options =>
 builder.Services
     .AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
-    .AddValidatorsFromAssemblyContaining<RegisterValidator>(); 
+    .AddValidatorsFromAssemblyContaining<MemberRegisterValidator>(); 
 
 
 builder.Services.AddAuthentication(options =>

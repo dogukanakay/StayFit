@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Security;
+using StayFit.Application.Constants.Messages;
 using StayFit.Application.Exceptions.Auths;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -22,21 +23,21 @@ namespace StayFit.Application.Features.Commands.Auths.Password
         {
             User user = await _authRepository.GetUserByIdAsync(request.UserId);
 
-            if (user is null) throw new UserNotFoundException("Kullanıcı bulunamadı.");
+            if (user is null) 
+                throw new UserNotFoundException(ExceptionMessages.UserNotFound);
 
             var verify = _hashingHelper.VerifyPasswordHash(request.UpdatePasswordDto.CurrentPassword, user.PasswordHash, user.PasswordSalt);
 
             if (!verify)
-                return new(false, "Hatalı şifre.");
-            byte[] newPasswordHash, newPasswordSalt;
-            _hashingHelper.CreatePasswordHash(request.UpdatePasswordDto.NewPassword,out newPasswordHash, out newPasswordSalt);
+                return new(false, Messages.IncorrectCurrentPassword);
 
+            _hashingHelper.CreatePasswordHash(request.UpdatePasswordDto.NewPassword, out var newPasswordHash, out var newPasswordSalt);
             user.PasswordHash = newPasswordHash;
             user.PasswordSalt = newPasswordSalt;
 
             int result = await _authRepository.SaveChangesAsync();
 
-            return result > 0 ? new(true, "Şifre başarıyla güncellendi.") : new(false, "Şifre güncellenemedi");
+            return result > 0 ? new(true, Messages.PasswordUpdatedSuccessful) : new(false, Messages.PasswordUpdatedFailed);
 
         }
     }

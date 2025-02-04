@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StayFit.Application.Constants.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace StayFit.Application.Exceptions.Auths
 {
     public class UserNotFoundException : Exception
     {
-        public UserNotFoundException() : base("Bu bilgilerde kayıtlı bir kullanıcı bulunmamaktadır.")
+        public UserNotFoundException() : base(ExceptionMessages.UserNotFound)
         {
 
         }
