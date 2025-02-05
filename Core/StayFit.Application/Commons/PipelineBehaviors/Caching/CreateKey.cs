@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.PipelineBehaviors.Caching
+namespace StayFit.Application.Commons.PipelineBehaviors.Caching
 {
     public static class CreateKey
     {

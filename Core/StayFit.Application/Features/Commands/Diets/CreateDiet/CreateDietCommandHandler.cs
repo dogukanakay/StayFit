@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using StayFit.Application.Constants.Messages;
-using StayFit.Application.CustomAttributes.Caching;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 

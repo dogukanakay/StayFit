@@ -2,7 +2,6 @@
 using MediatR;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs;
-using StayFit.Application.Exceptions.Subscriptions;
 using StayFit.Application.Repositories;
 
 namespace StayFit.Application.Features.Queries.Subscriptions.GetMemberSubscribedTrainer

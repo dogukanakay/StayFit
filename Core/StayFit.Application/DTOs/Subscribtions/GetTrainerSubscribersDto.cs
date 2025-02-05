@@ -12,6 +12,7 @@ namespace StayFit.Application.DTOs
         public Guid Id { get; init; }
         public Guid MemberId { get; init; }
         public DateTime EndDate { get; init; }
+        public string FormattedEndDate => EndDate.ToString("dd/MM/yyyy");
         public string? Goal { get; init; }
         public float Amount { get; init; }
         public int Height { get; init; }
@@ -21,6 +22,8 @@ namespace StayFit.Application.DTOs
         public string LastName { get; init; }
         public Gender Gender { get; init; }
         public DateTime BirthDate { get; init; }
+        public string FormattedBirthDate => BirthDate.ToString("dd/MM/yyyy");
+
 
     }
 }

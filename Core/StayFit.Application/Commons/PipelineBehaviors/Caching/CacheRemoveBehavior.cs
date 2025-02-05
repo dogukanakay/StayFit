@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Caching;
-using StayFit.Application.CustomAttributes.Caching;
+using StayFit.Application.Commons.CustomAttributes.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.PipelineBehaviors.Caching
+namespace StayFit.Application.Commons.PipelineBehaviors.Caching
 {
     public class CacheRemoveBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

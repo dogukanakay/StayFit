@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Services.FoodInformationServices;
 using StayFit.Application.Abstracts.Services.TranslationServices;
+using StayFit.Application.Commons.Exceptions.Business;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.FoodInformations.Fatsecrets;
 
@@ -23,6 +24,8 @@ namespace StayFit.Application.Features.Queries.FoodInformations.GetFoodInformati
             GetFoodInformationsByNameQueryRequest request,
             CancellationToken cancellationToken)
         {
+            throw new BusinessException("Buradayımmmm");
+
             string translatedFoodName = await _translationService.TranslateTextAsync(request.FoodName, "en", "tr");
 
             List<Food> foods = await _foodInformationService.SearchFoodsByNameAsync(translatedFoodName, includeFoodImages: true);

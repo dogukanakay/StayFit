@@ -4,6 +4,7 @@ using Hangfire;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -33,7 +34,7 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -78,9 +79,12 @@ builder.Services.AddControllers(options =>
 builder.Services
     .AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
-    .AddValidatorsFromAssemblyContaining<MemberRegisterValidator>(); 
+    .AddValidatorsFromAssemblyContaining<MemberRegisterValidator>();
 
-
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -116,12 +120,14 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions());
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseStaticFiles();
+app.UseStaticFiles();   
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

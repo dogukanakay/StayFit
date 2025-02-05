@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Caching;
-using StayFit.Application.CustomAttributes.Caching;
+using StayFit.Application.Commons.CustomAttributes.Caching;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.PipelineBehaviors.Caching
+namespace StayFit.Application.Commons.PipelineBehaviors.Caching
 {
     public class CacheBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
@@ -36,7 +36,7 @@ namespace StayFit.Application.PipelineBehaviors.Caching
 
             var cacheKey = CreateKey.ReplacePlaceholders(cacheAttribute.CacheKey, request);
             var cachedResponse = await _cacheService.GetAsync<TResponse>(cacheKey);
- 
+
             if (cachedResponse != null) return cachedResponse;
 
             var response = await next();

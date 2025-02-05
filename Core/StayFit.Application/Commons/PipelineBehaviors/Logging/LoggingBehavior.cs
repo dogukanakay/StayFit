@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Security.Claims;
 
-namespace StayFit.Application.PipelineBehaviors.Logging
+namespace StayFit.Application.Commons.PipelineBehaviors.Logging
 {
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

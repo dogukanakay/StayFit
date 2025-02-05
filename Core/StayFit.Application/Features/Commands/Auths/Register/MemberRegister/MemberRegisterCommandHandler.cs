@@ -3,7 +3,6 @@ using MediatR;
 using StayFit.Application.Abstracts.Security;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs;
-using StayFit.Application.Exceptions.Auths;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
 using StayFit.Domain.Enums;

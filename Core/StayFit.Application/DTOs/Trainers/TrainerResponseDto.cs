@@ -10,6 +10,7 @@ namespace StayFit.Application.DTOs
     {
         public string Id { get; init; }
         public DateTime CreatedDate { get; init; }
+        public string FormattedCreatedDate => CreatedDate.ToString("dd/MM/yyyy");
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string Email { get; init; }
@@ -20,6 +21,7 @@ namespace StayFit.Application.DTOs
         public float Rate { get; init; }
         public int YearsOfExperience { get; init; }
         public DateTime BirthDate { get; init; }
+        public string FormattedBirthDate => BirthDate.ToString("dd/MM/yyyy");
         public string Gender { get; init; }
 
     }

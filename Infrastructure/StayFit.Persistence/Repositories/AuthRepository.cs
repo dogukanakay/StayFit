@@ -1,12 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StayFit.Application.Abstracts.Security;
-using StayFit.Application.DTOs;
-using StayFit.Application.DTOs.Gemini;
-using StayFit.Application.Exceptions;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
-using StayFit.Domain.Enums;
 using StayFit.Persistence.Contexts;
 
 namespace StayFit.Persistence.Repositories

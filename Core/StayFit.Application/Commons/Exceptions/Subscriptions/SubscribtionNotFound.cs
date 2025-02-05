@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.Exceptions.Subscriptions
+namespace StayFit.Application.Commons.Exceptions.Subscriptions
 {
     public class SubscribtionNotFound : Exception
     {

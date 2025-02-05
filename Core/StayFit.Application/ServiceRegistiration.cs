@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using StayFit.Application.PipelineBehaviors.Caching;
-using StayFit.Application.PipelineBehaviors.Logging;
-using StayFit.Application.PipelineBehaviors.Performance;
+using StayFit.Application.Commons.PipelineBehaviors.Caching;
+using StayFit.Application.Commons.PipelineBehaviors.Logging;
+using StayFit.Application.Commons.PipelineBehaviors.Performance;
 using System.Reflection;
 
 namespace StayFit.Application

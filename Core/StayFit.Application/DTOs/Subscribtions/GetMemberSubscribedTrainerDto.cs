@@ -15,6 +15,7 @@ namespace StayFit.Application.DTOs
         public float Amount { get; init; }
         public string? Goal { get; set; }
         public DateTime EndDate { get; init; }
+        public string FormattedEndDate => EndDate.ToString("dd/MM/yyyy");
         public string? PhotoPath { get; init; }
 
     }

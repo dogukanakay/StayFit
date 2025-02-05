@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.CustomAttributes.Caching
+namespace StayFit.Application.Commons.CustomAttributes.Caching
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class CacheAttribute : Attribute

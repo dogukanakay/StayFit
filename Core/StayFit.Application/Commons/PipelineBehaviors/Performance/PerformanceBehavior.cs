@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.PipelineBehaviors.Performance
+namespace StayFit.Application.Commons.PipelineBehaviors.Performance
 {
     public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
@@ -35,7 +35,7 @@ namespace StayFit.Application.PipelineBehaviors.Performance
 
             var elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
-            if (elapsedMilliseconds > 500) 
+            if (elapsedMilliseconds > 500)
             {
                 var requestName = typeof(TRequest).Name;
 

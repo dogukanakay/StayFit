@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Application.Exceptions.Auths
+namespace StayFit.Application.Commons.Exceptions.Auths
 {
     public class UserNotFoundException : Exception
     {
