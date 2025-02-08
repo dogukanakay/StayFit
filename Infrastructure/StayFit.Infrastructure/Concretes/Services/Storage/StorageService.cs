@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Infrastructure.Storage
+namespace StayFit.Infrastructure.Concretes.Services.Storage
 {
     public class StorageService : IStorageService
     {

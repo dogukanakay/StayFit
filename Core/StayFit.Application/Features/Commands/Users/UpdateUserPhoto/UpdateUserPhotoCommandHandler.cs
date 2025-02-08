@@ -22,7 +22,7 @@ namespace StayFit.Application.Features.Commands.Users.UpdateUserPhoto
         {
             var result = await _storageService.UploadAsync(Containers.UserImageContainer, request.Files);
             var user = await _userRepository.GetByIdAsync(request.UserId);
-            user.PhotoPath = $"{request.BaseStorageUrl}/{result[0].PathOrContainerName}";
+            user.PhotoPath = result[0].PathOrContainerName;
 
             int response = await _userRepository.SaveAsync();
 

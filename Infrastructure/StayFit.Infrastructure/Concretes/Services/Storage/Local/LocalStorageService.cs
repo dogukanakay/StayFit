@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Infrastructure.Storage.Local
+namespace StayFit.Infrastructure.Concretes.Services.Storage.Local
 {
     public class LocalStorageService : Storage, ILocalStorage
     {

@@ -19,9 +19,9 @@ using StayFit.Infrastructure.Concretes.Services.BackgroundServices;
 using StayFit.Infrastructure.Concretes.Services.CachingServices;
 using StayFit.Infrastructure.Concretes.Services.FoodInformation.Fatsecret;
 using StayFit.Infrastructure.Concretes.Services.Hangfire;
+using StayFit.Infrastructure.Concretes.Services.Storage;
 using StayFit.Infrastructure.Concretes.Services.TranslationServices;
 using StayFit.Infrastructure.Helpers;
-using StayFit.Infrastructure.Storage;
 using System.Net.Http.Headers;
 
 namespace StayFit.Infrastructure

@@ -12,8 +12,8 @@ using StayFit.Application;
 using StayFit.Application.Settings;
 using StayFit.Application.Validatiors.Auths;
 using StayFit.Infrastructure;
+using StayFit.Infrastructure.Concretes.Services.Storage.Azure;
 using StayFit.Infrastructure.Filters;
-using StayFit.Infrastructure.Storage.Azure;
 using StayFit.Persistence;
 using StayFit.Persistence.Contexts;
 using System.Text;
@@ -39,7 +39,7 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddStorage<AzureStorageService>();
+builder.Services.AddStorage<CloudinaryStorageService>();
 
 builder.Services.AddApplicationInsightsTelemetry();
 

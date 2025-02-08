@@ -69,7 +69,7 @@ public class CreateWeeklyProgressByAICommandHandler : IRequestHandler<CreateWeek
         var progressImages = imageUploads.Select(image => new ProgressImage
         {
             WeeklyProgress = weeklyProgress,
-            Path = $"{request.BaseStorageUrl}/{image.PathOrContainerName}",
+            Path = image.PathOrContainerName,
             FileName = image.fileName
         }).ToList();
 

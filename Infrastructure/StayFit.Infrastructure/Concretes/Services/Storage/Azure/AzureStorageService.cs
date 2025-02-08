@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StayFit.Infrastructure.Storage.Azure
+namespace StayFit.Infrastructure.Concretes.Services.Storage.Azure
 {
-    public class AzureStorageService : Storage , IAzureStorage
+    public class AzureStorageService : Storage, IAzureStorage
     {
         private readonly BlobServiceClient _blobServiceClient;
         private BlobContainerClient _blobContainerClient;

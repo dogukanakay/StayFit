@@ -6,7 +6,6 @@ services:
       context: .
       dockerfile: Presentation/StayFit.API/Dockerfile
     depends_on:
-      - graylog
       - redis
       - postgres
     networks:
