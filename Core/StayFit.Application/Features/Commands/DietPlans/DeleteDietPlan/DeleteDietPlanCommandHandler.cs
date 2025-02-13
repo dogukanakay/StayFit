@@ -17,8 +17,10 @@ namespace StayFit.Application.Features.Commands.DietPlans.DeleteDietPlan
         public async Task<DeleteDietPlanCommandResponse> Handle(DeleteDietPlanCommandRequest request, CancellationToken cancellationToken)
         {
             DietPlan dietPlan = await _dietPlanRepository.GetByIdAsync(request.DietPlanId);
-            if (dietPlan == null)
-                return new("Bu id'ye ait bir diyet planı bulunamadı.", false);
+            if (dietPlan is null)
+                return new(Messages.DietPlanNotFoundById, false);
+            if (dietPlan.Subscription.TrainerId != request.TrainerId)
+                throw new UnauthorizedAccessException();
             
             await _dietPlanRepository.Remove(dietPlan);
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Commons.CustomAttributes.Caching;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs.DietPlans;
 using StayFit.Application.Repositories;
@@ -18,6 +19,7 @@ namespace StayFit.Application.Features.Queries.DietPlans.GetDietPlansByMemberId
             _mapper = mapper;
         }
 
+        //[Cache("dietPlans_{MemberId}", 1000)]
         public async Task<GetDietPlansByMemberIdQueryResponse> Handle(GetDietPlansByMemberIdQueryRequest request, CancellationToken cancellationToken)
         {
             List<DietPlan> dietPlans = await _dietPlanRepository.GetWhere(dp => dp.MemberId == request.MemberId, tracking: false);

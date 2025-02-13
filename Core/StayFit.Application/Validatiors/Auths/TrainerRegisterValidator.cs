@@ -47,6 +47,13 @@ namespace StayFit.Application.Validatiors.Auths
                 .MinimumLength(30).WithMessage(Messages.BioMinLength)
                 .MaximumLength(200).WithMessage(Messages.BioMaxLength);
 
+            RuleFor(r => r.YearsOfExperience)
+                .GreaterThanOrEqualTo(0).WithMessage(Messages.CannotBeNegative);
+
+
+            RuleFor(r => r.MonthlyRate)
+                .GreaterThanOrEqualTo(0).WithMessage(Messages.CannotBeNegative);
+
         }
 
     }

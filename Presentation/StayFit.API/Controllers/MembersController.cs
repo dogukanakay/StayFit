@@ -48,7 +48,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Member")]
         public async Task<IActionResult> UpdateMemberProfile(UpdateMemberDto updateMemberDto)
         {
-            UpdateMemberCommandRequest request = new(updateMemberDto);
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            UpdateMemberCommandRequest request = new(updateMemberDto, Guid.Parse(userId));
             UpdateMemberCommandResponse response = await _mediator.Send(request);
             return response.Success ? Ok(response) : BadRequest(response);
 

@@ -30,7 +30,7 @@ namespace StayFit.API.Controllers
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            GetTrainerProfileQueryRequest request = new() { TrainerId = Guid.Parse(userId) };
+            GetTrainerProfileQueryRequest request = new(Guid.Parse(userId));
             GetTrainerProfileQueryResponse response = await _mediator.Send(request);
 
             return Ok(response.TrainerResponseDto);
@@ -50,7 +50,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> UpdateTrainerProfile(UpdateTrainerDto updateTrainerDto)
         {
-            UpdateTrainerCommandRequest request = new(updateTrainerDto);
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            UpdateTrainerCommandRequest request = new(updateTrainerDto, Guid.Parse(userId));
             UpdateTrainerCommandResponse response = await _mediator.Send(request);
             return Ok(response);
         }

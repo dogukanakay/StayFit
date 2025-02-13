@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using StayFit.Application.Abstracts.Storage;
+using StayFit.Application.Commons.CustomAttributes.Caching;
+using StayFit.Application.Commons.Exceptions.Business;
 using StayFit.Application.Constants.Containers;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
@@ -18,8 +20,12 @@ namespace StayFit.Application.Features.Commands.Users.UpdateUserPhoto
             _userRepository = userRepository;
         }
 
+        [CacheRemove("profiles_{UserId}")]
         public async Task<UpdateUserPhotoCommandResponse> Handle(UpdateUserPhotoCommandRequest request, CancellationToken cancellationToken)
         {
+            if (!request.Files.Any())
+                throw new BusinessException(ExceptionMessages.PhotoCannotBeEmpty);
+
             var result = await _storageService.UploadAsync(Containers.UserImageContainer, request.Files);
             var user = await _userRepository.GetByIdAsync(request.UserId);
             user.PhotoPath = result[0].PathOrContainerName;

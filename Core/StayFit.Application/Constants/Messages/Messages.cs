@@ -39,6 +39,8 @@ namespace StayFit.Application.Constants.Messages
         public const string BioMinLength = "Bio must be at least 30 characters long.";
         public const string BioMaxLength = "Bio cannot be longer than 200 characters.";
 
+        public const string CannotBeNegative = "The input can not be negative.";
+
         //Validation Messages WeeklyProgress
         public const string WaistCircumferenceCannotBeEmpty = "Waist circumference cannot be empty.";
         public const string NeckCircumferenceCannotBeEmpty = "Neck circumference cannot be empty.";

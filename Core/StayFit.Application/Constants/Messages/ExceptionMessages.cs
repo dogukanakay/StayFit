@@ -16,5 +16,7 @@ namespace StayFit.Application.Constants.Messages
        
         public const string PhoneAlreadyExist = "Phone already exist";
 
+        public const string PhotoCannotBeEmpty = "Photo can not be empty.";
+
     }
 }

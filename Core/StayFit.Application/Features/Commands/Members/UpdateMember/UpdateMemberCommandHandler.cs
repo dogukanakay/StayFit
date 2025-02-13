@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Commons.CustomAttributes.Caching;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -17,9 +18,10 @@ namespace StayFit.Application.Features.Commands.Members.UpdateMember
             _mapper = mapper;
         }
 
+        [CacheRemove("profiles_{MemberId}")]
         public async Task<UpdateMemberCommandResponse> Handle(UpdateMemberCommandRequest request, CancellationToken cancellationToken)
         {
-            Member member = await _memberRepository.GetMemberProfileAsync(Guid.Parse(request.UpdateMemberDto.Id));
+            Member member = await _memberRepository.GetMemberProfileAsync(request.MemberId);
             _mapper.Map(request.UpdateMemberDto, member);
             _memberRepository.Update(member);
 

@@ -44,9 +44,12 @@ namespace StayFit.Application.Validatiors.Auths
                 .MaximumLength(50).WithMessage(Messages.LastNameMaxLengthExceeded);
 
             RuleFor(r => r.Weight)
+                .GreaterThan(0).WithMessage(Messages.WeightCannotBeEmptyOrZero)
                 .NotEmpty().WithMessage(Messages.WeightCannotBeEmptyOrZero);
+                
 
             RuleFor(r => r.Height)
+                .GreaterThan(0).WithMessage(Messages.WeightCannotBeEmptyOrZero)
                 .NotEmpty().WithMessage(Messages.HeightCannotBeEmptyOrZero);
 
 

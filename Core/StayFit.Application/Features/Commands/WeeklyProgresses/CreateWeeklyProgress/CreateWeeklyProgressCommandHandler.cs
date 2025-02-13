@@ -37,16 +37,13 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
             weeklyProgress.BMI = CalculateBMI(weeklyProgress.Weight, weeklyProgress.Height);
 
             if (request.Images.Any())
-            {
                 await UploadAndSaveImagesAsync(request, weeklyProgress);
-            }
             else
-            {
                 await _weeklyProgressRepository.AddAsync(weeklyProgress);
-            }
+
 
             int result = await _weeklyProgressRepository.SaveAsync();
-            
+
             return result > 0 ? new(Messages.WeeklyProgressCreatedSuccessful, true) : new(Messages.WeeklyProgressCreatedFailed, false);
         }
 
@@ -62,7 +59,7 @@ namespace StayFit.Application.Features.Commands.WeeklyProgresses.CreateWeeklyPro
             var progressImages = imageUploads.Select(image => new ProgressImage
             {
                 WeeklyProgress = weeklyProgress,
-                Path = $"{request.BaseStorageUrl}/{image.PathOrContainerName}",
+                Path = image.PathOrContainerName,
                 FileName = image.fileName
             }).ToList();
 

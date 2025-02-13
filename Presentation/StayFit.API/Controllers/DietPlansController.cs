@@ -62,7 +62,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> DeleteDietPlan(int dietPlanId)
         {
-            var request = new DeleteDietPlanCommandRequest(dietPlanId);
+            var trainerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var request = new DeleteDietPlanCommandRequest(dietPlanId, Guid.Parse(trainerId));
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : NotFound(response);

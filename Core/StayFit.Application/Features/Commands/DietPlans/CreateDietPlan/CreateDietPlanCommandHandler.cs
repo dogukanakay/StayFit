@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Commons.CustomAttributes.Caching;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -18,6 +19,7 @@ namespace StayFit.Application.Features.Commands.DietPlans.CreateDietPlan
             _mapper = mapper;
         }
 
+        //[CacheRemove("dietPlans_{MemberId}")]
         public async Task<CreateDietPlanCommandResponse> Handle(CreateDietPlanCommandRequest request, CancellationToken cancellationToken)
         {
             if (await _dietPlanRepository.CheckIfAlreadyExistPlanOnTimeRange

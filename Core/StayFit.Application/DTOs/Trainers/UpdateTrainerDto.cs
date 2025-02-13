@@ -8,7 +8,6 @@ namespace StayFit.Application.DTOs.Trainers
 {
     public record UpdateTrainerDto
     {
-        public string? Id { get; init; }
         public string? FirstName { get; init; }
         public string? LastName { get; init; }
         public string? Bio { get; init; }

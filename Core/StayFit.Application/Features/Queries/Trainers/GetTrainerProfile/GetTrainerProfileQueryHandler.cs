@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Commons.CustomAttributes.Caching;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.DTOs;
 using StayFit.Application.Repositories;
@@ -18,6 +19,7 @@ namespace StayFit.Application.Features.Queries.Trainers.GetTrainerProfile
             _mapper = mapper;
         }
 
+        [Cache("profiles_{TrainerId}", 1000)]
         public async Task<GetTrainerProfileQueryResponse> Handle(GetTrainerProfileQueryRequest request, CancellationToken cancellationToken)
         {
             Trainer trainer = await _trainerRepository.GetTrainerProfile(request.TrainerId);
