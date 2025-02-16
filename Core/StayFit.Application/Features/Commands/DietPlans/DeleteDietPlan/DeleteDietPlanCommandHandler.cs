@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StayFit.Application.Commons.Exceptions.Auths;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
@@ -19,8 +20,8 @@ namespace StayFit.Application.Features.Commands.DietPlans.DeleteDietPlan
             DietPlan dietPlan = await _dietPlanRepository.GetByIdAsync(request.DietPlanId);
             if (dietPlan is null)
                 return new(Messages.DietPlanNotFoundById, false);
-            if (dietPlan.Subscription.TrainerId != request.TrainerId)
-                throw new UnauthorizedAccessException();
+            if (dietPlan.TrainerId != request.TrainerId)
+                throw new ForbiddenAccessException();
             
             await _dietPlanRepository.Remove(dietPlan);
 

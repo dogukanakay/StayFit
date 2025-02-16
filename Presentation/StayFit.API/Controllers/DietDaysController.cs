@@ -6,6 +6,7 @@ using StayFit.Application.Features.Commands.DietDays.CreateDietDay;
 using StayFit.Application.Features.Commands.DietDays.DeleteDietDay;
 using StayFit.Application.Features.Commands.DietDays.UpdateDietDayCompleted;
 using StayFit.Application.Features.Queries.DietDays.GetDietDaysByDietPlanId;
+using StayFit.Domain.Entities;
 using System.Security.Claims;
 
 namespace StayFit.API.Controllers
@@ -25,7 +26,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateDietDay(CreateDietDayDto createDietDayDto)
         {
-            var request = new CreateDietDayCommandRequest(createDietDayDto);
+            Guid trainerId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var request = new CreateDietDayCommandRequest(createDietDayDto, trainerId);
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
@@ -35,7 +37,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> DeleteDietDay(int dietDayId)
         {
-            var request = new DeleteDietDayCommandRequest(dietDayId);
+            string trainerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new DeleteDietDayCommandRequest(dietDayId, Guid.Parse(trainerId));
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);
@@ -45,7 +48,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer, Member")]
         public async Task<IActionResult> GetDietDaysByDietPlanId(int dietPlanId)
         {
-            var request = new GetDietDaysByDietPlanIdQueryRequest(dietPlanId);
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new GetDietDaysByDietPlanIdQueryRequest(dietPlanId, Guid.Parse(userId));
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);

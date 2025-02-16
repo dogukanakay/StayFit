@@ -10,10 +10,12 @@ namespace StayFit.Application.Features.Queries.DietDays.GetDietDaysByDietPlanId
     public class GetDietDaysByDietPlanIdQueryRequest : IRequest<GetDietDaysByDietPlanIdQueryResponse>
     {
         public int DietPlanId { get;}
+        public Guid UserId { get;}
 
-        public GetDietDaysByDietPlanIdQueryRequest(int dietPlanId)
+        public GetDietDaysByDietPlanIdQueryRequest(int dietPlanId, Guid userId)
         {
             DietPlanId = dietPlanId;
+            UserId = userId;
         }
     }
 }

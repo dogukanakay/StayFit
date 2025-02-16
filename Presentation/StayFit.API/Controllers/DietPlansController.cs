@@ -27,7 +27,8 @@ namespace StayFit.API.Controllers
         [Authorize(Roles = "Trainer")]
         public async Task<IActionResult> CreateDietPlan(CreateDietPlanDto createDietPlanDto)
         {
-            CreateDietPlanCommandRequest request = new(createDietPlanDto);
+            var trainerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            CreateDietPlanCommandRequest request = new(createDietPlanDto, Guid.Parse(trainerId));
             CreateDietPlanCommandResponse response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);

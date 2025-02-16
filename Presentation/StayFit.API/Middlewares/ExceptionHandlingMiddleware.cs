@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using StayFit.Application.Commons.Exceptions.Auths;
 using StayFit.Application.Commons.Exceptions.Business;
 using System.Net;
 
@@ -27,6 +28,7 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = ex switch
             {
                 BusinessException => (int)HttpStatusCode.BadRequest,  
+                ForbiddenAccessException => (int)HttpStatusCode.Forbidden,  
                 _ => (int)HttpStatusCode.InternalServerError
             };
 

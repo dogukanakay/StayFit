@@ -29,8 +29,8 @@ namespace StayFit.API.Controllers
         public async Task<IActionResult> MemberRegisterAsync(MemberRegisterDto memberRegisterDto)
         {
             MemberRegisterCommandRequest request = new(memberRegisterDto);
-            var result = await _mediator.Send(request);
-            return Ok(result);
+            var response = await _mediator.Send(request);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("TrainerRegister")]
@@ -46,7 +46,7 @@ namespace StayFit.API.Controllers
         {
             var request = new MemberLoginCommandRequest(loginModel);
             var response = await _mediator.Send(request);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
 
@@ -55,7 +55,7 @@ namespace StayFit.API.Controllers
         {
             var request = new TrainerLoginCommandRequest(loginModel);
             var response = await _mediator.Send(request);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpPut("UpdatePassword")]

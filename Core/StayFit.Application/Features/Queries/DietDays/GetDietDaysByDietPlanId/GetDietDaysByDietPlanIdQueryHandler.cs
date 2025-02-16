@@ -20,7 +20,9 @@ namespace StayFit.Application.Features.Queries.DietDays.GetDietDaysByDietPlanId
 
         public async Task<GetDietDaysByDietPlanIdQueryResponse> Handle(GetDietDaysByDietPlanIdQueryRequest request, CancellationToken cancellationToken)
         {
-            List<DietDay> dietDays = await _dietDayRepository.GetWhere(dd=>dd.DietPlanId == request.DietPlanId, tracking : false);
+            List<DietDay> dietDays = await _dietDayRepository
+                .GetWhere(dd=>(dd.DietPlanId == request.DietPlanId) 
+                && (dd.DietPlan.MemberId == request.UserId || dd.DietPlan.TrainerId == request.UserId), tracking : false);
             if (!dietDays.Any())
                 return new(Messages.DietDayNotFound, false, null);
             List<GetDietDaysByDietPlanIdDto> getDietDaysByDietPlanIdDtos = _mapper.Map<List<GetDietDaysByDietPlanIdDto>>(dietDays);

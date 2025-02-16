@@ -25,9 +25,11 @@ namespace StayFit.Application.Features.Commands.DietPlans.CreateDietPlan
             if (await _dietPlanRepository.CheckIfAlreadyExistPlanOnTimeRange
                         (Guid.Parse(request.CreateDietPlanDto.MemberId), request.CreateDietPlanDto.StartDate, request.CreateDietPlanDto.EndDate))
                 return new(Messages.DietPlanAlreadyExist, false);
+            
 
             DietPlan dietPlan = _mapper.Map<DietPlan>(request.CreateDietPlanDto);
             dietPlan.Status = PlanStatus.Active;
+            dietPlan.TrainerId = request.TrainerId;
             await _dietPlanRepository.AddAsync(dietPlan);
             int result = await _dietPlanRepository.SaveAsync();
             

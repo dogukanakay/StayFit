@@ -10,10 +10,12 @@ namespace StayFit.Application.Features.Commands.DietDays.DeleteDietDay
     public class DeleteDietDayCommandRequest : IRequest<DeleteDietDayCommandResponse>
     {
         public int DietDayId { get;}
+        public Guid TrainerId { get; }
 
-        public DeleteDietDayCommandRequest(int dietDayId)
+        public DeleteDietDayCommandRequest(int dietDayId, Guid trainerId)
         {
             DietDayId = dietDayId;
+            TrainerId = trainerId;
         }
     }
 }

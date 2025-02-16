@@ -8,7 +8,7 @@ namespace StayFit.Application.Constants.Messages
 {
     public static class ExceptionMessages
     {
-        //UserNotFound
+        
         public const string UserNotFound = "User not found.";
         
 
@@ -17,6 +17,8 @@ namespace StayFit.Application.Constants.Messages
         public const string PhoneAlreadyExist = "Phone already exist";
 
         public const string PhotoCannotBeEmpty = "Photo can not be empty.";
+
+        public const string ForbiddenAccess = "You do not have access to perform this action.";
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StayFit.Application.Commons.Exceptions.Auths;
 using StayFit.Application.Constants.Messages;
 using StayFit.Application.Features.Commands.DietDays.CreateDietDay;
 using StayFit.Application.Repositories;
@@ -21,6 +22,9 @@ namespace StayFit.Application.Features.Commands.DietDays.DeleteDietDay
             DietDay dietDay = await _dietDayRepository.GetByIdAsync(request.DietDayId);
             if (dietDay == null)
                 return new(Messages.DietDayNotFound, false);
+
+            if (dietDay.DietPlan.TrainerId != request.TrainerId)
+                throw new ForbiddenAccessException();
 
             await _dietDayRepository.Remove(dietDay);
 
