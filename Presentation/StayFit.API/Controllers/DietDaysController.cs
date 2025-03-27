@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.DietDays;
 using StayFit.Application.Features.Commands.DietDays.CreateDietDay;
 using StayFit.Application.Features.Commands.DietDays.DeleteDietDay;
+using StayFit.Application.Features.Commands.DietDays.ResetCompletedDietDays;
 using StayFit.Application.Features.Commands.DietDays.UpdateDietDayCompleted;
 using StayFit.Application.Features.Queries.DietDays.GetDietDaysByDietPlanId;
 using StayFit.Domain.Entities;
@@ -65,6 +66,16 @@ namespace StayFit.API.Controllers
             var request = new UpdateDietDayCompletedCommandRequest(Guid.Parse(memberId), dietDayId);
             var response = await _mediator.Send(request);
 
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("[action]")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> ResetCompletedDietDays()
+        {
+            var request = new ResetCompletedDietDaysCommandRequest();
+            var response = await _mediator.Send(request);
+            
             return response.Success ? Ok(response) : BadRequest(response);
         }
 

@@ -24,7 +24,6 @@ namespace StayFit.Application.Features.Queries.FoodInformations.GetFoodInformati
             GetFoodInformationsByNameQueryRequest request,
             CancellationToken cancellationToken)
         {
-            throw new BusinessException("Buradayımmmm");
 
             string translatedFoodName = await _translationService.TranslateTextAsync(request.FoodName, "en", "tr");
 

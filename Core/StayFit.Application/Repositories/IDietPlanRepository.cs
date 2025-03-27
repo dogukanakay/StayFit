@@ -9,7 +9,8 @@ namespace StayFit.Application.Repositories
 {
     public interface IDietPlanRepository : IGenericRepository<DietPlan>
     {
-        Task<bool> CheckIfAlreadyExistPlanOnTimeRange(Guid memberId, DateTime startDate, DateTime endDate);
+        Task<bool> CheckIfAlreadyExistPlanOnTimeRangeAsync(Guid memberId, DateTime startDate, DateTime endDate);
+        Task<Guid?> GetTrainerIdByDietPlanIdAsync(int dietPlanId);
 
     }
 }

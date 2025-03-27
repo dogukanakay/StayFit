@@ -11,6 +11,7 @@ namespace StayFit.Application.Repositories
     {
         Task<bool> CheckIfDietDayAlreadyExistAsync(int dietPlanId, DayOfWeek day);
         Task<bool> CheckIfDietDayAlreadyExistUpdateAsync(int id, int dietPlanId, DayOfWeek day);
+        Task<int> ResetCompletedDietDaysAsync();
 
     }
 }

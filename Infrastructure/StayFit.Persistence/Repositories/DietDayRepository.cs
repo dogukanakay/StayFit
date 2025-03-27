@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StayFit.Application.Repositories;
 using StayFit.Domain.Entities;
+using StayFit.Domain.Enums;
 using StayFit.Persistence.Contexts;
 
 namespace StayFit.Persistence.Repositories
@@ -18,5 +19,10 @@ namespace StayFit.Persistence.Repositories
 
         public async Task<bool> CheckIfDietDayAlreadyExistUpdateAsync(int id, int dietPlanId, DayOfWeek day)
             =>await _context.DietDays.Where(dd => dd.DayOfWeek == day && dd.DietPlanId == dietPlanId && dd.Id != id).AnyAsync();
+
+        public async Task<int> ResetCompletedDietDaysAsync()
+            => await _context.DietDays.Where
+            (dd => dd.DietPlan.Status == PlanStatus.Active && dd.IsCompleted == true).
+            ExecuteUpdateAsync(setter => setter.SetProperty(dd => dd.IsCompleted, false));
     }
 }

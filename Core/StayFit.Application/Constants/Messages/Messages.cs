@@ -77,7 +77,9 @@ namespace StayFit.Application.Constants.Messages
         public const string DietDayCannotCompleted = "You can only enter completion for today.";
         public const string DietDayComletedSuccessful = "Congratulations. You've completed the diet day.";
         public const string DietDayComletedFailed = "The diet day is not marked as completed.";
-        public const string DietDayListedSuccessful = "Diet days listed successfully";
+        public const string DietDayListedSuccessful = "Diet days listed successfully.";
+        public const string DietDaysResetedSuccesfuly = "Diet days reseted successfuly.";
+        public const string DietDaysReseteFailed = "Diet days resete failed.";
 
 
         //DietPlan Messages
@@ -160,6 +162,8 @@ namespace StayFit.Application.Constants.Messages
         public const string WorkoutDayComleteFailed = "The workout day is not marked as completed.";
         public const string WorkoutDayCannotCompleted = "You can only enter completion for today.";
         public const string WorkoutDayListedSuccessful = "Workout days listed successfuly.";
+        public const string WorkoutDaysResetedSuccesfuly = "Workout days reseted successfuly.";
+        public const string WorkoutDaysReseteFailed = "Workout days resete failed.";
 
 
         //WorkoutPlan Messages

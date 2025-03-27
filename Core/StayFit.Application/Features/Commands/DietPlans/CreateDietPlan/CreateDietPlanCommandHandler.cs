@@ -22,7 +22,7 @@ namespace StayFit.Application.Features.Commands.DietPlans.CreateDietPlan
         //[CacheRemove("dietPlans_{MemberId}")]
         public async Task<CreateDietPlanCommandResponse> Handle(CreateDietPlanCommandRequest request, CancellationToken cancellationToken)
         {
-            if (await _dietPlanRepository.CheckIfAlreadyExistPlanOnTimeRange
+            if (await _dietPlanRepository.CheckIfAlreadyExistPlanOnTimeRangeAsync
                         (Guid.Parse(request.CreateDietPlanDto.MemberId), request.CreateDietPlanDto.StartDate, request.CreateDietPlanDto.EndDate))
                 return new(Messages.DietPlanAlreadyExist, false);
             

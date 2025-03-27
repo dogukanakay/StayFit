@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayFit.Application.DTOs.WorkoutDays;
+using StayFit.Application.Features.Commands.DietDays.ResetCompletedDietDays;
 using StayFit.Application.Features.Commands.WorkoutDays.CreateWorkoutDay;
 using StayFit.Application.Features.Commands.WorkoutDays.DeleteWorkoutDay;
+using StayFit.Application.Features.Commands.WorkoutDays.ResetCompletedWorkoutDays;
 using StayFit.Application.Features.Commands.WorkoutDays.UpdateWorkoutDayCompleted;
 using StayFit.Application.Features.Queries.WorkoutDays.GetWorkoutDaysByWorkoutPlanId;
 using System.Security.Claims;
@@ -56,6 +58,17 @@ namespace StayFit.API.Controllers
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var request = new UpdateWorkoutDayCompletedCommandRequest(Guid.Parse(userId), workoutDayId);
+            var response = await _mediator.Send(request);
+
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+
+        [HttpGet("[action]")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ResetCompletedWorkoutDays()
+        {
+            var request = new ResetCompletedWorkoutDaysCommandRequest();
             var response = await _mediator.Send(request);
 
             return response.Success ? Ok(response) : BadRequest(response);

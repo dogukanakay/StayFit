@@ -23,13 +23,13 @@ namespace StayFit.Application.Features.Commands.DietDays.CreateDietDay
 
         public async Task<CreateDietDayCommandResponse> Handle(CreateDietDayCommandRequest request, CancellationToken cancellationToken)
         {
-            var dietPlan = await _dietPlanRepository.GetByIdAsync(request.CreateDietDayDto.DietPlanId, false);
+            var trainerId = await _dietPlanRepository.GetTrainerIdByDietPlanIdAsync(request.CreateDietDayDto.DietPlanId);
 
-            if (dietPlan is null)
+            if (trainerId == null)
                 return new(Messages.DietPlanNotFoundById, false);
 
-            if (dietPlan.TrainerId != request.TrainerId)
-                throw new ForbiddenAccessException();
+            if (trainerId != request.TrainerId)
+                throw new ForbiddenAccessException(ExceptionMessages.ForbiddenAccess);
 
             if (await _dietDayRepository.CheckIfDietDayAlreadyExistAsync(request.CreateDietDayDto.DietPlanId, request.CreateDietDayDto.DayOfWeek))
                 return new(Messages.DietDayAlreadyExist, false);

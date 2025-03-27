@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using StayFit.Application;
+using StayFit.Application.Abstracts.Services.Hangfire;
 using StayFit.Application.Settings;
 using StayFit.Application.Validatiors.Auths;
 using StayFit.Infrastructure;
-using StayFit.Infrastructure.Concretes.Services.Storage.Azure;
 using StayFit.Infrastructure.Filters;
 using StayFit.Persistence;
 using StayFit.Persistence.Contexts;
@@ -116,6 +116,12 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 app.UseHangfireDashboard("/hangfire", new DashboardOptions());
+using (var scope = app.Services.CreateScope())
+{
+    var jobScheduler = scope.ServiceProvider.GetRequiredService<IJobSchedulerService>();
+    jobScheduler.ScheduleRecurringJobs();
+}
+
 
 app.UseSwagger();
 app.UseSwaggerUI();

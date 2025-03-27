@@ -18,10 +18,13 @@ namespace StayFit.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<bool> CheckIfAlreadyExistPlanOnTimeRange(Guid memberId, DateTime startDate, DateTime endDate)
-                 => await _context.WorkoutPlans
+        public async Task<bool> CheckIfAlreadyExistPlanOnTimeRangeAsync(Guid memberId, DateTime startDate, DateTime endDate)
+                 => await _context.DietPlans
              .Where(wp => wp.MemberId == memberId &&
              (startDate >= wp.StartDate && startDate <= wp.EndDate) ||
              endDate >= wp.StartDate && endDate <= wp.EndDate).AnyAsync();
+
+        public async Task<Guid?> GetTrainerIdByDietPlanIdAsync(int dietPlanId)
+                => await _context.DietPlans.Where(dp => dp.Id == dietPlanId).Select(dp => dp.TrainerId).FirstOrDefaultAsync();
     }
 }
