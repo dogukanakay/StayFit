@@ -6,6 +6,7 @@ using StayFit.Application.DTOs.Diets;
 using StayFit.Application.DTOs.Exercises;
 using StayFit.Application.DTOs.Members;
 using StayFit.Application.DTOs.Trainers;
+using StayFit.Application.DTOs.Videos;
 using StayFit.Application.DTOs.WeeklyProgresses;
 using StayFit.Application.DTOs.WorkoutDays;
 using StayFit.Application.DTOs.WorkoutPlans;
@@ -88,6 +89,12 @@ namespace StayFit.Application.Mapping
             CreateMap<Diet, GetDietsByDietDayIdDto>().ReverseMap();
             CreateMap<Diet, GetNewDietByAIRequestDto>().ReverseMap();
             CreateMap<Diet, GetTodaysDietsDto>().ReverseMap();
+
+
+            //Videos maps
+
+            CreateMap<Video, CreateVideoDto>().ReverseMap();
+            CreateMap<Video, GetVideosByVideoTypeDto>().ReverseMap();
 
 
         }

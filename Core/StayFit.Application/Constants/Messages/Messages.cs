@@ -184,5 +184,15 @@ namespace StayFit.Application.Constants.Messages
         public const string FoodInformationsListedSuccessful = "Foods listed successfuly.";
 
 
+        //Video Messages
+        public const string VideoCreatedSuccessfuly = "Video created successfuly.";
+        public const string VideoCreateFailed = "Video create failed.";
+        public const string VideosListedSuccessfuly = "Video listed successfuly.";
+        public const string VideosListFailed = "Video list failed.";
+        public const string VideoDeletedSuccessfuly = "Video deleted successfuly.";
+        public const string VideoDeleteFailed = "Video delete failed.";
+        public const string VideoNotFound= "Video not found.";
+
+
     }
 }

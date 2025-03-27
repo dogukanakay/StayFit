@@ -25,6 +25,7 @@ namespace StayFit.Persistence
             services.AddScoped<IDietPlanRepository, DietPlanRepository>();
             services.AddScoped<IDietDayRepository, DietDayRepository>();
             services.AddScoped<IDietRepository, DietRepository>();
+            services.AddScoped<IVideoRepository, VideoRepository>();
 
            
 

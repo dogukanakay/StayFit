@@ -63,5 +63,6 @@ namespace StayFit.Persistence.Contexts
         public DbSet<ProgressImage> ProgressImages { get; set; }
         public DbSet<WeeklyProgress> WeeklyProgresses { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Video> Videos { get; set; }
     }
 }
